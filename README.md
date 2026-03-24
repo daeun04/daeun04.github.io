@@ -1,2 +1,2 @@
-# http://daeun04.github.io/aiyit
+# http://daeun04.github.io
 2026.1t
