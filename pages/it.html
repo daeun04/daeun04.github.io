@@ -4,25 +4,20 @@
 <head>
   <meta charset="UTF-8">
   <title>IT개론</title>
-
   <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 
   <header>
-
     <div class="logo-area">
-
-      <img src="../img/logo_IT.png" alt="학과 로고">
+      <img src="../img/logo.png" alt="학과 로고">
 
       <div>
         <h2>IT개론</h2>
         <p>학기별 시험 범위 및 수업 정리</p>
       </div>
-
     </div>
-
   </header>
 
   <main class="content">
@@ -32,68 +27,98 @@
     <h2>학기 선택</h2>
 
     <div class="semester-box">
-
-      <label for="semester">
-        연도 및 학기 선택
-      </label>
+      <label for="semester">연도 및 학기 선택</label>
 
       <select id="semester" name="semester">
-
-        <option value="">
-          선택하세요
-        </option>
-
-        <option value="2026-1">
-          2026 1학기
-        </option>
-
-        <option value="2026-2">
-          2026 2학기
-        </option>
-
+        <option value="">선택하세요</option>
+        <option value="2026-1">2026 1학기</option>
+        <option value="2026-2">2026 2학기</option>
       </select>
-
     </div>
-
-    <br>
 
     <div class="exam-box">
-
-      <label for="exam">
-        시험 범위 선택
-      </label>
+      <label for="exam">시험 범위 선택</label>
 
       <select id="exam" name="exam">
-
-        <option value="">
-          선택하세요
-        </option>
-
-        <option value="midterm">
-          1학기 중간
-        </option>
-
-        <option value="final">
-          1학기 기말
-        </option>
-
+        <option value="">선택하세요</option>
+        <option value="midterm">1학기 중간</option>
+        <option value="final">1학기 기말</option>
       </select>
-
     </div>
 
-    <br>
-
-    <button class="select-button">
+    <button class="select-button" onclick="showUnits()">
       선택
     </button>
 
-    <br><br>
+    <section id="unit-section" class="unit-section">
+
+      <h2>단원별 정리</h2>
+
+      <div class="unit-list">
+
+        <a href="it-unit1.html" class="unit-card">
+          <h3>1단원</h3>
+          <p>수정중</p>
+        </a>
+
+        <a href="it-unit2.html" class="unit-card">
+          <h3>2단원</h3>
+          <p>수정중</p>
+        </a>
+
+        <a href="it-unit3.html" class="unit-card">
+          <h3>3단원</h3>
+          <p>수정중</p>
+        </a>
+
+        <a href="it-unit4.html" class="unit-card">
+          <h3>4단원</h3>
+          <p>수정중</p>
+        </a>
+
+        <a href="it-unit5.html" class="unit-card">
+          <h3>5단원</h3>
+          <p>수정중</p>
+        </a>
+
+        <a href="it-unit6.html" class="unit-card">
+          <h3>6단원</h3>
+          <p>수정중</p>
+        </a>
+
+        <a href="it-unit7.html" class="unit-card">
+          <h3>7단원</h3>
+          <p>수정중</p>
+        </a>
+
+        <a href="it-unit8.html" class="unit-card">
+          <h3>8단원</h3>
+          <p>수정중</p>
+        </a>
+
+      </div>
+
+    </section>
 
     <a href="../index.html" class="back-button">
       메인으로 돌아가기
     </a>
 
   </main>
+
+  <script>
+    function showUnits() {
+      const semester = document.getElementById("semester").value;
+      const exam = document.getElementById("exam").value;
+
+      if (semester === "" || exam === "") {
+        alert("학기와 시험 범위를 모두 선택하세요.");
+        return;
+      }
+
+      document.getElementById("unit-section").style.display = "block";
+    }
+  </script>
 
 </body>
 </html>
