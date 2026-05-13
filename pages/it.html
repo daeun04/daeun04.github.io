@@ -29,7 +29,7 @@
     <div class="semester-box">
       <label for="semester">연도 및 학기 선택</label>
 
-      <select id="semester" name="semester">
+      <select id="semester" name="semester" onchange="changeExamOptions()">
         <option value="">선택하세요</option>
         <option value="2026-1">2026 1학기</option>
         <option value="2026-2">2026 2학기</option>
@@ -40,9 +40,7 @@
       <label for="exam">시험 선택</label>
 
       <select id="exam" name="exam">
-        <option value="">선택하세요</option>
-        <option value="midterm">1학기 중간고사</option>
-        <option value="final">1학기 기말고사</option>
+        <option value="">학기를 먼저 선택하세요</option>
       </select>
     </div>
 
@@ -56,42 +54,42 @@
 
       <div class="unit-list">
 
-        <a href="it-1.html" class="unit-card midterm-unit">
+        <a href="it-1.html" class="unit-card first-midterm-unit">
           <h3>1단원</h3>
           <p>수정중</p>
         </a>
 
-        <a href="it-2.html" class="unit-card midterm-unit">
+        <a href="it-2.html" class="unit-card first-midterm-unit">
           <h3>2단원</h3>
           <p>수정중</p>
         </a>
 
-        <a href="it-3.html" class="unit-card midterm-unit">
+        <a href="it-3.html" class="unit-card first-midterm-unit">
           <h3>3단원</h3>
           <p>수정중</p>
         </a>
 
-        <a href="it-4.html" class="unit-card midterm-unit">
+        <a href="it-4.html" class="unit-card first-midterm-unit">
           <h3>4단원</h3>
           <p>수정중</p>
         </a>
 
-        <a href="it-5.html" class="unit-card final-unit">
+        <a href="it-5.html" class="unit-card first-final-unit">
           <h3>5단원</h3>
           <p>수정중</p>
         </a>
 
-        <a href="it-6.html" class="unit-card final-unit">
+        <a href="it-6.html" class="unit-card first-final-unit">
           <h3>6단원</h3>
           <p>수정중</p>
         </a>
 
-        <a href="it-7.html" class="unit-card final-unit">
+        <a href="it-7.html" class="unit-card first-final-unit">
           <h3>7단원</h3>
           <p>수정중</p>
         </a>
 
-        <a href="it-8.html" class="unit-card final-unit">
+        <a href="it-8.html" class="unit-card first-final-unit">
           <h3>8단원</h3>
           <p>수정중</p>
         </a>
@@ -107,6 +105,30 @@
   </main>
 
   <script>
+    function changeExamOptions() {
+      const semester = document.getElementById("semester").value;
+      const exam = document.getElementById("exam");
+
+      exam.innerHTML = "";
+
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.textContent = "선택하세요";
+      exam.appendChild(defaultOption);
+
+      if (semester === "2026-1") {
+        exam.appendChild(new Option("1학기 중간고사", "first-midterm"));
+        exam.appendChild(new Option("1학기 기말고사", "first-final"));
+      }
+
+      if (semester === "2026-2") {
+        exam.appendChild(new Option("2학기 중간고사", "second-midterm"));
+        exam.appendChild(new Option("2학기 기말고사", "second-final"));
+      }
+
+      document.getElementById("unit-section").style.display = "none";
+    }
+
     function showUnits() {
       const semester = document.getElementById("semester").value;
       const exam = document.getElementById("exam").value;
@@ -117,29 +139,28 @@
       }
 
       const unitSection = document.getElementById("unit-section");
-      const midtermUnits = document.querySelectorAll(".midterm-unit");
-      const finalUnits = document.querySelectorAll(".final-unit");
+      const allUnits = document.querySelectorAll(".unit-card");
 
       unitSection.style.display = "block";
 
-      if (exam === "midterm") {
-        midtermUnits.forEach(function(unit) {
-          unit.style.display = "block";
-        });
+      allUnits.forEach(function(unit) {
+        unit.style.display = "none";
+      });
 
-        finalUnits.forEach(function(unit) {
-          unit.style.display = "none";
+      if (exam === "first-midterm") {
+        document.querySelectorAll(".first-midterm-unit").forEach(function(unit) {
+          unit.style.display = "block";
         });
       }
 
-      if (exam === "final") {
-        midtermUnits.forEach(function(unit) {
-          unit.style.display = "none";
-        });
-
-        finalUnits.forEach(function(unit) {
+      if (exam === "first-final") {
+        document.querySelectorAll(".first-final-unit").forEach(function(unit) {
           unit.style.display = "block";
         });
+      }
+
+      if (exam === "second-midterm" || exam === "second-final") {
+        unitSection.innerHTML = "<h2>단원별 정리</h2><p>수정중</p>";
       }
     }
   </script>
