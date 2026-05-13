@@ -11,7 +11,7 @@
 
   <header>
     <div class="logo-area">
-      <img src="../img/logo_IT.png" alt="학과 로고">
+      <img src="../img/logo_IT.png" alt="IT개론 로고">
 
       <div>
         <h2>IT개론</h2>
@@ -56,42 +56,42 @@
 
       <div class="unit-list">
 
-        <a href="it-unit1.html" class="unit-card">
+        <a href="it-1.html" class="unit-card midterm-unit">
           <h3>1단원</h3>
           <p>수정중</p>
         </a>
 
-        <a href="it-unit2.html" class="unit-card">
+        <a href="it-2.html" class="unit-card midterm-unit">
           <h3>2단원</h3>
           <p>수정중</p>
         </a>
 
-        <a href="it-unit3.html" class="unit-card">
+        <a href="it-3.html" class="unit-card midterm-unit">
           <h3>3단원</h3>
           <p>수정중</p>
         </a>
 
-        <a href="it-unit4.html" class="unit-card">
+        <a href="it-4.html" class="unit-card midterm-unit">
           <h3>4단원</h3>
           <p>수정중</p>
         </a>
 
-        <a href="it-unit5.html" class="unit-card">
+        <a href="it-5.html" class="unit-card final-unit">
           <h3>5단원</h3>
           <p>수정중</p>
         </a>
 
-        <a href="it-unit6.html" class="unit-card">
+        <a href="it-6.html" class="unit-card final-unit">
           <h3>6단원</h3>
           <p>수정중</p>
         </a>
 
-        <a href="it-unit7.html" class="unit-card">
+        <a href="it-7.html" class="unit-card final-unit">
           <h3>7단원</h3>
           <p>수정중</p>
         </a>
 
-        <a href="it-unit8.html" class="unit-card">
+        <a href="it-8.html" class="unit-card final-unit">
           <h3>8단원</h3>
           <p>수정중</p>
         </a>
@@ -112,11 +112,35 @@
       const exam = document.getElementById("exam").value;
 
       if (semester === "" || exam === "") {
-        alert("학기와 시험 범위를 모두 선택하세요.");
+        alert("학기와 시험을 모두 선택하세요.");
         return;
       }
 
-      document.getElementById("unit-section").style.display = "block";
+      const unitSection = document.getElementById("unit-section");
+      const midtermUnits = document.querySelectorAll(".midterm-unit");
+      const finalUnits = document.querySelectorAll(".final-unit");
+
+      unitSection.style.display = "block";
+
+      if (exam === "midterm") {
+        midtermUnits.forEach(function(unit) {
+          unit.style.display = "block";
+        });
+
+        finalUnits.forEach(function(unit) {
+          unit.style.display = "none";
+        });
+      }
+
+      if (exam === "final") {
+        midtermUnits.forEach(function(unit) {
+          unit.style.display = "none";
+        });
+
+        finalUnits.forEach(function(unit) {
+          unit.style.display = "block";
+        });
+      }
     }
   </script>
 
