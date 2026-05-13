@@ -161,3 +161,67 @@ header {
 .back-button:hover {
   background-color: #7ecb7e;
 }
+
+.semester-box,
+.exam-box {
+
+  margin-top: 20px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.semester-box label,
+.exam-box label {
+
+  font-size: 20px;
+
+  font-weight: bold;
+}
+
+.semester-box select,
+.exam-box select {
+
+  width: 300px;
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  border: none;
+
+  font-size: 16px;
+
+  background-color: #fff0f5;
+}
+
+.select-button {
+
+  margin-top: 25px;
+
+  background-color: #ff9eb5;
+
+  color: white;
+
+  border: none;
+
+  padding: 14px 24px;
+
+  border-radius: 12px;
+
+  font-size: 18px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.select-button:hover {
+
+  background-color: #7ecb7e;
+}
