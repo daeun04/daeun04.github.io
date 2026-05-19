@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Learning Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --dark-color: #2c3e50;
+            --bg-color: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* [상단 메뉴] */
+        nav {
+            background: var(--dark-color);
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-around;
+        }
+        nav a { color: white; text-decoration: none; font-size: 0.9rem; font-weight: bold; }
+
+        /* 공통 섹션 스타일 */
+        section { padding: 30px 20px; border-bottom: 1px solid #eee; background: white; }
+        h2 { font-size: 1.4rem; color: var(--primary-color); margin-top: 0; }
+
+        /* [섹션 1: 홈페이지 소개] */
+        .intro { background: linear-gradient(135deg, #3498db, #8e44ad); color: white; text-align: center; }
+        .intro p { font-weight: 300; opacity: 0.9; }
+
+        /* [섹션 2: 학습 목록] */
+        .course-list { display: grid; gap: 10px; }
+        .course-item { 
+            background: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 8px;
+            text-decoration: none; color: #333; display: flex; justify-content: space-between; align-items: center;
+        }
+        .course-item:active { background: #f0f0f0; }
+        .tag { font-size: 0.7rem; padding: 3px 8px; border-radius: 15px; color: white; }
+        .tag-h { background: #e67e22; } /* HTML */
+        .tag-c { background: #2980b9; } /* CSS */
+        .tag-j { background: #f1c40f; color: #333; } /* JS */
+
+        /* [섹션 3: 사진 갤러리] */
+        .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .gallery-img { 
+            width: 100%; aspect-ratio: 1/1; background: #ddd; border-radius: 8px; 
+            object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #999;
+        }
+
+        /* [섹션 4: AI & 프로그래밍] */
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; }
+        .grid-3 div { background: #f1f3f5; padding: 15px 5px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; }
+
+        /* [섹션 5: SNS 메뉴] */
+        .sns-menu { display: flex; justify-content: center; gap: 20px; }
+        .sns-icon { width: 40px; height: 40px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 1.2rem; }
+
+        footer { text-align: center; padding: 30px; font-size: 0.8rem; color: #999; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#intro">홈</a>
+        <a href="#learning">학습</a>
+        <a href="#gallery">갤러리</a>
+        <a href="#content">콘텐츠</a>
+        <a href="#sns">SNS</a>
+    </nav>
+
+    <section id="intro" class="intro">
+        <h1>Smart Learning</h1>
+        <p>박경배와 함께하는<br>HTML5 & Web3D 모바일 강의실</p>
+    </section>
+
+    <section id="learning">
+        <h2>Learning List</h2>
+        <div class="course-list">
+            <a href="web1.html" class="course-item"><span>01. 메타태그 활용</span> <span class="tag tag-h">HTML5</span></a>
+            <a href="web2.html" class="course-item"><span>02. 문단 관련 태그</span> <span class="tag tag-h">HTML5</span></a>
+            <a href="web5.html" class="course-item"><span>05. 테이블 병합</span> <span class="tag tag-c">CSS3</span></a>
+            <a href="web6.html" class="course-item"><span>06. 표 크기 조정</span> <span
