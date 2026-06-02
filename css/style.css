@@ -315,11 +315,19 @@ body {
 
 .web-list li {
     list-style: none;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
 }
 
-.card-link {
+.web-list li .card-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
     width: 100%;
-    height: 100%;
+    box-sizing: border-box;
 
     background-color: #fff7fb;
     border-left: 7px solid #68c77a;
@@ -327,31 +335,27 @@ body {
     padding: 16px 20px;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
 
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
     color: #111;
     text-decoration: none;
 
-    transition: 0.25s ease;
+    transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.card-link strong {
-    font-weight: bold;
+.web-list li .card-link:hover {
+    transform: translateY(-5px);
+    background-color: #ffe8f3;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+.web-list li .card-link strong {
     color: #111;
+    font-weight: bold;
     white-space: nowrap;
 }
 
-.card-link span {
+.web-list li .card-link span {
     color: #333;
     font-size: 14px;
-}
-
-.card-link:hover {
-    transform: translateY(-5px);
-    background-color: #ffeef6;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
 }
 @media (max-width: 700px) {
     .web-list {
