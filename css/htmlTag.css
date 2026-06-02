@@ -44,7 +44,47 @@ body {
 }
 
 /* 왼쪽 사이드바 */
-ㅍ
+.side-menu {
+    width: 220px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    border-radius: 18px;
+    padding: 25px 18px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+
+    position: fixed;
+    left: calc(50% - 720px);
+    top: 170px;
+    z-index: 100;
+}
+
+.side-menu h2 {
+    font-size: 20px;
+    margin: 0 0 18px 0;
+    border-left: 6px solid #68c77a;
+    padding-left: 10px;
+}
+
+.side-menu a {
+    display: block;
+    background-color: #fff7fb;
+    color: #111;
+    text-decoration: none;
+    font-weight: bold;
+    white-space: nowrap;
+
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+
+    transition: all 0.25s ease;
+}
+
+.side-menu a:hover {
+    transform: translateX(10px);
+    background-color: #ffe8f3;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.13);
+}
 
 /* 가운데 내용 박스 */
 .web-container {
