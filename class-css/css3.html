@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS3 선택자 완전 정복</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+KR:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --card: #1c1c1c;
+      --border: #2a2a2a;
+      --accent: #e8ff47;
+      --accent2: #ff6b35;
+      --accent3: #00d4ff;
+      --text: #e8e4dc;
+      --muted: #888;
+      --code-bg: #111;
+      --serif: 'Noto Serif KR', serif;
+      --sans: 'Noto Sans KR', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.8;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── 헤더 ── */
+    header {
+      position: relative;
+      padding: 80px 40px 60px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 0%, rgba(232,255,71,.08) 0%, transparent 70%),
+        repeating-linear-gradient(0deg, transparent, transparent 39px, var(--border) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, var(--border) 40px);
+      pointer-events: none;
+    }
+    header .badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 4px 14px;
+      border-radius: 2px;
+      margin-bottom: 24px;
+      animation: fadeUp .6s ease both;
+    }
+    header h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+      animation: fadeUp .6s .1s ease both;
+    }
+    header h1 span { color: var(--accent); }
+    header p.sub {
+      margin-top: 16px;
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 300;
+      animation: fadeUp .6s .2s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── 레이아웃 ── */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 60px 24px 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+    }
+
+    /* ── 카드 ── */
+    .selector-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      animation: fadeUp .5s ease both;
+      transition: border-color .3s;
+    }
+    .selector-card:hover { border-color: #444; }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .card-num {
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--muted);
+      min-width: 28px;
+    }
+    .card-title {
+      font-family: var(--mono);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+      flex: 1;
+    }
+    .card-tag {
+      font-family: var(--mono);
+      font-size: .65rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 2px;
+      background: rgba(232,255,71,.1);
+      color: var(--accent);
+    }
+
+    .card-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    @media (max-width: 680px) { .card-body { grid-template-columns: 1fr; } }
+
+    .description {
+      padding: 28px;
+      border-right: 1px solid var(--border);
+      font-size: .9rem;
+    }
+    @media (max-width: 680px) { .description { border-right: none; border-bottom: 1px solid var(--border); } }
+
+    .description h3 {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+    .description p {
+      color: #aaa;
+      font-size: .875rem;
+      line-height: 1.9;
+    }
+    .description .syntax {
+      display: inline-block;
+      margin-top: 12px;
+      font-family: var(--mono);
+      font-size: .8rem;
+      color: var(--accent3);
+      background: rgba(0,212,255,.07);
+      border: 1px solid rgba(0,212,255,.2);
+      padding: 5px 12px;
+      border-radius: 3px;
+    }
+
+    .demo-area {
+      padding: 28px;
+      background: var(--code-bg);
+    }
+    .demo-area h4 {
+      font-family: var(--mono);
+      font-size: .65rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    /* ── 코드 블록 ── */
+    .code-block {
+      font-family: var(--mono);
+      font-size: .78rem;
+      line-height: 1.7;
+      background: #0a0a0a;
+      border: 1px solid #252525;
+      border-radius: 3px;
+      padding: 16px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+    .code-block .c-sel  { color: #e8ff47; }
+    .code-block .c-prop { color: #79b8ff; }
+    .code-block .c-val  { color: #ff8c42; }
+    .code-block .c-tag  { color: #f97583; }
+    .code-block .c-attr { color: #b392f0; }
+    .code-block .c-str  { color: #9ecbff; }
+    .code-block .c-com  { color: #555; font-style: italic; }
+
+    /* ════════════════════════════
+       ① 자식 선택자
+    ════════════════════════════ */
+    .demo-child-selector > .direct-child {
+      background: rgba(232,255,71,.12);
+      border-left: 3px solid var(--accent);
+      padding: 6px 10px;
+      border-radius: 2px;
+      font-size: .82rem;
+      margin-bottom: 6px;
+      color: var(--accent);
+      font-family: var(--mono);
+    }
+    .demo-child-selector .not-direct {
+      background: rgba(136,136,136,.08);
+      padding: 6px 10px;
+      font-size: .78rem;
+      margin: 4px 0;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    /* ════════════════════════════
+       ② 속성 선택자
+    ════════════════════════════ */
+    .attr-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .attr-list li {
+      font-family: var(--mono);
+      font-size: .8rem;
+      padding: 6px 10px;
+      border-radius: 2px;
+    }
+    .attr-list a[href^="https"] {
+      color: var(--accent);
+      background: rgba(232,255,71,.1);
+      border-left: 3px solid var(--accent);
+      display: block;
+      padding: 6px 10px;
+    }
+    .attr-list a[href^="http:"] {
+      color: #ff6b6b;
+      background: rgba(255,107,107,.08);
+      border-left: 3px solid #ff6b6b;
+      display: block;
+      padding: 6px 10px;
+    }
+    .attr-list a[href^="mailto"] {
+      color: var(--accent3);
+      background: rgba(0,212,255,.08);
+      border-left: 3px solid var(--accent3);
+      display: block;
+      padding: 6px 10px;
+    }
+
+    /* ════════════════════════════
+       ③ 가상 클래스 :nth-child
+    ════════════════════════════ */
+    .nth-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: .78rem;
+    }
+    .nth-table tr td {
+      padding: 7px 10px;
+      border: 1px solid #222;
+      color: var(--muted);
+    }
+    .nth-table tr:nth-child(odd) td {
+      background: rgba(232,255,71,.07);
+      color: var(--accent);
+    }
+    .nth-table tr:nth-child(even) td {
+      background: rgba(255,107,107,.05);
+      color: #ff9999;
+    }
+
+    /* ════════════════════════════
+       ④ 가상 요소 ::before / ::after
+    ════════════════════════════ */
+    .pseudo-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .pseudo-list li {
+      font-size: .85rem;
+      padding: 6px 0;
+      color: #ccc;
+      position: relative;
+      padding-left: 20px;
+    }
+    .pseudo-list li::before {
+      content: "▶";
+      position: absolute;
+      left: 0;
+      color: var(--accent2);
+      font-size: .65rem;
+      top: 9px;
+    }
+    .pseudo-item-demo {
+      font-family: var(--mono);
+      font-size: .82rem;
+      position: relative;
+      display: inline-block;
+      color: var(--text);
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      margin-top: 8px;
+    }
+    .pseudo-item-demo::before {
+      content: "「";
+      color: var(--accent2);
+      font-size: 1.2em;
+      margin-right: 2px;
+    }
+    .pseudo-item-demo::after {
+      content: "」";
+      color: var(--accent2);
+      font-size: 1.2em;
+      margin-left: 2px;
+    }
+
+    /* ════════════════════════════
+       ⑤ 형제 선택자 ~ (일반)
+    ════════════════════════════ */
+    .sibling-demo input[type="checkbox"] { display: none; }
+    .sibling-demo label {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: .8rem;
+      padding: 7px 14px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all .2s;
+      margin-bottom: 10px;
+    }
+    .sibling-demo input[type="checkbox"]:checked ~ label {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(232,255,71,.1);
+    }
+    .sibling-demo .sib-items { display: flex; flex-direction: column; gap: 5px; }
+    .sibling-demo input[type="checkbox"]:checked ~ .sib-items .sib-item {
+      color: var(--text);
+      background: rgba(255,255,255,.04);
+      border-left: 2px solid var(--accent);
+      padding-left: 8px;
+    }
+    .sib-item {
+      font-family: var(--mono);
+      font-size: .78rem;
+      color: #555;
+      padding: 5px 0;
+      transition: all .3s;
+    }
+    .sib-note {
+      font-size: .75rem;
+      color: var(--muted);
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    /* ════════════════════════════
+       ⑥ :focus-within
+    ════════════════════════════ */
+    .focus-form {
+      background: #0f0f0f;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 16px;
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .focus-form:focus-within {
+      border-color: var(--accent3);
+      box-shadow: 0 0 0 3px rgba(0,212,255,.12);
+    }
+    .focus-form label {
+      display: block;
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+      transition: color .3s;
+    }
+    .focus-form:focus-within label { color: var(--accent3); }
+    .focus-form input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #333;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: .85rem;
+      padding: 6px 0;
+      outline: none;
+      transition: border-color .3s;
+    }
+    .focus-form input:focus { border-bottom-color: var(--accent3); }
+    .focus-hint {
+      font-size: .72rem;
+      color: var(--muted);
+      margin-top: 10px;
+      font-family: var(--mono);
+      transition: color .3s;
+    }
+    .focus-form:focus-within .focus-hint { color: var(--accent3); }
+
+    /* ── 푸터 ── */
+    footer {
+      text-align: center;
+      padding: 40px;
+      border-top: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: .72rem;
+      color: #444;
+      letter-spacing: .08em;
+    }
+    footer span { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge">CSS3 Reference</div>
+  <h1>선택자 완전 정복<br/><span>6가지 핵심 Selector</span></h1>
+  <p class="sub">CSS3의 강력한 선택자들을 예제와 함께 완전히 이해하기</p>
+</header>
+
+<main>
+
+  <!-- ① 자식 선택자 -->
+  <div class="selector-card">
+    <div class="card-header">
+      <span class="card-num">01</span>
+      <span class="card-title">자식 선택자 &nbsp;›&nbsp; Child Selector</span>
+      <span class="card-tag">Combinator</span>
+    </div>
+    <div class="card-body">
+      <div class="description">
+        <h3>직계 자식만 선택한다</h3>
+        <p>
+          <code>&gt;</code> 기호를 사용하며, 부모 요소의 <strong>바로 아래 직계 자식</strong>만 선택합니다.
+          손자·증손자 등 더 깊은 자손 요소에는 스타일이 적용되지 않습니다.
+          중첩 구조에서 정밀하게 범위를 제어할 때 유용합니다.
+        </p>
+        <span class="syntax">부모 &gt; 자식 { }</span>
+      </div>
+      <div class="demo-area">
+        <h4>Live Demo</h4>
+        <div class="code-block">
+<span class="c-sel">.parent &gt; .child</span> {<br>
+&nbsp;&nbsp;<span class="c-prop">color</span>: <span class="c-val">lime</span>;<br>
+}<br>
+<span class="c-com">/* .grandchild 에는 미적용 */</span>
+        </div>
+        <div class="demo-child-selector">
+          <div class="direct-child">✔ 직계 자식 (적용됨)</div>
+          <div class="direct-child">✔ 직계 자식 (적용됨)
+            <div class="not-direct">✘ 손자 요소 (미적용)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ② 속성 선택자 -->
+  <div class="selector-card">
+    <div class="card-header">
+      <span class="card-num">02</span>
+      <span class="card-title">속성 선택자 &nbsp;›&nbsp; Attribute Selector</span>
+      <span class="card-tag">Attribute</span>
+    </div>
+    <div class="card-body">
+      <div class="description">
+        <h3>HTML 속성 값으로 선택한다</h3>
+        <p>
+          대괄호 <code>[ ]</code> 안에 속성명 또는 속성값을 지정하여 요소를 선택합니다.
+          <code>^=</code>은 "시작 값", <code>$=</code>는 "끝 값", <code>*=</code>는 "포함 값"을 의미합니다.
+          링크 유형 구분, 파일 형식 스타일링 등에 강력합니다.
+        </p>
+        <span class="syntax">a[href^="https"] { }</span>
+      </div>
+      <div class="demo-area">
+        <h4>Live Demo</h4>
+        <div class="code-block">
+<span class="c-sel">a[href^=<span class="c-str">"https"</span>]</span> { <span class="c-prop">color</span>: <span class="c-val">lime</span>; }<br>
+<span class="c-sel">a[href^=<span class="c-str">"http:"</span>]</span> { <span class="c-prop">color</span>: <span class="c-val">red</span>; }<br>
+<span class="c-sel">a[href^=<span class="c-str">"mailto"</span>]</span> { <span class="c-prop">color</span>: <span class="c-val">cyan</span>; }
+        </div>
+        <ul class="attr-list">
+          <li><a href="https://example.com">https:// → 보안 링크 (초록)</a></li>
+          <li><a href="http://example.com">http:// → 비보안 링크 (빨강)</a></li>
+          <li><a href="mailto:hello@example.com">mailto: → 이메일 링크 (청록)</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ :nth-child -->
+  <div class="selector-card">
+    <div class="card-header">
+      <span class="card-num">03</span>
+      <span class="card-title">:nth-child() &nbsp;›&nbsp; 순서 기반 가상 클래스</span>
+      <span class="card-tag">Pseudo-Class</span>
+    </div>
+    <div class="card-body">
+      <div class="description">
+        <h3>N번째 자식을 수식으로 선택한다</h3>
+        <p>
+          <code>:nth-child(n)</code>은 부모 안에서 몇 번째 자식인지를 기준으로 선택합니다.
+          <code>odd</code>(홀수), <code>even</code>(짝수), 또는 <code>2n+1</code> 같은
+          수식도 사용 가능합니다. 표·목록의 줄무늬(zebra) 패턴 구현에 자주 쓰입니다.
+        </p>
+        <span class="syntax">tr:nth-child(odd) { }</span>
+      </div>
+      <div class="demo-area">
+        <h4>Live Demo — 홀짝 줄무늬 테이블</h4>
+        <div class="code-block">
+<span class="c-sel">tr:nth-child(<span class="c-val">odd</span>)</span> &nbsp;{ <span class="c-prop">background</span>: <span class="c-val">lime/10%</span>; }<br>
+<span class="c-sel">tr:nth-child(<span class="c-val">even</span>)</span> { <span class="c-prop">background</span>: <span class="c-val">red/5%</span>; }
+        </div>
+        <table class="nth-table">
+          <tr><td>1번째 행 (odd)</td><td>홀수 스타일</td></tr>
+          <tr><td>2번째 행 (even)</td><td>짝수 스타일</td></tr>
+          <tr><td>3번째 행 (odd)</td><td>홀수 스타일</td></tr>
+          <tr><td>4번째 행 (even)</td><td>짝수 스타일</td></tr>
+          <tr><td>5번째 행 (odd)</td><td>홀수 스타일</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ④ 가상 요소 ::before / ::after -->
+  <div class="selector-card">
+    <div class="card-header">
+      <span class="card-num">04</span>
+      <span class="card-title">::before / ::after &nbsp;›&nbsp; 가상 요소</span>
+      <span class="card-tag">Pseudo-Element</span>
+    </div>
+    <div class="card-body">
+      <div class="description">
+        <h3>HTML을 건드리지 않고 콘텐츠를 삽입한다</h3>
+        <p>
+          <code>::before</code>와 <code>::after</code>는 요소의 앞뒤에
+          CSS만으로 가상의 콘텐츠를 삽입합니다.
+          <code>content</code> 속성이 필수이며, 장식용 아이콘·기호·오버레이 등
+          HTML을 오염시키지 않는 시각 요소 추가에 이상적입니다.
+        </p>
+        <span class="syntax">li::before { content: "▶"; }</span>
+      </div>
+      <div class="demo-area">
+        <h4>Live Demo</h4>
+        <div class="code-block">
+<span class="c-sel">li::before</span> {<br>
+&nbsp;&nbsp;<span class="c-prop">content</span>: <span class="c-str">"▶"</span>;<br>
+&nbsp;&nbsp;<span class="c-prop">color</span>: <span class="c-val">orange</span>;<br>
+}<br>
+<span class="c-sel">.item::before</span> { <span class="c-prop">content</span>: <span class="c-str">"「"</span>; }<br>
+<span class="c-sel">.item::after</span> &nbsp;{ <span class="c-prop">content</span>: <span class="c-str">"」"</span>; }
+        </div>
+        <ul class="pseudo-list">
+          <li>CSS만으로 앞에 ▶ 아이콘 삽입됨</li>
+          <li>HTML 마크업 변경 없이 스타일 제어</li>
+          <li>장식, 오버레이, 툴팁 등에 활용</li>
+        </ul>
+        <div class="pseudo-item-demo">CSS 가상 요소 데모</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑤ 일반 형제 선택자 ~ -->
+  <div class="selector-card">
+    <div class="card-header">
+      <span class="card-num">05</span>
+      <span class="card-title">일반 형제 선택자 &nbsp;›&nbsp; General Sibling ~</span>
+      <span class="card-tag">Combinator</span>
+    </div>
+    <div class="card-body">
+      <div class="description">
+        <h3>같은 부모의 뒤따르는 형제를 모두 선택한다</h3>
+        <p>
+          <code>~</code>는 같은 부모 아래에서 기준 요소 <strong>뒤에 오는 모든 형제</strong>를 선택합니다.
+          바로 인접한 형제만 선택하는 <code>+</code>(인접 형제)와 달리,
+          뒤에 있는 형제 전체에 적용됩니다.
+          체크박스 핵(checkbox hack) 등 JS 없는 UI 토글에 활용됩니다.
+        </p>
+        <span class="syntax">input:checked ~ .sibling { }</span>
+      </div>
+      <div class="demo-area">
+        <h4>Live Demo — 체크박스로 형제 스타일 변경</h4>
+        <div class="code-block">
+<span class="c-sel">input:checked ~ label</span> {<br>
+&nbsp;&nbsp;<span class="c-prop">color</span>: <span class="c-val">lime</span>;<br>
+}<br>
+<span class="c-sel">input:checked ~ .items .item</span> {<br>
+&nbsp;&nbsp;<span class="c-prop">border-left</span>: <span class="c-val">2px solid lime</span>;<br>
+}
+        </div>
+        <div class="sibling-demo">
+          <input type="checkbox" id="sib-toggle">
+          <label for="sib-toggle">☐ 클릭해서 형제 요소 활성화</label>
+          <div class="sib-items items">
+            <div class="sib-item">형제 요소 A</div>
+            <div class="sib-item">형제 요소 B</div>
+            <div class="sib-item">형제 요소 C</div>
+          </div>
+        </div>
+        <p class="sib-note">※ 체크박스를 클릭하면 ~ 선택자로 형제 스타일이 바뀝니다</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑥ :focus-within -->
+  <div class="selector-card">
+    <div class="card-header">
+      <span class="card-num">06</span>
+      <span class="card-title">:focus-within &nbsp;›&nbsp; 포커스 전파 가상 클래스</span>
+      <span class="card-tag">Pseudo-Class</span>
+    </div>
+    <div class="card-body">
+      <div class="description">
+        <h3>자식에 포커스가 오면 부모를 선택한다</h3>
+        <p>
+          <code>:focus-within</code>은 해당 요소 또는 그 <strong>자손 요소 중 하나라도 포커스</strong>를
+          받으면 부모 요소에 스타일을 적용합니다.
+          폼 그룹 전체를 강조하거나, 카드 내부 입력 시 카드 전체를 하이라이트하는 등
+          인터랙티브 UI에 매우 유용합니다.
+        </p>
+        <span class="syntax">.form:focus-within { border-color: cyan; }</span>
+      </div>
+      <div class="demo-area">
+        <h4>Live Demo — 입력 시 폼 전체 하이라이트</h4>
+        <div class="code-block">
+<span class="c-sel">.form:focus-within</span> {<br>
+&nbsp;&nbsp;<span class="c-prop">border-color</span>: <span class="c-val">cyan</span>;<br>
+&nbsp;&nbsp;<span class="c-prop">box-shadow</span>: <span class="c-val">0 0 0 3px cyan/12%</span>;<br>
+}
+        </div>
+        <div class="focus-form">
+          <label>이름을 입력하면 폼 전체가 강조됩니다</label>
+          <input type="text" placeholder="여기를 클릭해보세요…" />
+          <p class="focus-hint">↑ 입력창 클릭 시 :focus-within 이 부모 .form 에 적용됩니다</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  CSS3 Selector Reference &nbsp;|&nbsp; <span>6 Core Selectors</span> &nbsp;|&nbsp; HTML Document
+</footer>
+
+</body>
+</html>
