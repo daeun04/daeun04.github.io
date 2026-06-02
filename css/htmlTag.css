@@ -25,11 +25,7 @@ body {
 
 /* 전체 레이아웃 */
 .layout {
-    display: flex;
-    max-width: 1200px;
-    margin: 0 auto;
-    gap: 30px;
-    align-items: flex-start;
+    position: relative;
 }
 
 /* 왼쪽 사이드바 */
@@ -39,8 +35,11 @@ body {
     border-radius: 18px;
     padding: 25px 18px;
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
-    position: sticky;
-    top: 30px;
+
+    position: fixed;
+    left: 40px;
+    top: 170px;
+    z-index: 100;
 }
 
 .side-menu h2 {
@@ -59,18 +58,20 @@ body {
     padding: 14px 16px;
     border-radius: 12px;
     margin-bottom: 12px;
-    transition: 0.25s ease;
+    transition: all 0.25s ease;
 }
 
 .side-menu a:hover {
-    transform: translateX(8px);
+    transform: translateX(10px);
     background-color: #ffe8f3;
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.13);
 }
 
-/* 오른쪽 내용 박스 */
+/* 가운데 내용 박스 */
 .web-container {
-    flex: 1;
+    width: 85%;
+    max-width: 900px;
+    margin: 40px auto;
     background-color: #ffffff;
     border-radius: 18px;
     padding: 35px;
@@ -87,7 +88,18 @@ body {
     border-left: 6px solid #68c77a;
     padding-left: 12px;
 }
+@media (max-width: 1400px) {
+    .side-menu {
+        left: 10px;
+        width: 180px;
+    }
+}
 
+@media (max-width: 1200px) {
+    .side-menu {
+        display: none;
+    }
+}
 /* 카드 목록 */
 .web-list {
     list-style: none;
