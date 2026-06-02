@@ -1,0 +1,5 @@
+/*선택자{속성:값}*/
+p { color: gary;}
+div {border: 2px dashed red;}
+h1, p {background-color: magenta;}
+h2 {text-align: center; color: #f0fff0;}
