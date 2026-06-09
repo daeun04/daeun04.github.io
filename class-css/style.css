@@ -267,12 +267,6 @@ header {
 
 /* htmlTag 페이지 전용 */
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #ffe6ee;
-}
-
 .web-container {
   width: 85%;
   max-width: 900px;
