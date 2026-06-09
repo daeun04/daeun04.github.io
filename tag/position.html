@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS Position</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Pretendard:wght@400;500;700&display=swap');
+
+    :root {
+      --bg: #0e0e12;
+      --surface: #16161d;
+      --border: #2a2a38;
+      --text: #e8e6f0;
+      --muted: #7770a0;
+      --code-bg: #1e1e2a;
+
+      --c-static:   #6b7280;
+      --c-relative: #4f9ef7;
+      --c-absolute: #e05c9a;
+      --c-fixed:    #5fc97a;
+      --c-sticky:   #f0a040;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* ── fixed badge (실제 fixed 시연) ── */
+    #fixed-badge {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--c-fixed);
+      color: #0e1a12;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .7rem;
+      font-weight: 600;
+      padding: .35rem .7rem;
+      border-radius: 20px;
+      z-index: 999;
+      box-shadow: 0 2px 12px rgba(95,201,122,.35);
+    }
+
+    /* ── page wrap ── */
+    .page { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem 6rem; }
+
+    /* ── header ── */
+    header { border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 3rem; }
+    header .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .72rem; letter-spacing: .12em;
+      color: var(--muted); text-transform: uppercase; margin-bottom: .5rem;
+    }
+    header h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 700; letter-spacing: -.02em; }
+    header p  { margin-top: .7rem; color: var(--muted); font-size: .92rem; max-width: 520px; }
+
+    /* ── section ── */
+    .pos-section { margin-bottom: 3.5rem; }
+    .pos-section + .pos-section { border-top: 1px solid var(--border); padding-top: 3rem; }
+
+    .section-head { display: flex; align-items: center; gap: .75rem; margin-bottom: 1rem; }
+    .color-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+    .section-head h2 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.1rem; font-weight: 600; letter-spacing: .02em;
+    }
+    .section-desc { font-size: .88rem; color: var(--muted); margin-bottom: 1.3rem; max-width: 600px; }
+    .section-desc strong { color: var(--text); }
+
+    /* ── demo shell ── */
+    .demo {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .demo-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--muted); padding: .6rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,.02);
+    }
+    .demo-body { padding: 1.2rem; }
+
+    /* ── generic box styles ── */
+    .box {
+      border-radius: 5px;
+      padding: .4rem .7rem;
+      font-size: .8rem;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .flow-box {
+      background: #1e1e2a;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    /* ── STATIC ── */
+    .static-wrap { display: flex; flex-direction: column; gap: .4rem; }
+    .box-static {
+      background: #1e2028; border: 1px solid var(--c-static);
+      color: var(--c-static);
+    }
+
+    /* ── RELATIVE ── */
+    .relative-wrap { position: relative; min-height: 90px; }
+    .box-rel-normal {
+      background: #1e1e2a; border: 1px dashed var(--border);
+      color: var(--muted); display: inline-block; margin-bottom: .4rem;
+    }
+    .box-rel-moved {
+      background: #0e1e38; border: 1px solid var(--c-relative);
+      color: var(--c-relative); display: inline-block;
+      position: relative; top: 16px; left: 24px;
+    }
+    .arrow-hint {
+      font-size: .7rem; color: var(--c-relative); opacity: .7;
+      font-family: 'IBM Plex Mono', monospace;
+      display: block; margin-top: .2rem;
+    }
+
+    /* ── ABSOLUTE ── */
+    .abs-container {
+      position: relative;
+      height: 130px;
+      background: #12121a;
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+    }
+    .abs-container-label {
+      font-size: .65rem; font-family: 'IBM Plex Mono', monospace;
+      color: var(--border); padding: .4rem .6rem;
+      position: absolute; top: 0; left: 0;
+    }
+    .box-abs {
+      position: absolute;
+      background: #2a0e24; border: 1px solid var(--c-absolute);
+      color: var(--c-absolute);
+    }
+    .box-abs-tl { top: 8px;  right: 8px; }
+    .box-abs-br { bottom: 8px; left: 8px; }
+
+    /* ── FIXED — 이미 위 #fixed-badge로 시연 중 ── */
+    .fixed-note {
+      background: #0e1a12;
+      border: 1px solid rgba(95,201,122,.3);
+      border-radius: 6px;
+      padding: .8rem 1rem;
+      font-size: .83rem;
+      color: #5fc97a;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* ── STICKY ── */
+    .sticky-scroll-area {
+      height: 180px;
+      overflow-y: auto;
+      background: #12121a;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .sticky-inner { padding: 0; }
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      background: #1a0e28;
+      border-bottom: 1px solid var(--c-sticky);
+      padding: .45rem .8rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .78rem;
+      color: var(--c-sticky);
+      z-index: 10;
+    }
+    .sticky-content-item {
+      padding: .5rem .8rem;
+      font-size: .82rem;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .sticky-content-item:last-child { border-bottom: none; }
+
+    /* ── code block ── */
+    .code {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: .85rem 1rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .76rem;
+      line-height: 1.85;
+      overflow-x: auto;
+      margin-top: 1rem;
+    }
+    .ck  { color: #58b0e8; }   /* property */
+    .cv  { color: #f0813a; }   /* value */
+    .cc  { color: #454560; }   /* comment */
+
+    /* ── summary table ── */
+    .sum-table {
+      width: 100%; border-collapse: collapse;
+      font-size: .82rem;
+      border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+    }
+    .sum-table th {
+      background: #1a1a24; padding: .6rem .9rem;
+      text-align: left; font-family: 'IBM Plex Mono', monospace;
+      font-size: .72rem; font-weight: 600; letter-spacing: .06em;
+      color: var(--muted); border-bottom: 1px solid var(--border);
+    }
+    .sum-table td {
+      padding: .6rem .9rem; border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .sum-table tr:last-child td { border-bottom: none; }
+    .sum-table tr:nth-child(even) td { background: rgba(255,255,255,.015); }
+    .chip2 {
+      display: inline-block;
+      border-radius: 4px; padding: .1rem .4rem;
+      font-size: .7rem; font-family: 'IBM Plex Mono', monospace;
+      border: 1px solid;
+    }
+    .label-section { font-size: .72rem; font-family: 'IBM Plex Mono', monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: .8rem; }
+  </style>
+</head>
+<body>
+
+<!-- 실제 fixed 요소 시연 -->
+<div id="fixed-badge">📌 fixed — 화면 고정 중</div>
+
+<div class="page">
+
+  <header>
+    <div class="eyebrow">CSS Fundamentals</div>
+    <h1>Position</h1>
+    <p>요소를 문서 흐름 안팎에서 어떻게 배치할지 결정하는 5가지 <code style="font-family:monospace;color:#b090f0">position</code> 값을 예제로 이해합니다.</p>
+  </header>
+
+  <!-- ─── STATIC ─── -->
+  <div class="pos-section">
+    <div class="section-head">
+      <div class="color-dot" style="background:var(--c-static)"></div>
+      <h2 style="color:var(--c-static)">static</h2>
+    </div>
+    <p class="section-desc">
+      <strong>기본값.</strong> 문서의 일반 흐름(Normal Flow)에 따라 순서대로 배치됩니다.
+      <code style="font-size:.85em;font-family:monospace">top / right / bottom / left / z-index</code>가 모두 무시됩니다.
+    </p>
+    <div class="demo">
+      <div class="demo-label">예제 — 순서대로 아래로 쌓임</div>
+      <div class="demo-body">
+        <div class="static-wrap">
+          <div class="box box-static">Box 1 — position: static (default)</div>
+          <div class="box box-static">Box 2 — position: static</div>
+          <div class="box box-static">Box 3 — position: static</div>
+        </div>
+      </div>
+    </div>
+    <div class="code">
+<span class="cc">/* top, left 등 좌표값을 지정해도 아무 효과 없음 */</span>
+.box { <span class="ck">position</span>: <span class="cv">static</span>; <span class="cc">/* 기본값 — 생략 가능 */</span> }
+    </div>
+  </div>
+
+  <!-- ─── RELATIVE ─── -->
+  <div class="pos-section">
+    <div class="section-head">
+      <div class="color-dot" style="background:var(--c-relative)"></div>
+      <h2 style="color:var(--c-relative)">relative</h2>
+    </div>
+    <p class="section-desc">
+      <strong>원래 위치를 기준</strong>으로 이동합니다.
+      이동해도 원래 자리는 그대로 유지되어 주변 요소에 영향을 주지 않습니다.
+      <code style="font-size:.85em;font-family:monospace">absolute</code> 자식의 기준점으로도 자주 사용됩니다.
+    </p>
+    <div class="demo">
+      <div class="demo-label">예제 — 원래 자리에서 top: 16px, left: 24px 이동</div>
+      <div class="demo-body" style="min-height:110px; position:relative;">
+        <div class="box box-rel-normal">일반 요소</div>
+        <div class="box box-rel-moved">
+          relative 이동 요소
+          <span class="arrow-hint">↑ top:16px left:24px — 원래 자리는 유지</span>
+        </div>
+      </div>
+    </div>
+    <div class="code">
+.box {
+  <span class="ck">position</span>: <span class="cv">relative</span>;
+  <span class="ck">top</span>: <span class="cv">16px</span>;   <span class="cc">/* 원래 위치에서 아래로 */</span>
+  <span class="ck">left</span>: <span class="cv">24px</span>;  <span class="cc">/* 원래 위치에서 오른쪽으로 */</span>
+}
+    </div>
+  </div>
+
+  <!-- ─── ABSOLUTE ─── -->
+  <div class="pos-section">
+    <div class="section-head">
+      <div class="color-dot" style="background:var(--c-absolute)"></div>
+      <h2 style="color:var(--c-absolute)">absolute</h2>
+    </div>
+    <p class="section-desc">
+      <strong>문서 흐름에서 완전히 빠져나옵니다.</strong>
+      가장 가까운 <code style="font-size:.85em;font-family:monospace">position: static</code>이 아닌 부모를 기준으로 배치됩니다.
+      해당 부모가 없으면 <code style="font-size:.85em;font-family:monospace">&lt;html&gt;</code>이 기준이 됩니다.
+    </p>
+    <div class="demo">
+      <div class="demo-label">예제 — position: relative 부모 안에서 절대 좌표 배치</div>
+      <div class="demo-body">
+        <div class="abs-container">
+          <span class="abs-container-label">부모 (position: relative)</span>
+          <div class="box box-abs box-abs-tl">top: 8px / right: 8px</div>
+          <div class="box box-abs box-abs-br">bottom: 8px / left: 8px</div>
+        </div>
+      </div>
+    </div>
+    <div class="code">
+.parent { <span class="ck">position</span>: <span class="cv">relative</span>; }  <span class="cc">/* 기준 부모 */</span>
+
+.child {
+  <span class="ck">position</span>: <span class="cv">absolute</span>;
+  <span class="ck">top</span>: <span class="cv">8px</span>;
+  <span class="ck">right</span>: <span class="cv">8px</span>;
+}
+    </div>
+  </div>
+
+  <!-- ─── FIXED ─── -->
+  <div class="pos-section">
+    <div class="section-head">
+      <div class="color-dot" style="background:var(--c-fixed)"></div>
+      <h2 style="color:var(--c-fixed)">fixed</h2>
+    </div>
+    <p class="section-desc">
+      <strong>뷰포트(브라우저 화면)를 기준</strong>으로 고정됩니다.
+      스크롤해도 항상 같은 자리에 머뭅니다. 내비게이션 바, 플로팅 버튼 등에 사용됩니다.
+    </p>
+    <div class="demo">
+      <div class="demo-label">예제 — 오른쪽 상단에 실제 fixed 요소가 표시 중</div>
+      <div class="demo-body">
+        <div class="fixed-note">
+          📌 이 페이지 오른쪽 상단의 초록 배지가 <strong>position: fixed</strong> 로 동작 중입니다.<br>
+          스크롤해도 항상 같은 위치에 고정되는 것을 확인하세요.
+        </div>
+      </div>
+    </div>
+    <div class="code">
+.navbar {
+  <span class="ck">position</span>: <span class="cv">fixed</span>;
+  <span class="ck">top</span>: <span class="cv">0</span>;
+  <span class="ck">left</span>: <span class="cv">0</span>;
+  <span class="ck">width</span>: <span class="cv">100%</span>;
+  <span class="ck">z-index</span>: <span class="cv">999</span>;  <span class="cc">/* 다른 요소 위에 표시 */</span>
+}
+    </div>
+  </div>
+
+  <!-- ─── STICKY ─── -->
+  <div class="pos-section">
+    <div class="section-head">
+      <div class="color-dot" style="background:var(--c-sticky)"></div>
+      <h2 style="color:var(--c-sticky)">sticky</h2>
+    </div>
+    <p class="section-desc">
+      <strong>relative + fixed의 조합.</strong>
+      평소에는 일반 흐름에 따라 배치되다가, 스크롤이 지정한 임계점에 닿으면 그 자리에 고정됩니다.
+      테이블 헤더, 섹션 제목 고정 등에 유용합니다.
+    </p>
+    <div class="demo">
+      <div class="demo-label">예제 — 스크롤 영역 안에서 헤더가 상단에 고정됨</div>
+      <div class="demo-body">
+        <div class="sticky-scroll-area">
+          <div class="sticky-inner">
+            <div class="sticky-header">📌 Section A — sticky header (top: 0)</div>
+            <div class="sticky-content-item">항목 1 — 스크롤을 내려보세요</div>
+            <div class="sticky-content-item">항목 2</div>
+            <div class="sticky-content-item">항목 3</div>
+            <div class="sticky-content-item">항목 4</div>
+            <div class="sticky-header">📌 Section B — sticky header (top: 0)</div>
+            <div class="sticky-content-item">항목 5</div>
+            <div class="sticky-content-item">항목 6</div>
+            <div class="sticky-content-item">항목 7</div>
+            <div class="sticky-content-item">항목 8</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="code">
+.header {
+  <span class="ck">position</span>: <span class="cv">sticky</span>;
+  <span class="ck">top</span>: <span class="cv">0</span>;  <span class="cc">/* 이 지점에 닿으면 고정 */</span>
+}
+<span class="cc">/* ⚠️ 부모에 overflow: hidden/auto 가 있으면 sticky가 작동하지 않습니다 */</span>
+    </div>
+  </div>
+
+  <!-- ─── 요약 표 ─── -->
+  <div class="label-section">한눈에 요약</div>
+  <table class="sum-table">
+    <thead>
+      <tr>
+        <th>값</th>
+        <th>기준점</th>
+        <th>문서 흐름</th>
+        <th>스크롤 시</th>
+        <th>주 사용처</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="chip2" style="color:var(--c-static);border-color:var(--c-static)">static</span></td>
+        <td style="color:var(--muted)">없음</td>
+        <td style="color:var(--muted)">유지</td>
+        <td style="color:var(--muted)">함께 스크롤</td>
+        <td style="color:var(--muted)">기본 배치</td>
+      </tr>
+      <tr>
+        <td><span class="chip2" style="color:var(--c-relative);border-color:var(--c-relative)">relative</span></td>
+        <td style="color:var(--muted)">원래 자신의 위치</td>
+        <td style="color:var(--muted)">유지 (자리 차지)</td>
+        <td style="color:var(--muted)">함께 스크롤</td>
+        <td style="color:var(--muted)">미세 조정, absolute 기준</td>
+      </tr>
+      <tr>
+        <td><span class="chip2" style="color:var(--c-absolute);border-color:var(--c-absolute)">absolute</span></td>
+        <td style="color:var(--muted)">가장 가까운 non-static 부모</td>
+        <td style="color:var(--muted)">이탈 (자리 없음)</td>
+        <td style="color:var(--muted)">부모와 함께 이동</td>
+        <td style="color:var(--muted)">툴팁, 드롭다운, 뱃지</td>
+      </tr>
+      <tr>
+        <td><span class="chip2" style="color:var(--c-fixed);border-color:var(--c-fixed)">fixed</span></td>
+        <td style="color:var(--muted)">뷰포트</td>
+        <td style="color:var(--muted)">이탈 (자리 없음)</td>
+        <td style="color:var(--muted)">화면에 고정</td>
+        <td style="color:var(--muted)">상단 바, 플로팅 버튼</td>
+      </tr>
+      <tr>
+        <td><span class="chip2" style="color:var(--c-sticky);border-color:var(--c-sticky)">sticky</span></td>
+        <td style="color:var(--muted)">스크롤 컨테이너</td>
+        <td style="color:var(--muted)">유지 (자리 차지)</td>
+        <td style="color:var(--muted)">임계점에서 고정</td>
+        <td style="color:var(--muted)">테이블 헤더, 섹션 제목</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div><!-- /page -->
+</body>
+</html>
