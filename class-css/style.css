@@ -5,7 +5,9 @@ body {
   font-family: Arial, sans-serif;
 
   /* 전체 배경 */
-  background-color: #ffe4ec;
+body {
+    background-color: #fff7fa;
+}
 
   color: #333;
 }
