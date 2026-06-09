@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Margin & Padding</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #f5f4f0;
+      color: #1a1a2e;
+      font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+      line-height: 1.6;
+      padding: 2rem 1.5rem 5rem;
+    }
+
+    .page { max-width: 780px; margin: 0 auto; }
+
+    /* header */
+    header { margin-bottom: 2.5rem; border-bottom: 2px solid #1a1a2e; padding-bottom: 1.2rem; }
+    header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -.02em; }
+    header h1 span { color: #d95f4b; }
+    header h1 em   { font-style: normal; color: #3a7bd5; }
+    header p { margin-top: .5rem; color: #666; font-size: .92rem; }
+
+    /* section */
+    .sec { margin-bottom: 2.8rem; }
+    .sec h2 {
+      font-size: 1.1rem; font-weight: 700;
+      padding: .3rem .8rem;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+    .h2-margin  { background: #d95f4b; color: #fff; }
+    .h2-padding { background: #3a7bd5; color: #fff; }
+    .h2-both    { background: #1a1a2e; color: #fff; }
+
+    .desc { font-size: .88rem; color: #444; margin-bottom: 1.2rem; max-width: 580px; }
+    .desc strong { color: #1a1a2e; }
+
+    /* demo wrapper */
+    .demo {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .demo-title {
+      font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
+      color: #999; background: #fafafa;
+      border-bottom: 1px solid #eee;
+      padding: .5rem 1rem;
+    }
+    .demo-body { padding: 1.2rem; }
+
+    /* ── MARGIN demos ── */
+    .m-outer {
+      background: #fde8e5;
+      border: 1px dashed #d95f4b;
+      border-radius: 4px;
+    }
+    .m-box {
+      background: #d95f4b;
+      color: #fff;
+      font-size: .8rem;
+      padding: .4rem .7rem;
+      border-radius: 3px;
+      display: inline-block;
+    }
+    .row-boxes { display: flex; align-items: flex-start; gap: 0; }
+    .m-row-box {
+      background: #d95f4b; color: #fff;
+      font-size: .75rem; padding: .35rem .6rem;
+      border-radius: 3px;
+    }
+    .shorthand-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .7rem;
+      margin-top: .5rem;
+    }
+    .sh-item {
+      background: #fde8e5;
+      border: 1px solid #f0b0a0;
+      border-radius: 5px;
+      padding: .6rem .8rem;
+      font-size: .78rem;
+    }
+    .sh-item code { display: block; font-size: .72rem; color: #b03020; margin-bottom: .3rem; font-family: monospace; }
+    .sh-item span { color: #666; }
+
+    /* ── PADDING demos ── */
+    .p-outer {
+      background: #e5eefa;
+      border: 1px dashed #3a7bd5;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    .p-box {
+      background: #3a7bd5; color: #fff;
+      font-size: .8rem; border-radius: 3px;
+    }
+    .p-compare { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-end; }
+    .p-item { text-align: center; }
+    .p-item .lbl { font-size: .7rem; color: #999; margin-bottom: .4rem; font-family: monospace; }
+    .p-inner { background: #3a7bd5; color: #fff; font-size: .75rem; border-radius: 3px; white-space: nowrap; }
+
+    /* ── BOX MODEL visual ── */
+    .boxmodel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .bm-margin {
+      background: #fde8e5;
+      border: 2px dashed #d95f4b;
+      border-radius: 6px;
+      padding: 18px;
+      position: relative;
+    }
+    .bm-border {
+      background: #fff;
+      border: 3px solid #1a1a2e;
+      border-radius: 4px;
+      padding: 16px;
+    }
+    .bm-padding {
+      background: #e5eefa;
+      border: 2px dashed #3a7bd5;
+      border-radius: 3px;
+      padding: 14px;
+    }
+    .bm-content {
+      background: #1a1a2e;
+      color: #fff;
+      font-size: .75rem;
+      font-family: monospace;
+      padding: .5rem 1rem;
+      border-radius: 3px;
+      text-align: center;
+    }
+    .bm-label {
+      position: absolute;
+      font-size: .65rem;
+      font-family: monospace;
+      font-weight: 700;
+      letter-spacing: .05em;
+    }
+    .lbl-margin  { color: #d95f4b; top: 4px; left: 6px; }
+    .lbl-padding { color: #3a7bd5; }
+
+    /* ── code ── */
+    .code {
+      background: #1a1a2e;
+      color: #e8e6f0;
+      border-radius: 6px;
+      padding: .85rem 1rem;
+      font-family: monospace;
+      font-size: .77rem;
+      line-height: 1.85;
+      margin-top: 1rem;
+      overflow-x: auto;
+    }
+    .ck { color: #7ab0f0; }
+    .cv { color: #f0a060; }
+    .cc { color: #555575; }
+
+    /* ── collapse warning ── */
+    .warn {
+      background: #fffbe6;
+      border-left: 3px solid #f0c040;
+      padding: .7rem 1rem;
+      font-size: .83rem;
+      border-radius: 0 5px 5px 0;
+      margin-top: 1rem;
+      color: #5a4a00;
+    }
+    .warn strong { color: #3a2a00; }
+
+    /* ── table ── */
+    .sum-table {
+      width: 100%; border-collapse: collapse; font-size: .83rem;
+      border: 1px solid #ddd; border-radius: 8px; overflow: hidden;
+      margin-top: .8rem;
+    }
+    .sum-table th {
+      background: #1a1a2e; color: #e8e6f0;
+      padding: .6rem .9rem; text-align: left; font-size: .75rem; letter-spacing: .05em;
+    }
+    .sum-table td { padding: .55rem .9rem; border-bottom: 1px solid #eee; }
+    .sum-table tr:last-child td { border-bottom: none; }
+    .sum-table tr:nth-child(even) td { background: #fafafa; }
+    .t-m { color: #d95f4b; font-weight: 600; }
+    .t-p { color: #3a7bd5; font-weight: 600; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1><span>Margin</span> &amp; <em>Padding</em></h1>
+    <p>요소 바깥 여백과 안쪽 여백의 차이를 Box Model 중심으로 이해합니다.</p>
+  </header>
+
+  <!-- ── BOX MODEL ── -->
+  <div class="sec">
+    <h2 class="h2-both">Box Model</h2>
+    <p class="desc">모든 HTML 요소는 <strong>Content → Padding → Border → Margin</strong> 순서로 겹쳐진 박스 구조를 가집니다.</p>
+    <div class="demo">
+      <div class="demo-title">박스 모델 구조</div>
+      <div class="demo-body">
+        <div class="boxmodel">
+          <div class="bm-margin">
+            <span class="bm-label lbl-margin">MARGIN</span>
+            <div class="bm-border">
+              <div style="position:relative">
+                <span class="bm-label lbl-padding" style="top:-18px;left:0">PADDING</span>
+              </div>
+              <div class="bm-padding">
+                <div class="bm-content">CONTENT</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="text-align:center;font-size:.75rem;color:#999;margin-top:.3rem">
+          <span style="color:#d95f4b">■ margin</span> &nbsp;|&nbsp;
+          <span style="color:#1a1a2e">■ border</span> &nbsp;|&nbsp;
+          <span style="color:#3a7bd5">■ padding</span> &nbsp;|&nbsp;
+          <span style="color:#888">■ content</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MARGIN ── -->
+  <div class="sec">
+    <h2 class="h2-margin">Margin — 바깥 여백</h2>
+    <p class="desc">요소와 <strong>다른 요소 사이</strong>의 거리입니다. 배경색이 적용되지 않으며 투명합니다.</p>
+
+    <!-- 기본 예제 -->
+    <div class="demo">
+      <div class="demo-title">margin으로 요소 간 간격 주기</div>
+      <div class="demo-body">
+        <div class="row-boxes">
+          <div class="m-row-box">Box A</div>
+          <div class="m-row-box" style="margin-left:8px">margin-left: 8px</div>
+          <div class="m-row-box" style="margin-left:32px">margin-left: 32px</div>
+        </div>
+        <div style="margin-top:1rem">
+          <div class="m-outer" style="padding:.3rem">
+            <div class="m-box" style="margin:0">margin: 0</div>
+          </div>
+          <div class="m-outer" style="padding:.3rem;margin-top:.5rem">
+            <div class="m-box" style="margin:0 auto;display:block;text-align:center">margin: 0 auto (가운데 정렬)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 단축 속성 -->
+    <div class="shorthand-grid">
+      <div class="sh-item">
+        <code>margin: 10px</code>
+        <span>상하좌우 모두 10px</span>
+      </div>
+      <div class="sh-item">
+        <code>margin: 10px 20px</code>
+        <span>상하 10px / 좌우 20px</span>
+      </div>
+      <div class="sh-item">
+        <code>margin: 5px 10px 15px</code>
+        <span>상 5 / 좌우 10 / 하 15px</span>
+      </div>
+      <div class="sh-item">
+        <code>margin: 5px 10px 15px 20px</code>
+        <span>상 / 우 / 하 / 좌 (시계 방향)</span>
+      </div>
+    </div>
+
+    <div class="code">
+.box {
+  <span class="ck">margin-top</span>: <span class="cv">16px</span>;
+  <span class="ck">margin-right</span>: <span class="cv">8px</span>;
+  <span class="ck">margin-bottom</span>: <span class="cv">16px</span>;
+  <span class="ck">margin-left</span>: <span class="cv">8px</span>;
+  <span class="cc">/* 단축: margin: 16px 8px; */</span>
+}
+    </div>
+
+    <div class="warn">
+      <strong>⚠️ Margin Collapse (마진 상쇄)</strong><br>
+      블록 요소의 <strong>상하 마진</strong>은 인접할 때 더 큰 값 하나로 합쳐집니다.
+      예) 위 요소 margin-bottom: 20px + 아래 요소 margin-top: 30px → 실제 간격은 30px.
+    </div>
+  </div>
+
+  <!-- ── PADDING ── -->
+  <div class="sec">
+    <h2 class="h2-padding">Padding — 안쪽 여백</h2>
+    <p class="desc">콘텐츠와 <strong>테두리(border) 사이</strong>의 공간입니다. 배경색이 그대로 채워집니다.</p>
+
+    <div class="demo">
+      <div class="demo-title">padding 크기에 따른 변화</div>
+      <div class="demo-body">
+        <div class="p-compare">
+          <div class="p-item">
+            <div class="lbl">padding: 0</div>
+            <div class="p-outer" style="padding:2px">
+              <div class="p-inner" style="padding:0 4px">텍스트</div>
+            </div>
+          </div>
+          <div class="p-item">
+            <div class="lbl">padding: 8px</div>
+            <div class="p-outer" style="padding:8px">
+              <div class="p-inner" style="padding:0 4px">텍스트</div>
+            </div>
+          </div>
+          <div class="p-item">
+            <div class="lbl">padding: 20px</div>
+            <div class="p-outer" style="padding:20px">
+              <div class="p-inner" style="padding:0 4px">텍스트</div>
+            </div>
+          </div>
+          <div class="p-item">
+            <div class="lbl">padding: 20px 40px</div>
+            <div class="p-outer" style="padding:20px 40px">
+              <div class="p-inner" style="padding:0 4px">텍스트</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="code">
+.btn {
+  <span class="ck">padding</span>: <span class="cv">10px 24px</span>;  <span class="cc">/* 상하 10px, 좌우 24px */</span>
+  <span class="ck">background</span>: <span class="cv">#3a7bd5</span>;
+  <span class="cc">/* padding 영역에도 background 적용됨 */</span>
+}
+    </div>
+  </div>
+
+  <!-- ── 비교표 ── -->
+  <div class="sec">
+    <h2 class="h2-both">한눈에 비교</h2>
+    <table class="sum-table">
+      <thead>
+        <tr><th>항목</th><th>Margin</th><th>Padding</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>위치</td>
+          <td class="t-m">border 바깥</td>
+          <td class="t-p">content 안쪽 (border 안)</td>
+        </tr>
+        <tr>
+          <td>배경색 영향</td>
+          <td class="t-m">❌ 투명 (적용 안 됨)</td>
+          <td class="t-p">✅ 배경색이 채워짐</td>
+        </tr>
+        <tr>
+          <td>클릭 영역</td>
+          <td class="t-m">❌ 포함 안 됨</td>
+          <td class="t-p">✅ 포함됨</td>
+        </tr>
+        <tr>
+          <td>음수 값</td>
+          <td class="t-m">✅ 가능 (요소 당기기)</td>
+          <td class="t-p">❌ 불가</td>
+        </tr>
+        <tr>
+          <td>auto 값</td>
+          <td class="t-m">✅ 가능 (가운데 정렬 등)</td>
+          <td class="t-p">❌ 불가</td>
+        </tr>
+        <tr>
+          <td>상하 합산(collapse)</td>
+          <td class="t-m">⚠️ 발생 (큰 쪽 하나만)</td>
+          <td class="t-p">✅ 항상 그대로 합산</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>
