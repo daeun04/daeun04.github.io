@@ -1,0 +1,120 @@
+/* 문서 페이지 전용 */
+
+.doc-header {
+    background: linear-gradient(
+        to right,
+        #f4b3c2,
+        #e8c9cf,
+        #b7ddb0
+    );
+
+    color: white;
+    text-align: center;
+    padding: 50px 20px;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.doc-header h1 {
+    margin: 0;
+    font-size: 48px;
+
+    text-shadow:
+        4px 4px 8px rgba(0,0,0,0.25);
+}
+
+.doc-container {
+    width: 85%;
+    max-width: 1000px;
+
+    margin: 40px auto;
+}
+
+.doc-section {
+    background-color: white;
+
+    padding: 30px;
+
+    margin-bottom: 25px;
+
+    border-radius: 20px;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.doc-section h2 {
+    border-left: 8px solid #7ecb7e;
+
+    padding-left: 12px;
+
+    margin-top: 0;
+}
+
+.doc-section h3 {
+    color: #333;
+
+    margin-top: 30px;
+}
+
+.doc-section p,
+.doc-section li {
+    line-height: 1.8;
+}
+
+.doc-section pre {
+    background-color: #fff0f5;
+
+    border-left: 8px solid #7ecb7e;
+
+    padding: 20px;
+
+    border-radius: 10px;
+
+    overflow-x: auto;
+}
+
+.doc-section table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    margin-top: 15px;
+}
+
+.doc-section th,
+.doc-section td {
+    border: 1px solid #ddd;
+
+    padding: 12px;
+
+    text-align: center;
+}
+
+.doc-section th {
+    background-color: #ffe6ee;
+}
+
+.doc-footer {
+    text-align: center;
+
+    padding: 25px;
+
+    background-color: #f4b3c2;
+
+    color: white;
+}
+
+@media (max-width: 768px) {
+
+    .doc-header h1 {
+        font-size: 30px;
+    }
+
+    .doc-container {
+        width: 95%;
+    }
+
+    .doc-section {
+        padding: 20px;
+    }
+}
