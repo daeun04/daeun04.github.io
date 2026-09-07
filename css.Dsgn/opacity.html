@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <title>예제 6-10 투명성(Opacity)</title>
+  <style>
+    /* 모든 div 공통 스타일 */
+    div {
+      padding: 15px;
+      color: white;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      /* 에메랄드빛 바다 계열 그라데이션 */
+      background: linear-gradient(135deg, #07a3b2 0%, #15d2a0 100%);
+    }
+
+    /* 0.1 ~ 0.5: relative 위치 지정 및 계단식 겹침 효과 */
+    .box-01 { opacity: 0.1; position: relative; top: 0px; left: 0px; z-index: 1; }
+    .box-02 { opacity: 0.2; position: relative; top: -20px; left: 15px; z-index: 2; }
+    .box-03 { opacity: 0.3; position: relative; top: -40px; left: 30px; z-index: 3; }
+    .box-04 { opacity: 0.4; position: relative; top: -60px; left: 45px; z-index: 4; }
+    .box-05 { opacity: 0.5; position: relative; top: -80px; left: 60px; z-index: 5; }
+
+    /* 0.6 ~ 1.0: 겹침 위치 복원 및 일반 배치 */
+    .box-06 { opacity: 0.6; position: relative; top: -70px; }
+    .box-07 { opacity: 0.7; position: relative; top: -70px; }
+    .box-08 { opacity: 0.8; position: relative; top: -70px; }
+    .box-09 { opacity: 0.9; position: relative; top: -70px; }
+    .box-10 { opacity: 1.0; position: relative; top: -70px; }
+  </style>
+</head>
+<body>
+  <h3>에메랄드빛 투명도(Opacity) 단계별 박스</h3>
+
+  <div class="box-01"><p>opacity 0.1</p></div>
+  <div class="box-02"><p>opacity 0.2</p></div>
+  <div class="box-03"><p>opacity 0.3</p></div>
+  <div class="box-04"><p>opacity 0.4</p></div>
+  <div class="box-05"><p>opacity 0.5</p></div>
+
+  <div class="box-06"><p>opacity 0.6</p></div>
+  <div class="box-07"><p>opacity 0.7</p></div>
+  <div class="box-08"><p>opacity 0.8</p></div>
+  <div class="box-09"><p>opacity 0.9</p></div>
+  <div class="box-10"><p>opacity 1.0 (기본값)</p></div>
+</body>
+</html>
