@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!--=========================================
+예제 6-8 혼합 위치 설정 (Position)
+=========================================-->
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>예제 6-8 혼합 위치 설정</title>
+  <style>
+    /* body 기본 스타일 (맥북 고해상도 대응 및 모던 폰트 적용) */
+    body {
+      height: 1500px; /* 스크롤 테스트용으로 긴 페이지 생성 */
+      padding: 40px;  /* 내부 여백 */
+      margin: 0 auto;
+      max-width: 900px; /* 맥북 화면 중앙 배치 */
+      background-color: #f8fafc; /* 은은한 배경색 */
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #0f172a;
+    }
+
+    h4 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: #1e293b;
+    }
+
+    /* 공통 박스 기본 스타일 */
+    div {
+      box-sizing: border-box;
+      border-radius: 8px;
+    }
+
+    /* position: static (기본값, 위치 지정 불가) */
+    .static-box {
+      position: static;       /* 기본 위치 속성 */
+      width: 260px;
+      height: 56px;
+      background: #ef4444;    /* 세련된 로즈 레드 */
+      margin-bottom: 20px;    /* 아래쪽 여백 */
+      line-height: 56px;      /* 텍스트 수직 가운데 정렬 */
+      text-align: center;     /* 텍스트 가로 가운데 정렬 */
+      font-weight: 600;       /* 글자 굵게 */
+      color: white;           /* 글자색 흰색 */
+      box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);
+    }
+
+    /* position: relative (자기 자신 기준으로 이동 가능) */
+    .relative-box {
+      position: relative;     /* 자기 위치 기준으로 이동 */
+      width: 260px;
+      height: 56px;
+      background: #10b981;    /* 세련된 에메랄드 */
+      top: 25px;              /* 원래 위치에서 아래로 25px 이동 */
+      left: 50px;             /* 원래 위치에서 오른쪽으로 50px 이동 */
+      margin-bottom: 20px;
+      line-height: 56px;
+      text-align: center;
+      font-weight: 600;
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
+    }
+
+    /* position: absolute (부모 기준으로 절대 위치) */
+    .absolute-box {
+      position: absolute;     /* body 기준으로 절대 위치 */
+      width: 260px;
+      height: 56px;
+      background: #8b5cf6;    /* 세련된 보라색 */
+      right: 100px;           /* 오른쪽에서 100px 떨어진 위치 */
+      top: 200px;             /* 위쪽에서 200px 떨어진 위치 */
+      line-height: 56px;
+      text-align: center;
+      font-weight: 600;
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.2);
+    }
+
+    /* position: fixed (화면 기준으로 고정, 스크롤해도 위치 유지) */
+    .fixed-box {
+      position: fixed;        /* 브라우저 화면 기준으로 고정 */
+      width: 260px;
+      height: 56px;
+      background: #0284c7;    /* 세련된 스카이 블루 */
+      right: 150px;           /* 오른쪽에서 150px 떨어진 위치 */
+      top: 50px;              /* 위쪽에서 50px 떨어진 위치 */
+      line-height: 56px;      
+      text-align: center;
+      font-weight: 600;
+      color: white;
+      box-shadow: 0 10px 15px -3px rgba(2, 132, 199, 0.3); /* 고정 요소 강조 그림자 */
+      z-index: 100;
+    }
+
+    /* position: sticky (스크롤 시 특정 위치에 고정) */
+    .sticky-box {
+      position: sticky;       /* 스크롤 시 top 위치에 고정 */
+      width: 260px;
+      height: 56px;
+      background: #334155;    /* 모던 슬레이트 다크 */
+      top: 20px;              /* 스크롤 시 화면 상단에서 20px 띄워 고정 */
+      margin-bottom: 1000px;  /* sticky 효과 확인용 긴 여백 */
+      line-height: 56px;
+      text-align: center;
+      font-weight: 600;
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(51, 65, 85, 0.2);
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <h4>혼합 위치 설정</h4>
+
+  <!-- sticky: 스크롤 시 화면 상단에 붙음 -->
+  <div class="sticky-box">position: sticky</div>
+
+  <!-- static: 기본 위치, 이동 불가 -->
+  <div class="static-box">position: static</div>
+
+  <!-- relative: 자기 위치 기준으로 이동 -->
+  <div class="relative-box">position: relative</div>
+
+  <!-- absolute: 부모(body) 기준으로 절대 위치 -->
+  <div class="absolute-box">position: absolute</div>
+
+  <!-- fixed: 화면 기준으로 고정 -->
+  <div class="fixed-box">position: fixed</div>
+</body>
+</html>
