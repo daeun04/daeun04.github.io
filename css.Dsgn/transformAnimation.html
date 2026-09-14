@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fused CSS Transition & Timing Showcase</title>
+  <style>
+    /* 전체 테마 설정: 눈이 편안한 아이보리 톤 */
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #FDFBF7; /* 아이보리 배경 */
+      color: #1A1A1A;            /* 숯색 다크 텍스트 */
+      padding: 40px 20px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      max-width: 800px;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      color: #1A1A1A;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    main {
+      width: 100%;
+      max-width: 960px;
+    }
+
+    .demo-section {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+    }
+
+    .section-header {
+      margin-bottom: 25px;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      color: #1e293b;
+      font-weight: 700;
+    }
+
+    .section-desc {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    /* 트랙 컨테이너 */
+    .timing-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.02);
+      border: 2px dashed #cbd5e1;
+      border-radius: 16px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .timing-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 48px;
+    }
+
+    /* 공통 박스 스타일 */
+    .box {
+      width: 130px;
+      height: 44px;
+      line-height: 44px;
+      text-align: center;
+      color: white;
+      font-weight: 600;
+      font-size: 0.85rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+      /* 핵심: transform(이동)과 opacity(투명도) 속성 2가지 모두에 1.2초 transition 적용 */
+      transition: transform 1.2s, opacity 1.2s, box-shadow 1.2s;
+      cursor: pointer;
+      user-select: none;
+      opacity: 1; /* 초기 투명도 불투명 */
+    }
+
+    /* 각기 다른 고유 모던 컬러 배치 */
+    .box.linear     { background: linear-gradient(135deg, #f43f5e, #e11d48); transition-timing-function: linear; }
+    .box.ease       { background: linear-gradient(135deg, #f59e0b, #d97706); transition-timing-function: ease; }
+    .box.ease-in    { background: linear-gradient(135deg, #10b981, #059669); transition-timing-function: ease-in; }
+    .box.ease-out   { background: linear-gradient(135deg, #3b82f6, #2563eb); transition-timing-function: ease-out; }
+    .box.ease-in-out{ background: linear-gradient(135deg, #8b5cf6, #7c3aed); transition-timing-function: ease-in-out; }
+
+    /* 💡 마우스를 전체 영역(container) 위에 올리면 이동 + 투명도 감소(반투명)가 동시에 발동 */
+    .timing-container:hover .box {
+      transform: translateX(min(450px, 50vw)); /* 오른쪽 이동 */
+      opacity: 0.35;                             /* 점점 반투명하게 변경 (35% 투명도) */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+    }
+
+    /* 툴팁 설명 카드 (Hover 시 출현) */
+    .info-card {
+      position: absolute;
+      left: 105%;
+      top: 50%;
+      width: 290px;
+      padding: 14px 18px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      
+      /* 기본 상태 (숨김) */
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-50%) translateX(-10px);
+      transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .info-card h4 {
+      margin: 0 0 6px 0;
+      color: #1e293b;
+      font-size: 0.95rem;
+    }
+
+    .info-card code {
+      display: block;
+      background-color: #f1f5f9;
+      padding: 6px 10px;
+      border-radius: 6px;
+      color: #0f172a;
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+      font-family: monospace;
+      border-left: 3px solid #3b82f6;
+    }
+
+    .info-card p {
+      margin: 0;
+      color: #475569;
+      font-size: 0.8rem;
+      line-height: 1.45;
+    }
+
+    /* 각 행별 호버 시 카드 표시 */
+    .timing-row:hover .info-card {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(-50%) translateX(0);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Fused CSS Transition Showcase</h1>
+    <p>아래 박스 트랙에 마우스를 올리면 각 속도 곡선에 따라 이동하며 동시에 반투명해지는 효과를 확인할 수 있습니다.</p>
+  </header>
+
+  <main>
+    <section class="demo-section">
+      <div class="section-header">
+        <div class="section-title">이동 & 반투명 투명도(Opacity) 융합 Transition</div>
+        <div class="section-desc"><code>transform</code>(위치 이동)과 <code>opacity</code>(투명도 변화) 속성이 해당 <code>timing-function</code>에 맞춰 부드럽게 변형됩니다.</div>
+      </div>
+
+      <div class="timing-container">
+
+        <!-- 1. linear -->
+        <div class="timing-row">
+          <div class="box linear">linear</div>
+          <div class="info-card">
+            <h4>🔴 linear (일정한 속도)</h4>
+            <code>transition: transform 1.2s, opacity 1.2s;</code>
+            <p><strong>일정한 속도</strong>로 위치가 이동하면서 배경색이 점점 반투명(35%)해집니다.</p>
+          </div>
+        </div>
+
+        <!-- 2. ease -->
+        <div class="timing-row">
+          <div class="box ease">ease</div>
+          <div class="info-card">
+            <h4>🟠 ease (기본값)</h4>
+            <code>transition-timing-function: ease;</code>
+            <p><strong>천천히 시작해서 빠르고 느리게 끝나는 곡선</strong>으로 이동 및 투명도가 변합니다.</p>
+          </div>
+        </div>
+
+        <!-- 3. ease-in -->
+        <div class="timing-row">
+          <div class="box ease-in">ease-in</div>
+          <div class="info-card">
+            <h4>🟢 ease-in (가속)</h4>
+            <code>transition-timing-function: ease-in;</code>
+            <p>처음에는 천천히 서서히 흐려지다가 <strong>점점 빠르게 이동하며 반투명</strong>해집니다.</p>
+          </div>
+        </div>
+
+        <!-- 4. ease-out -->
+        <div class="timing-row">
+          <div class="box ease-out">ease-out</div>
+          <div class="info-card">
+            <h4>🔵 ease-out (감속)</h4>
+            <code>transition-timing-function: ease-out;</code>
+            <p><strong>빠르게 움직이며 흐려지다가</strong> 도착 지점에서 천천히 멈춥니다.</p>
+          </div>
+        </div>
+
+        <!-- 5. ease-in-out -->
+        <div class="timing-row">
+          <div class="box ease-in-out">ease-in-out</div>
+          <div class="info-card">
+            <h4>🟣 ease-in-out (양방향 감속)</h4>
+            <code>transition-timing-function: ease-in-out;</code>
+            <p><strong>느리게 시작되어 부드럽게 속도를 붙인 후</strong> 다시 부드럽게 감속하며 반투명해집니다.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>
