@@ -3,29 +3,103 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../css/htmlTag.css">
     <title>디자인 예시 정리</title>
+    <!-- 외부 CSS 연결 (경로 확인) -->
+    <link rel="stylesheet" href="../css/htmlTag.css">
 </head>
 
 <body>
 
-    <header>
+    <!-- 상단 타이트 바 -->
+    <header class="top-bar">
         <h1>디자인 예시 정리</h1>
-        <nav>
-            <ul>
-                <li><a href="../css.Dsgn/opacity.html">투명 박스</a></li>
-                <li><a href="../css.Dsgn/display.html">디스플레이</a></li>
-                <li><a href="../css.Dsgn/MixPosition.html">혼합</a></li>
-                <li><a href="../css.Dsgn/mPadding.html">패딩마진</a></li>
-                <li><a href="../css.Dsgn/positioning.html">포지션</a></li>
-                <li><a href="../css.Dsgn/translate.html">transform translate</a></li>
-                <li><a href="../css.Dsgn/rocate.html">transform rocate</a></li>
-                <li><a href="../css.Dsgn/transformMIX.html">transform MIX_1</a></li>
-                <li><a href="../css.Dsgn/3DtransformMIX.html">3Dtransform MIX_1</a></li>
-                <li><a href="../css.Dsgn/transformAnimation.html">transform animation</a></li>
-            </ul>
-        </nav>
     </header>
+
+    <div class="layout">
+        <!-- 왼쪽 사이드바 네비게이션 -->
+        <nav class="side-menu">
+            <h2>CSS Menu</h2>
+            <a href="../css.Dsgn/opacity.html">투명 박스</a>
+            <a href="../css.Dsgn/display.html">디스플레이</a>
+            <a href="../css.Dsgn/MixPosition.html">혼합</a>
+            <a href="../css.Dsgn/mPadding.html">패딩마진</a>
+            <a href="../css.Dsgn/positioning.html">포지션</a>
+            <a href="../css.Dsgn/translate.html">transform translate</a>
+            <a href="../css.Dsgn/rocate.html">transform rocate</a>
+            <a href="../css.Dsgn/transformMIX.html">transform MIX_1</a>
+            <a href="../css.Dsgn/3DtransformMIX.html">3Dtransform MIX_1</a>
+            <a href="../css.Dsgn/transformAnimation.html">transform animation</a>
+        </nav>
+
+        <!-- 중앙 메인 카드 컨테이너 -->
+        <main class="web-container">
+            <section class="tag-section">
+                <h2>CSS Transform & Layout 예시 목록</h2>
+                <ul class="web-list">
+                    <li>
+                        <a href="../css.Dsgn/opacity.html" class="card-link">
+                            <strong>투명 박스 (Opacity)</strong>
+                            <span>요소의 투명도 및 rgba 색상 제어 예제</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../css.Dsgn/display.html" class="card-link">
+                            <strong>디스플레이 (Display)</strong>
+                            <span>block, inline, flex 레이아웃 변환 예제</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../css.Dsgn/MixPosition.html" class="card-link">
+                            <strong>혼합 (Mix Position)</strong>
+                            <span>다양한 포지션 속성의 복합 응용 예제</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../css.Dsgn/mPadding.html" class="card-link">
+                            <strong>패딩 & 마진 (Margin/Padding)</strong>
+                            <span>여백 설정 및 여백 상쇄 현상 실습</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../css.Dsgn/positioning.html" class="card-link">
+                            <strong>포지션 (Positioning)</strong>
+                            <span>relative, absolute, fixed 속성 실습</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../css.Dsgn/translate.html" class="card-link">
+                            <strong>Transform Translate</strong>
+                            <span>2D/3D 위치 이동 메서드 실습</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../css.Dsgn/rocate.html" class="card-link">
+                            <strong>Transform Rotate</strong>
+                            <span>각도별 회전 메서드 실습</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../css.Dsgn/transformMIX.html" class="card-link">
+                            <strong>Transform MIX_1</strong>
+                            <span>2D 변형 속성 복합 조합 실습</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../css.Dsgn/3DtransformMIX.html" class="card-link">
+                            <strong>3D Transform MIX_1</strong>
+                            <span>Perspective 원근감과 3D 공간 연출</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../css.Dsgn/transformAnimation.html" class="card-link">
+                            <strong>Transform Animation</strong>
+                            <span>Keyframes 및 Transition 애니메이션 결합</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </main>
+    </div>
 
 </body>
 
