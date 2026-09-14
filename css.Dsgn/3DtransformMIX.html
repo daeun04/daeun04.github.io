@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All-in-One 3D Transform Box</title>
+  <style>
+    /* 1. 눈이 편안한 아이보리 테마 설정 */
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #FDFBF7;
+      color: #1A1A1A;
+      padding: 40px 20px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      color: #1A1A1A;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    /* 2. 3D 무대 (Perspective 원근감 적용) */
+    .stage-container {
+      perspective: 700px; /* 원근감 중심 설정 */
+      width: 320px;
+      height: 320px;
+      background: rgba(0, 0, 0, 0.02);
+      border: 2px dashed #cbd5e1;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 35px;
+    }
+
+    /* 3. 단 하나의 올인원 3D 박스 */
+    .all-in-one-box {
+      width: 180px;
+      height: 180px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+      
+      /* 초기 3D 상태: translate3d + scale3d + rotate3d 동시 적용 */
+      transform: perspective(700px) translate3D(0px, 0px, 0px) scale3d(1, 1, 1) rotate3d(0, 1, 0, 0deg);
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.6s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .all-in-one-box span {
+      font-size: 0.8rem;
+      opacity: 0.9;
+      margin-top: 6px;
+      font-weight: 400;
+    }
+
+    /* 마우스 호버 시: 이동 + 크기변화 + 3D회전이 한 번에 발동 */
+    .stage-container:hover .all-in-one-box {
+      /* translate3d(오른쪽 20px, 위로 -15px, 앞으로 60px) 
+         + scale3d(가로 1.15배, 세로 1.15배, Z축 1.5배) 
+         + rotate3d(X축 1, Y축 1, Z축 0 대각선으로 45도 회전) */
+      transform: translate3D(20px, -15px, 60px) scale3d(1.15, 1.15, 1.5) rotate3d(1, 1, 0, 45deg);
+      box-shadow: -15px 30px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    /* 4. 변형 정보 안내 실시간 카드 */
+    .info-card {
+      width: 100%;
+      max-width: 500px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .info-card h3 {
+      margin: 0 0 12px 0;
+      font-size: 1.1rem;
+      color: #1e293b;
+    }
+
+    .info-card code {
+      display: block;
+      background-color: #f1f5f9;
+      padding: 12px 14px;
+      border-radius: 8px;
+      color: #0f172a;
+      font-size: 0.85rem;
+      font-family: 'Fira Code', Consolas, monospace;
+      border-left: 4px solid #8b5cf6;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .info-card ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #475569;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .info-card li {
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>All-in-One 3D Transform</h1>
+    <p>박스 위에 마우스를 올려 3D 이동, 크기 확대, 회전이 동시에 실행되는 모습을 확인해보세요.</p>
+  </header>
+
+  <!-- 3D 무대 및 올인원 단일 박스 -->
+  <div class="stage-container">
+    <div class="all-in-one-box">
+      3D Master Box
+      <span>Hover me!</span>
+    </div>
+  </div>
+
+  <!-- 결합 코드 설명 카드 -->
+  <div class="info-card">
+    <h3>✨ 적용된 복합 3D Transform 코드</h3>
+    <code>
+      transform:<br>
+      &nbsp;&nbsp;translate3D(20px, -15px, 60px)<br>
+      &nbsp;&nbsp;scale3d(1.15, 1.15, 1.5)<br>
+      &nbsp;&nbsp;rotate3d(1, 1, 0, 45deg);
+    </code>
+    <ul>
+      <li><strong>translate3D:</strong> X축(오른쪽 20px), Y축(위로 15px), Z축(화면 밖 60px)으로 3차원 이동합니다.</li>
+      <li><strong>scale3d:</strong> 전체 크기를 1.15배 확대하고 깊이(Z축) 비율을 1.5배 확장합니다.</li>
+      <li><strong>rotate3d:</strong> X축과 Y축 대각선 축을 기준으로 입체감 있게 45도 회전합니다.</li>
+    </ul>
+  </div>
+
+</body>
+</html>
