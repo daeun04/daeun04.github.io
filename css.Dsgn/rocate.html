@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>예제7-4 Transform-rotate()</title> 
+    <style> 
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #FDFBF7;
+            color: #f8fafc;
+            padding: 40px;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+            font-size: 2rem;
+            color: #1A1A1A;
+        }
+
+        /* 각 박스를 싸고 있는 행 그룹 (툴팁 배치를 위한 설정) */
+        .box-row {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+            width: fit-content;
+        }
+
+        /* 공통 박스 스타일 */
+        .box {
+            width: 300px;  /* 기존 150px에서 2배 확대 */
+            height: 160px; /* 기존 80px에서 2배 확대 */
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #ffffff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* 첫 번째 박스: -15도 회전 & 모던 인디고 컬러 */
+        div#rotate01 {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            transform: rotate(-15deg);
+        }
+
+        /* 두 번째 박스: 30도 회전 & 모던 에메랄드 틸 컬러 */
+        div#rotate02 {
+            background: linear-gradient(135deg, #14b8a6, #0d9488);
+            transform: rotate(30deg);
+        }
+
+        /* 호버 카드 (툴팁 스타일) */
+        .info-card {
+            position: absolute;
+            left: 340px; /* 박스 우측 옆에 위치 */
+            width: 280px;
+            padding: 16px;
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            
+            /* 기본 상태 (숨김) */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .info-card h4 {
+            margin: 0 0 8px 0;
+            color: #38bdf8;
+            font-size: 1rem;
+        }
+
+        .info-card code {
+            display: block;
+            background-color: #090d16;
+            padding: 6px 10px;
+            border-radius: 6px;
+            color: #f43f5e;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            font-family: monospace;
+        }
+
+        .info-card p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        /* 마우스 호버 시 카드 등장 및 박스 강조 */
+        .box-row:hover .info-card {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .box-row:hover .box {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Transform - rotate()</h1>
+
+    <!-- 첫 번째 박스 행 -->
+    <div class="box-row">
+        <div id="rotate01" class="box">rotate(-15deg)</div>
+        <div class="info-card">
+            <h4>첫 번째 박스</h4>
+            <code>transform: rotate(-15deg);</code>
+            <p>시계 반대 방향으로 15도 회전되어 있습니다.<br>(크기: 300px × 160px)</p>
+        </div>
+    </div>
+
+    <!-- 두 번째 박스 행 -->
+    <div class="box-row">
+        <div id="rotate02" class="box">rotate(30deg)</div>
+        <div class="info-card">
+            <h4>두 번째 박스</h4>
+            <code>transform: rotate(30deg);</code>
+            <p>시계 방향으로 30도 회전되어 있습니다.<br>(크기: 300px × 160px)</p>
+        </div>
+    </div>
+
+</body>
+</html>
