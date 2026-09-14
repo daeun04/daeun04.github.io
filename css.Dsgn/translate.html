@@ -1,47 +1,92 @@
-<html>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-    <title>예제7-1 translate</title> 
     <meta charset="utf-8">
+    <title>예제7-1 translate</title> 
     <!-- 외부 CSS 파일 연결 -->
     <link type="text/css" rel="stylesheet" href="css/color.css">
+    
     <style> 
-        /* translate(X, Y): X축과 Y축으로 동시에 이동 */
+        /* 공통 스타일: 가독성과 깔끔한 디자인을 위한 기본 설정 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+
+        /* 설명 박스 스타일 */
+        .description {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            font-size: 15px;
+            line-height: 1.6;
+            font-weight: normal;
+            border-radius: 4px;
+            margin-bottom: 40px;
+        }
+
+        /* 공통 박스 스타일 */
+        .box {
+            width: 160px;
+            height: 120px;
+            color: white;
+            font-size: 13px;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        /* 1. X축과 Y축 동시에 이동 */
         div#trnsXY {
-            width: 150px;
-            height: 120px;
-            background-color: red;              /* 빨강 박스 */
-            transform: translate(300px, 300px); /* 오른쪽 300px, 아래쪽 300px 이동 */
+            background-color: #e74c3c; /* 빨강 박스 */
+            transform: translate(300px, 50px); /* 오른쪽 300px, 아래 50px 이동 */
         }
 
-        /* translateX(): X축으로만 이동 */
+        /* 2. X축으로만 이동 */
         div#trnsX {
-            width: 150px;
-            height: 120px;
-            background-color: green;            /* 초록 박스 */
-            transform: translateX(150px);       /* 오른쪽으로 150px 이동 */
+            background-color: #2ecc71; /* 초록 박스 */
+            transform: translateX(150px); /* 오른쪽으로 150px 이동 */
         }
 
-        /* translateY(): Y축으로만 이동 */
+        /* 3. Y축으로만 이동 */
         div#trnsY {
-            width: 150px;
-            height: 120px;
-            background-color: blue;             /* 파랑 박스 */
-            transform: translateY(-50px);       /* 위쪽으로 50px 이동 (음수 값) */
+            background-color: #3498db; /* 파랑 박스 */
+            transform: translateY(-20px); /* 위쪽으로 20px 이동 (음수 값) */
         }
     </style>
 </head>
 <body>
+
     <h1>Transform - translate()</h1>
     
-    <h3>CSS transform 속성은 기준점(transform-origin)을 설정하여 HTML 요소의 시각적 형태와 위치를 다채롭게 변형하는 기능으로, 이동(translate), 회전(rotate), 크기 조절(scale), 기울이기(skew) 등의 전용 메서드와 이들을 결합한 행렬 연산(matrix)을 통해 2D 및 3D 그래픽 효과를 자유롭게 구현할 수 있게 해줍니다</h3>
+    <!-- 기능 상세 설명 -->
+    <div class="description">
+        CSS <code>transform</code> 속성은 기준점(<code>transform-origin</code>)을 설정하여 HTML 요소의 시각적 형태와 위치를 다채롭게 변형하는 기능으로, 이동(<code>translate</code>), 회전(<code>rotate</code>), 크기 조절(<code>scale</code>), 기울이기(<code>skew</code>) 등의 전용 메서드와 이들을 결합한 행렬 연산(<code>matrix</code>)을 통해 2D 및 3D 그래픽 효과를 자유롭게 구현할 수 있게 해줍니다.
+    </div>
 
-    <!-- X축 300px, Y축 300px 이동 -->
-    <div id="trnsXY">translate(300px, 300px) 빨강박스, 오른쪽 300px, 아래쪽 300px 이동 </div><br>
+    <!-- 1. translate(x, y) -->
+    <div id="trnsXY" class="box">
+        <strong>translate(300px, 50px)</strong><br>
+        빨강박스<br>
+        오른쪽 300px, 아래쪽 50px 이동
+    </div>
 
-    <!-- X축 150px 이동 -->
-    <div id="trnsX">translateX(150px) 초록박스, X축 150px 이동</div><br>
+    <!-- 2. translateX(x) -->
+    <div id="trnsX" class="box">
+        <strong>translateX(150px)</strong><br>
+        초록박스<br>
+        X축 150px 이동
+    </div>
 
-    <!-- Y축 -50px 이동 -->
-    <div id="trnsY">translateY(-50px 파랑박스, Y축 -50px 이동</div>
+    <!-- 3. translateY(y) -->
+    <div id="trnsY" class="box">
+        <strong>translateY(-20px)</strong><br>
+        파랑박스<br>
+        Y축 -20px 이동
+    </div>
+
 </body>
 </html>
