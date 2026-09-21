@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>CSS3 애니메이션 예제 통합</title>
+  <style>
+    /* 공통 레이아웃 스타일 */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f8f9fa;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 1. 상단 요약 이미지 */
+    .summary-image-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .summary-image-container img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    /* 예제 섹션 공통 스타일 */
+    .example-section {
+      border-top: 2px solid #eee;
+      padding-top: 20px;
+      margin-top: 30px;
+    }
+
+    .description {
+      background-color: #eef7ff;
+      padding: 12px 15px;
+      border-left: 4px solid #007bff;
+      margin-bottom: 20px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* =========================================================
+       [예제 7-11] Color Animation 스타일
+       ========================================================= */
+    .color-box {
+      width: 200px;
+      height: 200px;
+      border: 5px solid red;
+      /* 
+         animation 단축 속성 사용:
+         - borderColorChange: 실행할 keyframes 이름
+         - 4s: 실행 시간 4초
+         - infinite: 무한 반복 
+      */
+      animation: borderColorChange 4s infinite;
+      margin: 40px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: width 0.3s ease; /* smooth한 크기 변경 효과 */
+    }
+
+    /* 마우스 호버 시 크기 확대 (width 200px -> 400px) */
+    .color-box:hover {
+      width: 400px;
+    }
+
+    /* keyframes: 테두리 두께, 스타일, 색상 변화 */
+    @keyframes borderColorChange {
+      0%   { border: 2px dotted red; }     /* 시작: 빨강 점선 */
+      25%  { border: 5px dashed blue; }    /* 25%: 파랑 파선 */
+      50%  { border: 15px groove green; }  /* 50%: 초록 입체 groove */
+      75%  { border: 5px inset orange; }   /* 75%: 주황 안쪽 inset */
+      100% { border: 2px solid cyan; }     /* 끝: 청록 실선 */
+    }
+
+    /* =========================================================
+       [예제 7-12] 이동 Animation 스타일
+       ========================================================= */
+    .move-stage {
+      height: 300px; /* 이동 공간 확보 */
+      position: relative;
+    }
+
+    .move-box {
+      width: 100px;
+      height: 50px;
+      background: cyan;
+      position: relative;          /* left, top 속성을 적용하기 위한 상대 위치 지정 */
+      animation-name: colorMove;   /* 실행할 keyframe 이름 지정 */
+      animation-duration: 5s;      /* 애니메이션 5초간 실행 */
+      animation-iteration-count: infinite; /* 끊김 없는 확인을 위해 무한 반복 추가 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* keyframes: 테두리 스타일과 위치(left, top) 좌표 변화 */
+    @keyframes colorMove {
+      0%   { border: 2px dotted red;    left: 0px;   top: 0px; }    /* 시작: 좌상단 */
+      25%  { border: 5px dashed green;  left: 200px; top: 0px; }    /* 우측 이동 */
+      50%  { border: 15px groove blue;  left: 200px; top: 200px; }  /* 우하단 이동 */
+      75%  { border: 5px inset cyan;    left: 0px;   top: 200px; }  /* 좌하단 이동 */
+      100% { border: 2px solid orange;  left: 0px;   top: 0px; }    /* 복귀: 좌상단 */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- 1. 문서 상단 핵심요약 이미지 -->
+    <div class="summary-image-container">
+      <img src="CSSanimation.png" alt="CSS3 애니메이션 핵심요약 이미지">
+    </div>
+
+    <!-- 2. 예제 7-11 섹션 -->
+    <div class="example-section">
+      <h2>예제 7-11: Color Animation</h2>
+      <div class="description">
+        <strong>[프로그램 설명]</strong><br>
+        - <code>@keyframes borderColorChange</code>를 활용해 테두리의 두께, 스타일, 색상을 시간에 따라 변화시킵니다.<br>
+        - <code>animation: borderColorChange 4s infinite</code> 속성을 통해 4초 동안 무한 반복 동작합니다.<br>
+        - 박스에 마우스를 올리면(<code>:hover</code>) 너비가 400px로 확대됩니다.
+      </div>
+      
+      <!-- 예제 7-11 실행 영역 -->
+      <div class="color-box">
+        <h4>Color Animation</h4>
+      </div>
+    </div>
+
+    <!-- 3. 예제 7-12 섹션 -->
+    <div class="example-section">
+      <h2>예제 7-12: 이동 Animation</h2>
+      <div class="description">
+        <strong>[프로그램 설명]</strong><br>
+        - <code>position: relative;</code> 상태에서 <code>left</code>와 <code>top</code> 좌표를 제어하여 요소가 사각형 궤적으로 이동하도록 구현했습니다.<br>
+        - 이동 경로에 맞춰 테두리 스타일 및 색상도 함께 변화합니다.<br>
+        - <code>animation-duration: 5s</code> 속성으로 1회 순환에 5초가 소요됩니다.
+      </div>
+
+      <!-- 예제 7-12 실행 영역 -->
+      <div class="move-stage">
+        <div class="move-box">
+          <h4 style="color: gray; margin: 0;">Translation</h4>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
