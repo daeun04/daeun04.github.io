@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자바스크립트 출력 방식 완벽 가이드 (초보자용)</title>
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+            --code-bg: #1e1e1e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .intro {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1fr solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+
+        .badge {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            color: #0f172a;
+        }
+
+        .description {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-bottom: 15px;
+        }
+
+        .how-it-works {
+            background-color: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 10px;
+            font-size: 0.85rem;
+            color: #15803d;
+            margin-bottom: 15px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .code-block {
+            background-color: var(--code-bg);
+            color: #9cdcfe;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            overflow-x: auto;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #2563eb;
+        }
+
+        .demo-area {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #0f172a;
+            word-break: break-all;
+        }
+
+        /* 가상 콘솔 영역 */
+        .virtual-console {
+            background: #1e1e1e;
+            color: #4ec9b0;
+            font-family: monospace;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            min-height: 40px;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            padding: 15px;
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>JavaScript 출력 방식 4가지 완벽 가이드</h1>
+        <p class="intro">자바스크립트에서 데이터를 화면이나 콘솔에 출력하는 대표적인 방법 4가지를 실습과 함께 배워봅시다.</p>
+    </header>
+
+    <div class="grid">
+
+        <!-- 1. innerHTML -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="badge">1</span>
+                    <h2>innerHTML (요소 내부 변경)</h2>
+                </div>
+                <p class="description">
+                    <strong>가장 많이 사용하는 방식!</strong><br>
+                    HTML 문서 내의 특정 태그(요소)를 찾아 그 안의 내용(텍스트 또는 HTML)을 바꿉니다.
+                </p>
+                <div class="how-it-works">
+                    💡 <strong>동작 방식:</strong> `document.getElementById('아이디')`로 태그를 선택한 뒤, `.innerHTML`을 이용해 내용을 삽입합니다.
+                </div>
+                <div class="code-block">
+document.getElementById("demo1").innerHTML = <br>&nbsp;&nbsp;"&lt;span style='color:blue'&gt;출력 완료!&lt;/span&gt;";
+                </div>
+            </div>
+            <div>
+                <button class="btn" onclick="runInnerHTML()">실행해보기</button>
+                <div class="demo-area" id="demo1">여기에 결과가 출력됩니다.</div>
+            </div>
+        </div>
+
+        <!-- 2. document.write() -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="badge">2</span>
+                    <h2>document.write() (문서에 직접 쓰기)</h2>
+                </div>
+                <p class="description">
+                    HTML 문서 전체에 직접 글자를 출력합니다.<br>
+                    <span style="color: #ef4444; font-weight: bold;">⚠️주의:</span> 페이지가 다 로딩된 후에 실행하면 <strong>기존 화면 내용이 전부 삭제</strong>되고 새 내용만 남습니다. (테스트용으로만 주로 사용)
+                </p>
+                <div class="how-it-works">
+                    💡 <strong>동작 방식:</strong> HTML 로딩 과정 중에 실시간으로 텍스트를 출력 스트림에 밀어 넣습니다.
+                </div>
+                <div class="code-block">
+document.write("화면에 직접 텍스트를 작성합니다.");
+                </div>
+            </div>
+            <div>
+                <button class="btn" onclick="runDocumentWrite()" style="background-color: #ef4444;">실행해보기 (주의!)</button>
+                <div class="demo-area" style="font-size: 0.8rem; color: #64748b;">
+                    버튼을 누르면 이 가이드 페이지 전체가 덮어씌워집니다. (새로고침으로 복구 가능)
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. window.alert() -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="badge">3</span>
+                    <h2>window.alert() (경고창 팝업)</h2>
+                </div>
+                <p class="description">
+                    브라우저 상단에 메시지 알림(팝업창)을 띄웁니다.<br>
+                    사용자가 '확인' 버튼을 누르기 전까지는 다음 코드의 실행이 멈춥니다.
+                </p>
+                <div class="how-it-works">
+                    💡 <strong>동작 방식:</strong> 브라우저 자체 대화상자를 호출하여 사용자에게 중요한 정보를 알릴 때 사용합니다.
+                </div>
+                <div class="code-block">
+window.alert("반갑습니다! 경고창 출력입니다.");<br>
+// 'window.' 생략 가능: alert("내용");
+                </div>
+            </div>
+            <div>
+                <button class="btn" onclick="runAlert()">실행해보기</button>
+                <div class="demo-area" id="alert-status">버튼을 눌러 팝업창을 띄워보세요.</div>
+            </div>
+        </div>
+
+        <!-- 4. console.log() -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="badge">4</span>
+                    <h2>console.log() (개발자 도구 콘솔)</h2>
+                </div>
+                <p class="description">
+                    웹 페이지 화면에는 보이지 않고, 브라우저 **개발자 도구(F12)**의 [Console] 탭에만 출력됩니다.<br>
+                    개발자가 코드의 오류(버그)를 찾거나 값을 확인할 때 필수적으로 씁니다.
+                </p>
+                <div class="how-it-works">
+                    💡 <strong>동작 방식:</strong> 키보드 <kbd>F12</kbd>를 누른 뒤 'Console' 탭을 켜면 출력된 메시지를 확인할 수 있습니다.
+                </div>
+                <div class="code-block">
+console.log("개발자 도구 콘솔에 출력되는 메시지입니다.");
+                </div>
+            </div>
+            <div>
+                <button class="btn" onclick="runConsoleLog()">실행해보기</button>
+                <div class="virtual-console" id="virtual-console-out">
+                    > F12를 누르거나, 버튼을 클릭해 가상 콘솔 출력을 확인하세요.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>JavaScript Beginner Guide &copy; 2026 | 작성된 예제를 직접 클릭하며 동작 원리를 이해해 보세요.</p>
+    </footer>
+</div>
+
+<script>
+    // 1. innerHTML 실행 함수
+    function runInnerHTML() {
+        document.getElementById("demo1").innerHTML = "<span style='color:#2563eb; font-weight:bold;'>outPut2: innerHTML 성공!</span>";
+    }
+
+    // 2. document.write 실행 함수
+    function runDocumentWrite() {
+        alert("확인을 누르면 페이지 내용이 덮어씌워집니다. 다시 돌아오려면 브라우저 [새로고침]을 누르세요.");
+        document.write("<h1>outPut1: document.write 실행됨</h1><p>기존 HTML 문서 전체가 사라지고 이 문구만 남았습니다! (새로고침을 눌러 원상복구 하세요)</p>");
+    }
+
+    // 3. window.alert 실행 함수
+    function runAlert() {
+        window.alert("outPut3: alert 메시지 창입니다!");
+        document.getElementById("alert-status").innerText = "경고창이 닫혔습니다.";
+    }
+
+    // 4. console.log 실행 함수
+    function runConsoleLog() {
+        // 실제 브라우저 콘솔 출력
+        console.log("outPut4: console.log 출력 결과입니다.");
+        
+        // 화면의 가상 콘솔 영역에도 시각적으로 표현
+        const consoleBox = document.getElementById("virtual-console-out");
+        consoleBox.innerHTML = "> outPut4: console.log (F12 콘솔 창 확인 완료!)";
+        consoleBox.style.color = "#a6e22e";
+    }
+</script>
+
+</body>
+</html>
