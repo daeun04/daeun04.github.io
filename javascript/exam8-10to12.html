@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>예제 8-10 ~ 8-12 정리</title>
+<style>
+  body { font-family: "Malgun Gothic", sans-serif; max-width: 860px; margin: 0 auto; padding: 16px; line-height: 1.6; color: #222; background: #fff; }
+  h1 { border-bottom: 3px solid #f0db4f; padding-bottom: 6px; }
+  h2 { margin-top: 48px; background: #f7f7f7; padding: 8px 12px; border-left: 6px solid #f0db4f; }
+  pre { background: #1e1e1e; color: #ddd; padding: 12px; border-radius: 6px; overflow-x: auto; font-size: 14px; }
+  table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+  th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #fafafa; }
+  .demo { border: 1px dashed #999; padding: 12px; border-radius: 6px; margin: 8px 0; }
+  .bad { color: #c62828; font-weight: bold; }
+  code { background: #f1f1f1; padding: 1px 4px; border-radius: 3px; }
+  pre code { background: none; padding: 0; }
+</style>
+<script>
+  // ===== 예제 8-10 =====
+  function jsFunction() {
+    alert("눌렀군요!");
+    document.getElementById("first").innerHTML = "first";   // 문자 출력
+    document.getElementById("second").innerHTML = "second"; // 문자 출력
+  }
+
+  // ===== 예제 8-11 =====
+  function calc() {
+    var x = document.getElementById("x").value; // 입력된 정수1 값
+    var y = document.getElementById("y").value; // 입력된 정수2 값
+    var tot = parseInt(x) + parseInt(y);        // 문자열을 정수로 변환 후 더함
+    if (isNaN(tot)) {
+      alert("정수를 올바르게 입력하세요.");
+      return;
+    }
+    document.getElementById("sum").value = tot; // id="sum"에 결과 출력
+  }
+
+  // ===== 예제 8-12 =====
+  function promptMsg() {
+    var answer = prompt("무엇이든지 물어보세요?", "질문은 여기에");
+    if (answer !== null) {          // 확인을 누른 경우
+      alert("입력한 내용: " + answer);
+    }
+  }
+  function confirmMsg() {
+    var result = confirm("계속 진행할까요?");
+    if (result) {                   // '확인'을 클릭한 경우 실행
+      alert("진행합니다.");
+    } else {                        // '취소'를 클릭한 경우 실행
+      alert("취소했습니다.");
+    }
+  }
+  function alertMsg() {
+    alert("경고창입니다!");
+  }
+</script>
+</head>
+<body>
+
+<h1>JavaScript 예제 8-10 ~ 8-12 정리</h1>
+<p>원본 소스를 확인해 잘못된 부분을 고치고, 고친 코드와 실행 예시를 함께 정리했습니다.</p>
+
+<!-- ======================= 8-10 ======================= -->
+<h2>예제 8-10 이벤트 함수</h2>
+<p><b>핵심:</b> 버튼의 <code>onclick</code> 이벤트로 함수를 호출하고, <code>getElementById().innerHTML</code>로 문단에 글자를 출력합니다.</p>
+
+<table>
+  <tr><th>원본 문제</th><th>수정</th></tr>
+  <tr><td><span class="bad">버튼 뒤의 <code>//버튼 클릭 이벤트</code></span> — HTML 영역에서는 <code>//</code>가 주석이 아니라서 화면에 글자로 그대로 보임</td><td><code>&lt;!-- 버튼 클릭 이벤트 --&gt;</code> HTML 주석으로 변경</td></tr>
+  <tr><td><code>&lt;meta charset&gt;</code>, <code>lang</code> 없음 — 서버 설정에 따라 한글이 깨질 수 있음</td><td><code>&lt;html lang="ko"&gt;</code>, <code>&lt;meta charset="UTF-8"&gt;</code> 추가</td></tr>
+</table>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ko"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;title&gt;예제8-10 이벤트함수(Function)&lt;/title&gt;
+&lt;script&gt;
+function jsFunction() {
+    alert("눌렀군요!");
+    document.getElementById("first").innerHTML = "first";   // 문자 출력
+    document.getElementById("second").innerHTML = "second"; // 문자 출력
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;JavaScript 이벤트함수(Function)&lt;/h1&gt;
+    &lt;!-- 버튼 클릭 이벤트 --&gt;
+    &lt;button onclick="jsFunction()"&gt;눌러주세요&lt;/button&gt;
+    &lt;p id="first"&gt;&lt;/p&gt;
+    &lt;p id="second"&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p><b>실행해 보기</b></p>
+<div class="demo">
+  <button onclick="jsFunction()">눌러주세요</button>
+  <p id="first"></p>
+  <p id="second"></p>
+</div>
+
+<!-- ======================= 8-11 ======================= -->
+<h2>예제 8-11 함수 연산</h2>
+<p><b>핵심:</b> 입력창의 <code>.value</code>는 <b>문자열</b>이므로 <code>parseInt()</code>로 정수로 바꾼 뒤 더해야 합니다. (안 바꾸면 "1"+"2" = "12")</p>
+
+<table>
+  <tr><th>원본 문제</th><th>수정</th></tr>
+  <tr><td><span class="bad">가장 큰 오류:</span> <code>type="text"　id="x"</code> 사이가 <b>전각 공백(U+3000)</b>이라 브라우저가 속성 이름을 <code>"　id"</code>로 인식 → 입력창에 id가 없음 → <code>getElementById("x")</code>가 <code>null</code> → 확인 버튼을 눌러도 <b>동작하지 않음</b> (입력1, 입력2 둘 다)</td><td>일반 공백(반각 스페이스)으로 교체</td></tr>
+  <tr><td><code>id="sum"size="10"</code> — 속성 사이 공백 없음 (문법 오류)</td><td><code>id="sum" size="10"</code></td></tr>
+  <tr><td>숫자가 아닌 값을 넣으면 합계에 <code>NaN</code> 표시</td><td><code>isNaN()</code>으로 검사 후 안내 (선택 사항)</td></tr>
+  <tr><td>charset 없음</td><td><code>&lt;meta charset="UTF-8"&gt;</code> 추가</td></tr>
+</table>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ko"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;title&gt;예제8-11 함수(Function) 계산&lt;/title&gt;
+&lt;script&gt;
+function calc() {
+    var x = document.getElementById("x").value; // 입력된 정수1 값
+    var y = document.getElementById("y").value; // 입력된 정수2 값
+    var tot = parseInt(x) + parseInt(y);        // 입력1,2를 정수로 변환 후 더함
+    if (isNaN(tot)) {
+        alert("정수를 올바르게 입력하세요.");
+        return;
+    }
+    document.getElementById("sum").value = tot; // id="sum"에 결과 출력
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h3&gt;함수 계산 결과&lt;/h3&gt;
+&lt;h4&gt;두 개의 정수를 입력하세요.&lt;/h4&gt;
+&lt;form&gt;
+    정수 입력1: &lt;input type="text" id="x" size="10"&gt;&lt;br&gt;
+    정수 입력2: &lt;input type="text" id="y" size="10"&gt;&lt;br&gt;
+    &lt;input type="button" value="확인" onclick="calc();"&gt;&lt;br&gt;
+    합-------계: &lt;input type="text" id="sum" size="10" readonly&gt;&lt;br&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p><b>실행해 보기</b></p>
+<div class="demo">
+  <form>
+    정수 입력1: <input type="text" id="x" size="10"><br>
+    정수 입력2: <input type="text" id="y" size="10"><br>
+    <input type="button" value="확인" onclick="calc();"><br>
+    합-------계: <input type="text" id="sum" size="10" readonly><br>
+  </form>
+</div>
+
+<!-- ======================= 8-12 ======================= -->
+<h2>예제 8-12 내장함수 (prompt, confirm, alert)</h2>
+<table>
+  <tr><th>함수</th><th>창 모양</th><th>반환값</th></tr>
+  <tr><td><code>prompt(메시지, 기본값)</code></td><td>입력창 + 확인/취소</td><td>입력한 문자열, 취소 시 <code>null</code></td></tr>
+  <tr><td><code>confirm(메시지)</code></td><td>확인/취소</td><td>확인 <code>true</code>, 취소 <code>false</code></td></tr>
+  <tr><td><code>alert(메시지)</code></td><td>확인만</td><td>없음(<code>undefined</code>)</td></tr>
+</table>
+
+<table>
+  <tr><th>원본 문제</th><th>수정</th></tr>
+  <tr><td><span class="bad"><code>&lt;/html&gt;</code> 닫는 태그 누락</span></td><td>추가</td></tr>
+  <tr><td>주석 오타 <code>아니로를</code>, 버튼 이름도 실제로는 '확인/취소'</td><td>'확인'/'취소'를 클릭한 경우로 정정</td></tr>
+  <tr><td><code>if(result){ } else {}</code> 가 비어 있어 결과 확인 불가</td><td>각 경우에 alert로 결과 표시</td></tr>
+  <tr><td><code>prompt</code>의 입력값을 받지 않고 버림</td><td>변수에 저장 후 출력 (취소 시 <code>null</code> 처리)</td></tr>
+  <tr><td>alert 문구가 "실행할까요?" — alert는 질문에 답할 수 없는 창이라 어색함</td><td>"경고창입니다!"로 변경</td></tr>
+  <tr><td>charset 없음, 들여쓰기 탭/공백 혼용</td><td>정리</td></tr>
+</table>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ko"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;title&gt;예제8-12 내장 함수&lt;/title&gt;
+&lt;script&gt;
+function promptMsg() {
+    var answer = prompt("무엇이든지 물어보세요?", "질문은 여기에");
+    if (answer !== null) {          // 확인을 누른 경우
+        alert("입력한 내용: " + answer);
+    }
+}
+function confirmMsg() {
+    var result = confirm("계속 진행할까요?");
+    if (result) {                   // '확인'을 클릭한 경우 실행
+        alert("진행합니다.");
+    } else {                        // '취소'를 클릭한 경우 실행
+        alert("취소했습니다.");
+    }
+}
+function alertMsg() {
+    alert("경고창입니다!");
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h3&gt;유용한 함수&lt;/h3&gt;
+&lt;h4&gt;단추를 누르면 대화상자가 나타납니다.&lt;/h4&gt;
+&lt;input type="button" value="prompt" onclick="promptMsg()"&gt;
+&lt;input type="button" value="confirm" onclick="confirmMsg()"&gt;
+&lt;input type="button" value="alert" onclick="alertMsg()"&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p><b>실행해 보기</b></p>
+<div class="demo">
+  <input type="button" value="prompt" onclick="promptMsg()">
+  <input type="button" value="confirm" onclick="confirmMsg()">
+  <input type="button" value="alert" onclick="alertMsg()">
+</div>
+
+<h2>한눈에 요약</h2>
+<ul>
+  <li><b>8-10</b> 이벤트(onclick) → 함수 호출 → <code>innerHTML</code>로 출력. HTML 안에서는 <code>//</code> 대신 <code>&lt;!-- --&gt;</code> 주석.</li>
+  <li><b>8-11</b> <code>.value</code>는 문자열 → <code>parseInt()</code>로 변환 후 계산. 속성 사이에는 반드시 일반 공백.</li>
+  <li><b>8-12</b> <code>prompt</code>(문자열/null), <code>confirm</code>(true/false), <code>alert</code>(반환값 없음).</li>
+</ul>
+
+</body>
+</html>
