@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예제 9-9 ~ 9-12 Math 객체</title>
+    <style>
+        :root {
+            --bg: #f7f7f5;
+            --panel: #ffffff;
+            --panel-soft: #f3f3f1;
+            --line: #e5e7eb;
+            --primary: #6b7280;
+            --text: #1f2937;
+            --subtext: #5b6472;
+            --code-bg: #1f2937;
+            --code-text: #e5e7eb;
+            --code-comment: #9ca3af;
+            --result: #2f6b4f;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            background: linear-gradient(180deg, #f8f8f7 0%, #f1f2f4 100%);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .top-bar {
+            background: linear-gradient(135deg, #4b5563 0%, #8a919b 100%);
+            color: #fff;
+            text-align: center;
+            padding: 36px 16px 32px;
+        }
+
+        .top-bar h1 {
+            margin: 0;
+            font-size: 34px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .top-bar p {
+            margin: 6px 0 0;
+            color: #e5e7eb;
+        }
+
+        .container {
+            width: min(920px, 92%);
+            margin: 32px auto 60px;
+        }
+
+        .toc {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 0 0 24px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .toc a {
+            display: inline-block;
+            background: var(--panel);
+            color: #111;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 9px 14px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .toc a:hover {
+            background: var(--line);
+        }
+
+        .section {
+            background: var(--panel);
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 28px;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+        }
+
+        .section h2 {
+            margin: 0 0 16px;
+            font-size: 23px;
+            border-left: 6px solid var(--primary);
+            padding-left: 12px;
+        }
+
+        .section h3 {
+            margin: 28px 0 10px;
+            font-size: 18px;
+        }
+
+        .section p {
+            margin: 0 0 12px;
+        }
+
+        code {
+            font-family: Consolas, "JetBrains Mono", monospace;
+            background: var(--panel-soft);
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 0.92em;
+        }
+
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 18px 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-family: Consolas, "JetBrains Mono", monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            font-size: inherit;
+        }
+
+        pre .cm {
+            color: var(--code-comment);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 11px 12px;
+            border-bottom: 1px solid var(--line);
+            vertical-align: top;
+        }
+
+        th {
+            background: var(--panel-soft);
+            white-space: nowrap;
+        }
+
+        td:first-child {
+            white-space: nowrap;
+        }
+
+        td code {
+            white-space: nowrap;
+        }
+
+        td.val {
+            font-family: Consolas, "JetBrains Mono", monospace;
+            color: var(--result);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .output-box {
+            margin-top: 16px;
+            background: var(--panel-soft);
+            border-left: 6px solid var(--primary);
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+
+        .output-box h3 {
+            margin: 0 0 8px;
+        }
+
+        .output-box p {
+            margin: 2px 0;
+        }
+
+        .output-box b {
+            font-family: Consolas, "JetBrains Mono", monospace;
+            color: var(--result);
+        }
+
+        .label {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--subtext);
+            margin: 18px 0 6px;
+        }
+
+        .tip {
+            background: #f3f4f6;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-top: 16px;
+        }
+
+        .tip strong {
+            color: #111;
+        }
+
+        /* 직접 해 보기 */
+        .try {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .try label {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .try input,
+        .try select {
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--panel-soft);
+            font-size: 15px;
+            min-width: 150px;
+        }
+
+        .try button,
+        .btn {
+            background: linear-gradient(135deg, #4b5563 0%, #7a818a 100%);
+            color: #fff;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .try-result {
+            margin-top: 14px;
+            font-family: Consolas, "JetBrains Mono", monospace;
+            font-size: 16px;
+        }
+
+        .try-result b {
+            color: var(--result);
+        }
+
+        .back-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #4b5563 0%, #7a818a 100%);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        /* 마우스를 올리면 나오는 설명 */
+        .hint {
+            position: relative;
+            border-bottom: 1px dashed var(--primary);
+            cursor: help;
+        }
+
+        .hint-box {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: calc(100% + 8px);
+            z-index: 10;
+            width: 280px;
+            max-width: 70vw;
+            background: #1f2937;
+            color: #f3f4f6;
+            font-size: 13.5px;
+            line-height: 1.6;
+            padding: 10px 14px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+        }
+
+        .hint:hover .hint-box,
+        .hint:focus .hint-box {
+            display: block;
+        }
+
+        /* 학습용 애니메이션 */
+        .play-btn {
+            border: 1px solid var(--line);
+            background: var(--panel);
+            color: var(--text);
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .play-btn:hover {
+            background: var(--line);
+        }
+
+        .step {
+            transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .step.active {
+            border-color: #4b5563;
+            background: #f3f4f6;
+            transform: translateY(-3px);
+        }
+
+        .pop {
+            animation: pop-in 0.4s ease both;
+        }
+
+        @keyframes pop-in {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .step,
+            .pop {
+                transition: none;
+                animation: none;
+            }
+        }
+
+        /* 메서드 예제 9-10 ~ 9-12 */
+        .ex-card {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .ex-card .output-box {
+            margin-top: 0;
+        }
+
+        .ex-card .output-box p {
+            font-size: 14px;
+        }
+
+        /* 그림 설명 */
+        .figure {
+            margin: 22px 0 0;
+            background: #fafaf9;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .figure svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .figure svg text {
+            font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            font-size: 13px;
+            fill: var(--text);
+        }
+
+        .figure svg .mono {
+            font-family: Consolas, "JetBrains Mono", monospace;
+        }
+
+        .figure svg .small {
+            font-size: 11px;
+            fill: var(--subtext);
+        }
+
+        .figure figcaption {
+            margin-top: 14px;
+            font-size: 14px;
+            color: var(--subtext);
+        }
+
+        .figure figcaption strong {
+            color: var(--text);
+        }
+
+        .fig-title {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: var(--subtext);
+            margin-bottom: 10px;
+        }
+
+        .fig-row {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .fig-row.two {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .fig-cell {
+            min-width: 0;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .fig-cell p {
+            margin: 8px 0 0;
+            font-size: 13.5px;
+            color: var(--subtext);
+        }
+
+        /* 단계 흐름 (DOM, 주사위) */
+        .steps {
+            display: flex;
+            align-items: stretch;
+            gap: 6px;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 0;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 12px 10px;
+            text-align: center;
+        }
+
+        .step small {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--subtext);
+            margin-bottom: 6px;
+        }
+
+        .step code {
+            display: inline-block;
+            font-size: 12.5px;
+            overflow-wrap: anywhere;
+        }
+
+        #hyp-svg,
+        #trig-svg {
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .step .big {
+            display: block;
+            margin-top: 6px;
+            font-family: Consolas, "JetBrains Mono", monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--result);
+        }
+
+        .step-arrow {
+            display: flex;
+            align-items: center;
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .step-arrow::after {
+            content: "→";
+        }
+
+        .pow-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            min-height: 92px;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--subtext);
+        }
+
+        .pow-row span {
+            display: inline-grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: #dbe5f3;
+            color: #2c4f86;
+        }
+
+        .pow-row span.res {
+            background: #dcebe2;
+            color: var(--result);
+        }
+
+        /* 각도 · 반올림 조절 */
+        .fig-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 12px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .fig-controls input[type="range"] {
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .chip-btn {
+            border: 1px solid var(--line);
+            background: var(--panel);
+            color: var(--text);
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-family: Consolas, "JetBrains Mono", monospace;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .chip-btn[aria-pressed="true"] {
+            background: #4b5563;
+            border-color: #4b5563;
+            color: #fff;
+        }
+
+        .trig-wrap {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 18px;
+            align-items: center;
+        }
+
+        .readout {
+            display: grid;
+            gap: 6px;
+            font-family: Consolas, "JetBrains Mono", monospace;
+            font-size: 14px;
+        }
+
+        .readout div {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 8px 12px;
+        }
+
+        .readout b {
+            float: right;
+        }
+
+        .c-blue { color: #3b6fb6; }
+        .c-red { color: #c0504d; }
+        .c-green { color: #2f6b4f; }
+        .c-purple { color: #7c5cb8; }
+
+        @media (max-width: 700px) {
+            .top-bar h1 {
+                font-size: 26px;
+            }
+
+            .section {
+                padding: 22px 18px;
+            }
+
+            .figure {
+                padding: 14px;
+            }
+
+            .ex-card,
+            .fig-row,
+            .fig-row.two,
+            .trig-wrap {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                flex-direction: column;
+            }
+
+            .step-arrow {
+                justify-content: center;
+            }
+
+            .step-arrow::after {
+                content: "↓";
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 그림에서 함께 쓰는 화살표 머리 -->
+    <svg width="0" height="0" style="position: absolute;" aria-hidden="true">
+        <defs>
+            <marker id="ar-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker>
+            <marker id="ar-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3b6fb6"/></marker>
+            <marker id="ar-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0504d"/></marker>
+            <marker id="ar-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f6b4f"/></marker>
+            <marker id="ar-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7c5cb8"/></marker>
+        </defs>
+    </svg>
+
+    <header class="top-bar">
+        <h1>예제 9-9 ~ 9-12 Math 객체</h1>
+        <p>JavaScript 수학 내장 객체의 상수와 메서드 정리</p>
+    </header>
+
+    <main class="container">
+
+        <ul class="toc">
+            <li><a href="#example">9-9 상수 예제</a></li>
+            <li><a href="#constants">Math 상수</a></li>
+            <li><a href="#method-examples">9-10 ~ 9-12 메서드 예제</a></li>
+            <li><a href="#methods">Math 메서드</a></li>
+            <li><a href="#rounding">반올림 비교</a></li>
+            <li><a href="#try">직접 해 보기</a></li>
+        </ul>
+
+        <section class="section">
+            <h2>Math 객체란?</h2>
+            <p>
+                <code>Math</code>는 수학 계산에 필요한 상수와 함수를 모아 둔 JavaScript 내장 객체입니다.
+                <code>new</code>로 만들지 않고 <code>Math.PI</code>, <code>Math.round(1.5)</code>처럼 바로 사용합니다.
+            </p>
+            <ul>
+                <li><strong>상수(속성)</strong>: <code>Math.PI</code>처럼 정해진 값. 이름이 모두 대문자입니다.</li>
+                <li><strong>메서드</strong>: <code>Math.sqrt(4)</code>처럼 값을 넣으면 계산 결과를 돌려주는 함수입니다.</li>
+            </ul>
+        </section>
+
+        <section class="section" id="example">
+            <h2>1. 예제 9-9 · Math 상수 출력</h2>
+            <p>Math 객체의 상수 8개를 화면에 출력하는 예제입니다. 출력할 자리를 <code>&lt;b id="..."&gt;</code>로 만들어 두고, 스크립트에서 <code>innerHTML</code>로 값을 채웁니다.</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;예제 9-9 Math 속성&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h3&gt;Math 객체 속성&lt;/h3&gt;
+
+<span class="cm">&lt;!-- 값이 들어갈 자리. id로 구분합니다 --&gt;</span>
+&lt;p&gt;Euler's 상수(E) : &lt;b id="ca"&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;자연로그2 LN2 : &lt;b id="cca"&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;자연로그10 LN10 : &lt;b id="cnct"&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;2진로그E(LOG2E) : &lt;b id="ido"&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;10진로그E(LOG10E): &lt;b id="fxd"&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;PI : &lt;b id="prc"&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;SQRT1_2 : &lt;b id="str"&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;SQRT2 : &lt;b id="vlf"&gt;&lt;/b&gt;&lt;/p&gt;
+
+&lt;script&gt;
+    <span class="cm">// id로 요소를 찾아 Math 상수 값을 넣습니다</span>
+    document.getElementById("ca").innerHTML = Math.E;
+    document.getElementById("cca").innerHTML = Math.LN2;
+    document.getElementById("cnct").innerHTML = Math.LN10;
+    document.getElementById("ido").innerHTML = Math.LOG2E;
+    document.getElementById("fxd").innerHTML = Math.LOG10E;
+    document.getElementById("prc").innerHTML = Math.PI;
+    document.getElementById("str").innerHTML = Math.SQRT1_2;
+    document.getElementById("vlf").innerHTML = Math.SQRT2;
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+            <div class="output-box">
+                <h3>실행 결과</h3>
+                <p>Euler's 상수(E) : <b id="ca"></b></p>
+                <p>자연로그2 LN2 : <b id="cca"></b></p>
+                <p>자연로그10 LN10 : <b id="cnct"></b></p>
+                <p>2진로그E(LOG2E) : <b id="ido"></b></p>
+                <p>10진로그E(LOG10E): <b id="fxd"></b></p>
+                <p>PI : <b id="prc"></b></p>
+                <p>SQRT1_2 : <b id="str"></b></p>
+                <p>SQRT2 : <b id="vlf"></b></p>
+            </div>
+
+            <h3>코드 흐름</h3>
+            <ol>
+                <li><code>&lt;p&gt;</code> 안의 빈 <code>&lt;b&gt;</code> 태그가 값을 출력할 자리입니다. <code>ca</code>, <code>cca</code>, <code>prc</code> 같은 고유 id를 붙여 구분합니다.</li>
+                <li><code>document.getElementById("id")</code>로 해당 요소를 찾습니다.</li>
+                <li><code>.innerHTML = Math.E</code>처럼 Math 상수 값을 요소 안에 넣으면 화면에 표시됩니다.</li>
+            </ol>
+
+            <figure class="figure">
+                <div class="fig-controls">
+                    <span class="fig-title" style="margin: 0;">그림으로 보기 · 값이 화면에 나타나는 과정</span>
+                    <button type="button" class="play-btn" id="dom-play">▶ 순서대로 보기</button>
+                </div>
+                <div class="steps" id="dom-steps">
+                    <div class="step"><small>① 빈 자리 만들기</small><code>&lt;b id="prc"&gt;&lt;/b&gt;</code></div>
+                    <div class="step-arrow" aria-hidden="true"></div>
+                    <div class="step"><small>② id로 찾기</small><code>getElementById<wbr>("prc")</code></div>
+                    <div class="step-arrow" aria-hidden="true"></div>
+                    <div class="step"><small>③ 값 넣기</small><code>.innerHTML =<wbr> Math.PI</code></div>
+                    <div class="step-arrow" aria-hidden="true"></div>
+                    <div class="step"><small>④ 화면 출력</small><code>PI :</code><span class="big">3.14159…</span></div>
+                </div>
+                <figcaption>
+                    HTML에는 이름표(id)만 붙은 <strong>빈 상자</strong>가 있고, 스크립트가 이름표로 상자를 찾아 <strong>Math 상수 값을 넣는</strong> 구조입니다.
+                    8개 상수 모두 같은 방식으로 반복됩니다.
+                </figcaption>
+            </figure>
+        </section>
+
+        <section class="section" id="constants">
+            <h2>2. Math 상수</h2>
+            <p>값이 바뀌지 않는 수학 상수입니다. 괄호 없이 씁니다.</p>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>상수</th><th>의미</th><th>값</th></tr>
+                    <tr><td><code>Math.E</code></td><td><span class="hint" tabindex="0">오일러 상수<span class="hint-box" role="tooltip">수학에서 π만큼 자주 쓰이는 상수로, 약 2.718입니다. 100% 이자를 1년 동안 아주 잘게 나눠 복리로 계속 붙이면 1원이 e원(약 2.718원)이 됩니다. 자연로그(ln)의 밑으로 쓰입니다.</span></span> e. 자연로그의 밑</td><td class="val">2.718281828459045</td></tr>
+                    <tr><td><code>Math.LN2</code></td><td>2의 자연로그 (ln 2)</td><td class="val">0.6931471805599453</td></tr>
+                    <tr><td><code>Math.LN10</code></td><td>10의 자연로그 (ln 10)</td><td class="val">2.302585092994046</td></tr>
+                    <tr><td><code>Math.LOG2E</code></td><td>밑이 2인 e의 로그 (log₂ e)</td><td class="val">1.4426950408889634</td></tr>
+                    <tr><td><code>Math.LOG10E</code></td><td>밑이 10인 e의 로그 (log₁₀ e)</td><td class="val">0.4342944819032518</td></tr>
+                    <tr><td><code>Math.PI</code></td><td>원주율 π</td><td class="val">3.141592653589793</td></tr>
+                    <tr><td><code>Math.SQRT1_2</code></td><td>1/2의 제곱근 (√½ = 1/√2)</td><td class="val">0.7071067811865476</td></tr>
+                    <tr><td><code>Math.SQRT2</code></td><td>2의 제곱근 (√2)</td><td class="val">1.4142135623730951</td></tr>
+                </table>
+            </div>
+
+            <figure class="figure">
+                <span class="fig-title">그림으로 보기 · 상수 8개를 수직선에 놓으면</span>
+                <svg id="const-line" viewBox="0 0 780 170" role="img" aria-label="0부터 3.5까지 수직선 위에 Math 상수 8개의 위치"></svg>
+                <div class="fig-row two" style="margin-top: 14px;">
+                    <div class="fig-cell">
+                        <svg viewBox="0 0 220 150" role="img" aria-label="지름이 1인 원의 둘레는 π">
+                            <circle cx="110" cy="72" r="52" fill="#eef3fb" stroke="#3b6fb6" stroke-width="3"/>
+                            <line x1="58" y1="72" x2="162" y2="72" stroke="#c0504d" stroke-width="3"/>
+                            <text x="110" y="64" text-anchor="middle" fill="#c0504d" style="fill:#c0504d">지름 = 1</text>
+                            <text x="110" y="144" text-anchor="middle" style="fill:#3b6fb6">둘레 = π ≈ 3.14</text>
+                        </svg>
+                        <p><code>Math.PI</code>: 지름이 1인 원의 둘레 길이</p>
+                    </div>
+                    <div class="fig-cell">
+                        <svg viewBox="0 0 220 150" role="img" aria-label="한 변이 1인 정사각형의 대각선은 루트 2">
+                            <rect x="60" y="22" width="100" height="100" fill="#eef3fb" stroke="#3b6fb6" stroke-width="3"/>
+                            <line x1="60" y1="122" x2="160" y2="22" stroke="#c0504d" stroke-width="3"/>
+                            <text x="110" y="140" text-anchor="middle" style="fill:#3b6fb6">한 변 = 1</text>
+                            <text x="118" y="80" style="fill:#c0504d">√2 ≈ 1.414</text>
+                        </svg>
+                        <p><code>Math.SQRT2</code>: 한 변이 1인 정사각형의 대각선 길이</p>
+                    </div>
+                </div>
+                <figcaption>
+                    상수들은 모두 0과 3.5 사이의 값입니다. <strong>LN2(0.693)와 SQRT1_2(0.707)</strong>, <strong>SQRT2(1.414)와 LOG2E(1.443)</strong>는 서로 아주 가깝지만 다른 값이니 헷갈리지 않도록 주의하세요.
+                </figcaption>
+            </figure>
+        </section>
+
+        <section class="section" id="method-examples">
+            <h2>3. 예제 9-10 ~ 9-12 · Math 메서드 출력</h2>
+            <p>세 예제 모두 9-9와 같은 방식입니다. <code>&lt;b id="..."&gt;</code> 자리를 만들어 두고, 스크립트에서 메서드 계산 결과를 <code>innerHTML</code>로 넣습니다. 아래는 스크립트 부분만 줄여서 정리했습니다.</p>
+
+            <h3>예제 9-10 · 메서드 1 (x = 1, y = 3)</h3>
+            <p>절댓값, 역삼각함수, 세제곱근, 올림을 계산합니다.</p>
+            <div class="ex-card">
+<pre><code><span class="cm">// 9-10 Math 메소드1</span>
+var x = 1, y = 3;
+Math.abs(x);       <span class="cm">// 절댓값</span>
+Math.acos(x);      <span class="cm">// 아크코사인</span>
+Math.acosh(x);     <span class="cm">// 역쌍곡코사인</span>
+Math.asin(x);      <span class="cm">// 아크사인</span>
+Math.asinh(x);     <span class="cm">// 역쌍곡사인</span>
+Math.atan(x);      <span class="cm">// 아크탄젠트</span>
+Math.atan2(x, y);  <span class="cm">// 점 (3, 1)의 각도</span>
+Math.cbrt(x);      <span class="cm">// 세제곱근</span>
+Math.ceil(x);      <span class="cm">// 올림</span></code></pre>
+                <div class="output-box" id="out-910">
+                    <h3>실행 결과</h3>
+
+                </div>
+            </div>
+
+            <h3>예제 9-11 · 메서드 2 (x = 1.00, y = 3)</h3>
+            <p>코사인, 지수·로그, 내림, 최댓값·최솟값, 거듭제곱, 난수를 계산합니다.</p>
+            <div class="ex-card">
+<pre><code><span class="cm">// 9-11 Math 메소드2</span>
+var x = 1.00, y = 3;
+Math.cos(x);               <span class="cm">// 코사인</span>
+Math.cosh(x);              <span class="cm">// 쌍곡코사인</span>
+Math.exp(x);               <span class="cm">// e의 x제곱</span>
+Math.floor(x);             <span class="cm">// 내림</span>
+Math.log(x);               <span class="cm">// 자연로그</span>
+Math.max(x, 3, 0.3, 12);   <span class="cm">// 최댓값</span>
+Math.min(x, 3, 0.3, 12);   <span class="cm">// 최솟값</span>
+Math.pow(x, y);            <span class="cm">// x의 y제곱</span>
+Math.random();             <span class="cm">// 0 이상 1 미만 난수</span></code></pre>
+                <div class="output-box" id="out-911">
+                    <h3>실행 결과</h3>
+
+                </div>
+            </div>
+
+            <h3>예제 9-12 · 메서드 3 (x = 1.234)</h3>
+            <p>반올림, 사인·탄젠트, 쌍곡함수, 제곱근, 버림을 계산합니다.</p>
+            <div class="ex-card">
+<pre><code><span class="cm">// 9-12 Math 메소드3</span>
+var x = 1.234;
+Math.round(x);   <span class="cm">// 반올림</span>
+Math.sin(x);     <span class="cm">// 사인</span>
+Math.sinh(x);    <span class="cm">// 쌍곡사인</span>
+Math.sqrt(x);    <span class="cm">// 제곱근</span>
+Math.tan(x);     <span class="cm">// 탄젠트</span>
+Math.tanh(x);    <span class="cm">// 쌍곡탄젠트</span>
+Math.trunc(x);   <span class="cm">// 버림</span></code></pre>
+                <div class="output-box" id="out-912">
+                    <h3>실행 결과</h3>
+
+                </div>
+            </div>
+
+            <div class="tip">
+                <strong>참고</strong>: 원본 예제는 x 값이 1이라 <code>ceil</code>, <code>floor</code>, <code>round</code>, <code>trunc</code> 결과가 모두 1로 같습니다.
+                차이는 <a href="#rounding">5번 비교</a>에서 확인하세요. 각 메서드의 뜻은 바로 아래 4번 표에 기능별로 정리했습니다.
+            </div>
+        </section>
+
+        <section class="section" id="methods">
+            <h2>4. Math 메서드 정리</h2>
+            <p>괄호 안에 숫자를 넣으면 계산 결과를 돌려줍니다. 비슷한 기능끼리 묶었습니다.</p>
+
+            <h3>정수 만들기 · 절댓값</h3>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>메서드</th><th>설명</th><th>예시</th><th>결과</th></tr>
+                    <tr><td><code>Math.ceil(x)</code></td><td>올림. x보다 크거나 같은 정수 중 가장 작은 수</td><td><code>Math.ceil(1.234)</code></td><td class="val">2</td></tr>
+                    <tr><td><code>Math.floor(x)</code></td><td>내림. x보다 작거나 같은 정수 중 가장 큰 수</td><td><code>Math.floor(1.234)</code></td><td class="val">1</td></tr>
+                    <tr><td><code>Math.round(x)</code></td><td>반올림. 가장 가까운 정수</td><td><code>Math.round(1.234)</code></td><td class="val">1</td></tr>
+                    <tr><td><code>Math.trunc(x)</code></td><td>소수점 아래를 버리고 정수 부분만 남김</td><td><code>Math.trunc(1.234)</code></td><td class="val">1</td></tr>
+                    <tr><td><code>Math.abs(x)</code></td><td>절댓값</td><td><code>Math.abs(-3)</code></td><td class="val">3</td></tr>
+                </table>
+            </div>
+
+            <figure class="figure">
+                <span class="fig-title">그림으로 보기 · 절댓값은 0에서의 거리</span>
+                <svg id="abs-line" viewBox="0 0 560 120" role="img" aria-label="-3과 3은 모두 0에서 거리 3"></svg>
+                <figcaption>
+                    -3과 3은 방향만 다르고 0에서 떨어진 <strong>거리는 똑같이 3</strong>입니다. 그래서 <code>Math.abs(-3)</code>과 <code>Math.abs(3)</code>은 둘 다 3입니다.
+                    올림·내림·반올림·버림은 아래 <a href="#rounding">4번 그림</a>에서 비교합니다.
+                </figcaption>
+            </figure>
+
+            <h3>거듭제곱 · 제곱근 · 로그</h3>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>메서드</th><th>설명</th><th>예시</th><th>결과</th></tr>
+                    <tr><td><code>Math.pow(x, y)</code></td><td>x의 y제곱</td><td><code>Math.pow(1, 3)</code></td><td class="val">1</td></tr>
+                    <tr><td><code>Math.sqrt(x)</code></td><td>제곱근 (√x)</td><td><code>Math.sqrt(1.234)</code></td><td class="val">1.1108555261599053</td></tr>
+                    <tr><td><code>Math.cbrt(x)</code></td><td>세제곱근 (∛x)</td><td><code>Math.cbrt(1)</code></td><td class="val">1</td></tr>
+                    <tr><td><code>Math.exp(x)</code></td><td>e의 x제곱 (eˣ)</td><td><code>Math.exp(1)</code></td><td class="val">2.718281828459045</td></tr>
+                    <tr><td><code>Math.log(x)</code></td><td>자연로그 (ln x)</td><td><code>Math.log(1)</code></td><td class="val">0</td></tr>
+                </table>
+            </div>
+
+            <figure class="figure">
+                <span class="fig-title">그림으로 보기 · 거듭제곱, 제곱근, 지수와 로그</span>
+                <div class="fig-row">
+                    <div class="fig-cell">
+                        <div class="pow-row" aria-label="2 곱하기 2 곱하기 2는 8"><span>2</span>×<span>2</span>×<span>2</span>=<span class="res">8</span></div>
+                        <p><code>Math.pow(2, 3)</code><br>2를 <strong>3번</strong> 곱합니다.</p>
+                    </div>
+                    <div class="fig-cell">
+                        <svg viewBox="0 0 160 110" role="img" aria-label="칸 9개짜리 정사각형의 한 변은 3">
+                            <g fill="#dcebe2" stroke="#2f6b4f" stroke-width="1.5">
+                                <rect x="50" y="8" width="26" height="26"/><rect x="76" y="8" width="26" height="26"/><rect x="102" y="8" width="26" height="26"/>
+                                <rect x="50" y="34" width="26" height="26"/><rect x="76" y="34" width="26" height="26"/><rect x="102" y="34" width="26" height="26"/>
+                                <rect x="50" y="60" width="26" height="26"/><rect x="76" y="60" width="26" height="26"/><rect x="102" y="60" width="26" height="26"/>
+                            </g>
+                            <text x="36" y="52" text-anchor="middle" style="fill:#c0504d;font-weight:700">3</text>
+                            <text x="89" y="104" text-anchor="middle" style="fill:#c0504d;font-weight:700">3</text>
+                        </svg>
+                        <p><code>Math.sqrt(9)</code><br>넓이 9인 정사각형의 <strong>한 변 = 3</strong></p>
+                    </div>
+                    <div class="fig-cell">
+                        <svg viewBox="0 0 220 110" role="img" aria-label="exp는 1을 2.718로, log는 2.718을 1로 바꾸는 반대 계산">
+                            <path d="M62,40 Q110,4 158,40" fill="none" stroke="#3b6fb6" stroke-width="2.5" marker-end="url(#ar-blue)"/>
+                            <path d="M158,72 Q110,108 62,72" fill="none" stroke="#c0504d" stroke-width="2.5" marker-end="url(#ar-red)"/>
+                            <circle cx="40" cy="56" r="22" fill="#fff" stroke="#6b7280" stroke-width="2"/>
+                            <circle cx="180" cy="56" r="28" fill="#fff" stroke="#6b7280" stroke-width="2"/>
+                            <text x="40" y="61" text-anchor="middle" class="mono" style="font-weight:700">1</text>
+                            <text x="180" y="61" text-anchor="middle" class="mono" style="font-weight:700">2.718</text>
+                            <text x="110" y="16" text-anchor="middle" class="mono" style="fill:#3b6fb6">Math.exp</text>
+                            <text x="110" y="106" text-anchor="middle" class="mono" style="fill:#c0504d">Math.log</text>
+                        </svg>
+                        <p><code>exp</code>와 <code>log</code>는<br>서로 <strong>반대 계산</strong>입니다.</p>
+                    </div>
+                </div>
+                <figcaption>
+                    <code>sqrt</code>는 <code>pow(x, 2)</code>의 반대, <code>log</code>는 <code>exp</code>의 반대입니다.
+                    그래서 <code>Math.log(Math.exp(1))</code>을 하면 다시 1이 나옵니다.
+                </figcaption>
+            </figure>
+
+            <h3>삼각함수</h3>
+            <p>각도는 <strong>도(°)가 아니라 라디안</strong> 단위입니다.</p>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>메서드</th><th>설명</th><th>예시</th><th>결과</th></tr>
+                    <tr><td><code>Math.sin(x)</code></td><td>사인</td><td><code>Math.sin(1.234)</code></td><td class="val">0.9438182093746337</td></tr>
+                    <tr><td><code>Math.cos(x)</code></td><td>코사인</td><td><code>Math.cos(1)</code></td><td class="val">0.5403023058681398</td></tr>
+                    <tr><td><code>Math.tan(x)</code></td><td>탄젠트</td><td><code>Math.tan(1.234)</code></td><td class="val">2.856029838919548</td></tr>
+                    <tr><td><code>Math.asin(x)</code></td><td>아크사인 (sin의 역함수)</td><td><code>Math.asin(1)</code></td><td class="val">1.5707963267948966 (π/2)</td></tr>
+                    <tr><td><code>Math.acos(x)</code></td><td>아크코사인 (cos의 역함수)</td><td><code>Math.acos(1)</code></td><td class="val">0</td></tr>
+                    <tr><td><code>Math.atan(x)</code></td><td>아크탄젠트 (tan의 역함수)</td><td><code>Math.atan(1)</code></td><td class="val">0.7853981633974483 (π/4)</td></tr>
+                    <tr><td><code>Math.atan2(y, x)</code></td><td>점 (x, y)의 각도. y를 먼저 씁니다</td><td><code>Math.atan2(1, 3)</code></td><td class="val">0.3217505543966422</td></tr>
+                </table>
+            </div>
+            <div class="tip">
+                <strong>도 → 라디안 변환</strong>: <code>라디안 = 도 * Math.PI / 180</code>.
+                예를 들어 sin 30°는 <code>Math.sin(30 * Math.PI / 180)</code>이고 결과는 약 0.5입니다.
+            </div>
+
+            <figure class="figure">
+                <span class="fig-title">그림으로 보기 · 단위원에서 sin과 cos</span>
+                <div class="fig-controls">
+                    <label for="trig-deg">각도</label>
+                    <input type="range" id="trig-deg" min="0" max="360" step="5" value="30">
+                    <span class="mono" id="trig-deg-label">30°</span>
+                    <button type="button" class="play-btn" id="trig-play">▶ 한 바퀴 돌리기</button>
+                </div>
+                <div class="trig-wrap">
+                    <svg id="trig-svg" viewBox="0 0 300 300" role="img" aria-label="반지름 1인 원 위의 점과 sin, cos 길이"></svg>
+                    <div class="readout">
+                        <div>각도 <b id="ro-deg">30°</b></div>
+                        <div>라디안 <b id="ro-rad"></b></div>
+                        <div class="c-red">Math.sin <b id="ro-sin"></b></div>
+                        <div class="c-blue">Math.cos <b id="ro-cos"></b></div>
+                        <div>Math.tan <b id="ro-tan"></b></div>
+                    </div>
+                </div>
+                <figcaption>
+                    반지름이 1인 원 위의 점에서 <strong class="c-blue">가로 길이가 cos</strong>, <strong class="c-red">세로 높이가 sin</strong>입니다.
+                    tan은 sin ÷ cos, 즉 기울기입니다. 막대를 움직이면 각도에 따라 값이 어떻게 바뀌는지 볼 수 있습니다.
+                    코드에서는 <code>Math.sin(각도 * Math.PI / 180)</code>처럼 라디안으로 바꿔서 넣습니다.
+                </figcaption>
+            </figure>
+
+            <h3>쌍곡선 함수</h3>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>메서드</th><th>설명</th><th>예시</th><th>결과</th></tr>
+                    <tr><td><code>Math.sinh(x)</code></td><td>쌍곡사인</td><td><code>Math.sinh(1.234)</code></td><td class="val">1.5719080591023373</td></tr>
+                    <tr><td><code>Math.cosh(x)</code></td><td>쌍곡코사인</td><td><code>Math.cosh(1)</code></td><td class="val">1.5430806348152437</td></tr>
+                    <tr><td><code>Math.tanh(x)</code></td><td>쌍곡탄젠트</td><td><code>Math.tanh(1.234)</code></td><td class="val">0.8437356625893302</td></tr>
+                    <tr><td><code>Math.asinh(x)</code></td><td>역쌍곡사인</td><td><code>Math.asinh(1)</code></td><td class="val">0.881373587019543</td></tr>
+                    <tr><td><code>Math.acosh(x)</code></td><td>역쌍곡코사인</td><td><code>Math.acosh(1)</code></td><td class="val">0</td></tr>
+                </table>
+            </div>
+
+            <figure class="figure">
+                <span class="fig-title">그림으로 보기 · 쌍곡선 함수 그래프 (x: -2 ~ 2)</span>
+                <svg id="hyp-svg" viewBox="0 0 380 270" role="img" aria-label="sinh, cosh, tanh 그래프"></svg>
+                <figcaption>
+                    <strong class="c-blue">cosh</strong>는 U자 모양으로 항상 1 이상이고, <strong class="c-red">sinh</strong>는 원점을 지나 계속 커집니다.
+                    <strong class="c-green">tanh</strong>는 아무리 커져도 <strong>-1과 1 사이</strong>를 벗어나지 않습니다(점선).
+                    이름은 삼각함수와 비슷하지만 원이 아니라 쌍곡선에서 나온 함수입니다.
+                </figcaption>
+            </figure>
+
+            <h3>최댓값 · 최솟값 · 난수</h3>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>메서드</th><th>설명</th><th>예시</th><th>결과</th></tr>
+                    <tr><td><code>Math.max(...)</code></td><td>넣은 값 중 가장 큰 수</td><td><code>Math.max(1, 3, 0.3, 12)</code></td><td class="val">12</td></tr>
+                    <tr><td><code>Math.min(...)</code></td><td>넣은 값 중 가장 작은 수</td><td><code>Math.min(1, 3, 0.3, 12)</code></td><td class="val">0.3</td></tr>
+                    <tr><td><code>Math.random()</code></td><td>0 이상 1 미만의 무작위 수. 실행할 때마다 바뀜</td><td><code>Math.random()</code></td><td class="val" id="random-value">0.…</td></tr>
+                </table>
+            </div>
+            <p style="margin-top: 12px;"><button type="button" class="btn" id="random-btn">난수 다시 뽑기</button></p>
+            <div class="tip">
+                <strong>1~6 주사위 만들기</strong>: <code>Math.floor(Math.random() * 6) + 1</code>.
+                <code>random()</code>에 6을 곱하면 0 이상 6 미만이 되고, <code>floor</code>로 내려서 0~5, 1을 더해 1~6이 됩니다.
+            </div>
+
+            <figure class="figure">
+                <span class="fig-title">그림으로 보기 · max와 min</span>
+                <svg id="maxmin-svg" viewBox="0 0 640 120" role="img" aria-label="1, 3, 0.3, 12 중 가장 작은 값 0.3과 가장 큰 값 12"></svg>
+                <span class="fig-title" style="margin-top: 18px;">그림으로 보기 · 난수로 주사위 만들기</span>
+                <div class="steps">
+                    <div class="step"><small>Math.random()</small><code>0 이상 1 미만</code><span class="big" id="dice-r"></span></div>
+                    <div class="step-arrow" aria-hidden="true"></div>
+                    <div class="step"><small>× 6</small><code>0 이상 6 미만</code><span class="big" id="dice-m"></span></div>
+                    <div class="step-arrow" aria-hidden="true"></div>
+                    <div class="step"><small>Math.floor</small><code>0 ~ 5</code><span class="big" id="dice-f"></span></div>
+                    <div class="step-arrow" aria-hidden="true"></div>
+                    <div class="step"><small>+ 1</small><code>1 ~ 6</code><span class="big" id="dice-d"></span></div>
+                </div>
+                <figcaption>
+                    <code>max</code>와 <code>min</code>은 넣은 값들을 수직선에 놓았을 때 <strong>가장 오른쪽</strong>과 <strong>가장 왼쪽</strong> 값을 고릅니다.
+                    주사위는 위 순서대로 숫자 범위를 바꿔서 만듭니다. 위쪽의 <strong>난수 다시 뽑기</strong> 버튼을 누르면 이 그림의 값도 함께 바뀝니다.
+                </figcaption>
+            </figure>
+        </section>
+
+        <section class="section" id="rounding">
+            <h2>5. 올림 · 내림 · 반올림 · 버림 비교</h2>
+            <p>양수 1에서는 네 메서드 결과가 모두 같아서 차이가 안 보입니다. 다른 값을 넣어 보면 차이가 드러납니다. 특히 <strong>음수</strong>에서 <code>floor</code>와 <code>trunc</code>가 달라집니다.</p>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>x</th><th>ceil</th><th>floor</th><th>round</th><th>trunc</th></tr>
+                    <tr><td><code>1.234</code></td><td class="val">2</td><td class="val">1</td><td class="val">1</td><td class="val">1</td></tr>
+                    <tr><td><code>1.5</code></td><td class="val">2</td><td class="val">1</td><td class="val">2</td><td class="val">1</td></tr>
+                    <tr><td><code>-1.234</code></td><td class="val">-1</td><td class="val">-2</td><td class="val">-1</td><td class="val">-1</td></tr>
+                    <tr><td><code>-1.5</code></td><td class="val">-1</td><td class="val">-2</td><td class="val">-1</td><td class="val">-1</td></tr>
+                </table>
+            </div>
+            <div class="tip">
+                <strong>주의</strong>: <code>Math.round(-1.5)</code>는 -2가 아니라 <strong>-1</strong>입니다. JavaScript의 round는 .5일 때 항상 큰 쪽(+∞ 방향)으로 올립니다.
+            </div>
+
+            <figure class="figure">
+                <span class="fig-title">그림으로 보기 · 네 메서드가 움직이는 방향</span>
+                <div class="fig-controls" id="round-btns">
+                    <span>x 값</span>
+                    <button type="button" class="chip-btn" data-x="1.234" aria-pressed="false">1.234</button>
+                    <button type="button" class="chip-btn" data-x="1.5" aria-pressed="true">1.5</button>
+                    <button type="button" class="chip-btn" data-x="-1.234" aria-pressed="false">-1.234</button>
+                    <button type="button" class="chip-btn" data-x="-1.5" aria-pressed="false">-1.5</button>
+                </div>
+                <svg id="round-svg" viewBox="0 0 760 250" role="img" aria-label="수직선 위에서 ceil, floor, round, trunc 결과로 이동하는 화살표"></svg>
+                <figcaption>
+                    <strong class="c-blue">ceil</strong>은 항상 오른쪽(큰 쪽), <strong class="c-red">floor</strong>는 항상 왼쪽(작은 쪽)으로 갑니다.
+                    <strong class="c-green">round</strong>는 가까운 정수로 가고, <strong class="c-purple">trunc</strong>는 소수점을 잘라서 항상 <strong>0 쪽</strong>으로 갑니다.
+                    음수를 눌러 보면 floor와 trunc의 방향이 갈라지는 것을 볼 수 있습니다.
+                </figcaption>
+            </figure>
+        </section>
+
+        <section class="section" id="try">
+            <h2>6. 직접 해 보기</h2>
+            <p>숫자와 메서드를 골라 결과를 확인해 보세요.</p>
+            <form class="try" id="try-form">
+                <label for="try-x">x 값
+                    <input type="number" id="try-x" value="1.234" step="any">
+                </label>
+                <label for="try-fn">메서드
+                    <select id="try-fn">
+                        <option>ceil</option>
+                        <option>floor</option>
+                        <option selected>round</option>
+                        <option>trunc</option>
+                        <option>abs</option>
+                        <option>sqrt</option>
+                        <option>cbrt</option>
+                        <option>exp</option>
+                        <option>log</option>
+                        <option>sin</option>
+                        <option>cos</option>
+                        <option>tan</option>
+                        <option>asin</option>
+                        <option>acos</option>
+                        <option>atan</option>
+                        <option>sinh</option>
+                        <option>cosh</option>
+                        <option>tanh</option>
+                    </select>
+                </label>
+                <button type="submit">계산</button>
+            </form>
+            <div class="try-result" id="try-result"></div>
+        </section>
+
+        <a href="../classpages/Dsgnpages.html" class="back-button">목록으로 돌아가기</a>
+
+    </main>
+
+    <script>
+        // 1. 예제 실행 결과
+        document.getElementById("ca").innerHTML = Math.E;
+        document.getElementById("cca").innerHTML = Math.LN2;
+        document.getElementById("cnct").innerHTML = Math.LN10;
+        document.getElementById("ido").innerHTML = Math.LOG2E;
+        document.getElementById("fxd").innerHTML = Math.LOG10E;
+        document.getElementById("prc").innerHTML = Math.PI;
+        document.getElementById("str").innerHTML = Math.SQRT1_2;
+        document.getElementById("vlf").innerHTML = Math.SQRT2;
+
+        // 3. 예제 9-10 ~ 9-12 실행 결과
+        function fillOutput(id, rows) {
+            const box = document.getElementById(id);
+            rows.forEach(([name, value]) => {
+                const p = document.createElement("p");
+                p.innerHTML = name + " : <b>" + value + "</b>";
+                box.appendChild(p);
+            });
+        }
+        (function () {
+            var x = 1, y = 3;
+            fillOutput("out-910", [
+                ["abs(x)", Math.abs(x)], ["acos(x)", Math.acos(x)], ["acosh(x)", Math.acosh(x)],
+                ["asin(x)", Math.asin(x)], ["asinh(x)", Math.asinh(x)], ["atan(x)", Math.atan(x)],
+                ["atan2(x, y)", Math.atan2(x, y)], ["cbrt(x)", Math.cbrt(x)], ["ceil(x)", Math.ceil(x)]
+            ]);
+        })();
+        (function () {
+            var x = 1.00, y = 3;
+            fillOutput("out-911", [
+                ["cos(x)", Math.cos(x)], ["cosh(x)", Math.cosh(x)], ["exp(x)", Math.exp(x)],
+                ["floor(x)", Math.floor(x)], ["log(x)", Math.log(x)], ["max(x, 3, 0.3, 12)", Math.max(x, 3, 0.3, 12)],
+                ["min(x, 3, 0.3, 12)", Math.min(x, 3, 0.3, 12)], ["pow(x, y)", Math.pow(x, y)], ["random()", Math.random()]
+            ]);
+        })();
+        (function () {
+            var x = 1.234;
+            fillOutput("out-912", [
+                ["round(x)", Math.round(x)], ["sin(x)", Math.sin(x)], ["sinh(x)", Math.sinh(x)],
+                ["sqrt(x)", Math.sqrt(x)], ["tan(x)", Math.tan(x)], ["tanh(x)", Math.tanh(x)],
+                ["trunc(x)", Math.trunc(x)]
+            ]);
+        })();
+
+        // 3. 난수
+        function showRandom() {
+            const r = Math.random();
+            document.getElementById("random-value").textContent = r;
+            updateDice(r);
+        }
+        document.getElementById("random-btn").addEventListener("click", showRandom);
+
+        // 5. 직접 해 보기
+        function calculate(event) {
+            if (event) event.preventDefault();
+            const x = Number(document.getElementById("try-x").value);
+            const fn = document.getElementById("try-fn").value;
+            document.getElementById("try-result").innerHTML =
+                "Math." + fn + "(" + x + ") = <b class=\"pop\">" + Math[fn](x) + "</b>";
+        }
+        document.getElementById("try-form").addEventListener("submit", calculate);
+        calculate();
+
+        // ===== 그림 그리기 =====
+        const NS = "http://www.w3.org/2000/svg";
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const COLOR = { gray: "#6b7280", axis: "#9ca3af", faint: "#e5e7eb", blue: "#3b6fb6", red: "#c0504d", green: "#2f6b4f", purple: "#7c5cb8" };
+
+        function el(parent, tag, attrs, text) {
+            const node = document.createElementNS(NS, tag);
+            for (const key in attrs) node.setAttribute(key, attrs[key]);
+            if (text !== undefined) node.textContent = text;
+            parent.appendChild(node);
+            return node;
+        }
+
+        function label(parent, x, y, text, opts) {
+            const o = opts || {};
+            const t = el(parent, "text", { x: x, y: y, "text-anchor": o.anchor || "middle" }, text);
+            if (o.cls) t.setAttribute("class", o.cls);
+            if (o.color) t.style.fill = o.color;
+            if (o.bold) t.style.fontWeight = "700";
+            return t;
+        }
+
+        // 2. 상수 수직선
+        (function drawConstants() {
+            const svg = document.getElementById("const-line");
+            const X = v => 40 + v * 200;
+            const axisY = 100;
+            el(svg, "line", { x1: 30, y1: axisY, x2: 750, y2: axisY, stroke: COLOR.axis, "stroke-width": 2, "marker-end": "url(#ar-gray)" });
+            for (let i = 0; i <= 3; i++) {
+                el(svg, "line", { x1: X(i), y1: axisY - 6, x2: X(i), y2: axisY + 6, stroke: COLOR.axis, "stroke-width": 2 });
+                label(svg, X(i), axisY + 22, String(i), { cls: "small" });
+            }
+            // level: -2, -1 = 위쪽 줄, 1 = 아래쪽 줄
+            const data = [
+                ["LOG10E", Math.LOG10E, -1], ["LN2", Math.LN2, 1], ["SQRT1_2", Math.SQRT1_2, -2],
+                ["SQRT2", Math.SQRT2, -1], ["LOG2E", Math.LOG2E, 1], ["LN10", Math.LN10, 1],
+                ["E", Math.E, -1], ["PI", Math.PI, -1]
+            ];
+            const nameY = { "-2": 20, "-1": 52, "1": 142 };
+            data.forEach(([name, v, lv]) => {
+                const x = X(v);
+                const top = lv < 0 ? nameY[lv] + 18 : axisY;
+                const bottom = lv < 0 ? axisY : nameY[lv] - 14;
+                el(svg, "line", { x1: x, y1: top, x2: x, y2: bottom, stroke: COLOR.faint, "stroke-width": 1.5 });
+                el(svg, "circle", { cx: x, cy: axisY, r: 5, fill: COLOR.blue });
+                label(svg, x, nameY[lv], name, { cls: "mono", bold: true });
+                label(svg, x, nameY[lv] + 14, v.toFixed(3), { cls: "small mono" });
+            });
+        })();
+
+        // 3. 절댓값
+        (function drawAbs() {
+            const svg = document.getElementById("abs-line");
+            const X = v => 280 + v * 60;
+            const axisY = 72;
+            el(svg, "line", { x1: 30, y1: axisY, x2: 530, y2: axisY, stroke: COLOR.axis, "stroke-width": 2 });
+            for (let i = -4; i <= 4; i++) {
+                el(svg, "line", { x1: X(i), y1: axisY - 5, x2: X(i), y2: axisY + 5, stroke: COLOR.axis, "stroke-width": 2 });
+                label(svg, X(i), axisY + 24, String(i), { cls: "small" });
+            }
+            [[-3, COLOR.red], [3, COLOR.blue]].forEach(([v, c]) => {
+                el(svg, "line", { x1: X(0), y1: 40, x2: X(v), y2: 40, stroke: c, "stroke-width": 3 });
+                el(svg, "line", { x1: X(v), y1: 32, x2: X(v), y2: 48, stroke: c, "stroke-width": 3 });
+                label(svg, (X(0) + X(v)) / 2, 30, "거리 3", { color: c, bold: true });
+                el(svg, "circle", { cx: X(v), cy: axisY, r: 7, fill: c });
+                label(svg, X(v), 116, "Math.abs(" + v + ") = 3", { cls: "mono", color: c });
+            });
+            el(svg, "line", { x1: X(0), y1: 32, x2: X(0), y2: 48, stroke: COLOR.gray, "stroke-width": 3 });
+            el(svg, "circle", { cx: X(0), cy: axisY, r: 5, fill: COLOR.gray });
+        })();
+
+        // 3. 삼각함수 단위원
+        function drawTrig(deg) {
+            const svg = document.getElementById("trig-svg");
+            svg.innerHTML = "";
+            const cx = 150, cy = 150, r = 105;
+            const rad = deg * Math.PI / 180;
+            const px = cx + r * Math.cos(rad);
+            const py = cy - r * Math.sin(rad);
+
+            el(svg, "line", { x1: 20, y1: cy, x2: 285, y2: cy, stroke: COLOR.axis, "stroke-width": 1.5 });
+            el(svg, "line", { x1: cx, y1: 285, x2: cx, y2: 15, stroke: COLOR.axis, "stroke-width": 1.5 });
+            el(svg, "circle", { cx: cx, cy: cy, r: r, fill: "none", stroke: COLOR.gray, "stroke-width": 2 });
+            label(svg, cx + r + 8, cy + 16, "1", { cls: "small" });
+            label(svg, cx - r - 8, cy + 16, "-1", { cls: "small" });
+            label(svg, cx + 10, cy - r - 4, "1", { cls: "small", anchor: "start" });
+
+            // 각도 호
+            if (deg > 0 && deg < 360) {
+                const ar = 24;
+                const ax = cx + ar * Math.cos(rad), ay = cy - ar * Math.sin(rad);
+                el(svg, "path", { d: "M" + (cx + ar) + "," + cy + " A" + ar + "," + ar + " 0 " + (deg > 180 ? 1 : 0) + " 0 " + ax + "," + ay, fill: "none", stroke: COLOR.gray, "stroke-width": 1.5 });
+            }
+
+            el(svg, "line", { x1: cx, y1: cy, x2: px, y2: py, stroke: COLOR.gray, "stroke-width": 2 });
+            el(svg, "line", { x1: cx, y1: cy, x2: px, y2: cy, stroke: COLOR.blue, "stroke-width": 5, "stroke-linecap": "round" });
+            el(svg, "line", { x1: px, y1: cy, x2: px, y2: py, stroke: COLOR.red, "stroke-width": 5, "stroke-linecap": "round" });
+            el(svg, "circle", { cx: px, cy: py, r: 6, fill: COLOR.gray });
+
+            const below = Math.sin(rad) >= 0 ? 20 : -10;
+            if (Math.abs(px - cx) > 18) label(svg, (cx + px) / 2, cy + below, "cos", { color: COLOR.blue, bold: true });
+            if (Math.abs(py - cy) > 18) {
+                const right = Math.cos(rad) >= 0;
+                label(svg, px + (right ? 8 : -8), (cy + py) / 2 + 4, "sin", { color: COLOR.red, bold: true, anchor: right ? "start" : "end" });
+            }
+
+            const fmt = v => (Math.abs(v) < 1e-10 ? 0 : v).toFixed(4);
+            const cosV = Math.cos(rad);
+            document.getElementById("trig-deg-label").textContent = deg + "°";
+            document.getElementById("ro-deg").textContent = deg + "°";
+            document.getElementById("ro-rad").textContent = rad.toFixed(4);
+            document.getElementById("ro-sin").textContent = fmt(Math.sin(rad));
+            document.getElementById("ro-cos").textContent = fmt(cosV);
+            document.getElementById("ro-tan").textContent = Math.abs(cosV) < 1e-10 ? "무한대" : fmt(Math.tan(rad));
+        }
+        const trigInput = document.getElementById("trig-deg");
+        trigInput.addEventListener("input", () => drawTrig(Number(trigInput.value)));
+        drawTrig(Number(trigInput.value));
+
+        // 3. 쌍곡선 함수 그래프
+        (function drawHyperbolic() {
+            const svg = document.getElementById("hyp-svg");
+            const X = v => 50 + (v + 2) * 80;
+            const Y = v => 135 - v * 28;
+            for (let i = -2; i <= 2; i++) {
+                el(svg, "line", { x1: X(i), y1: Y(4), x2: X(i), y2: Y(-4), stroke: i === 0 ? COLOR.axis : COLOR.faint, "stroke-width": i === 0 ? 1.5 : 1 });
+                label(svg, X(i), Y(-4) + 16, String(i), { cls: "small" });
+            }
+            for (let j = -4; j <= 4; j += 2) {
+                el(svg, "line", { x1: X(-2), y1: Y(j), x2: X(2), y2: Y(j), stroke: j === 0 ? COLOR.axis : COLOR.faint, "stroke-width": j === 0 ? 1.5 : 1 });
+                label(svg, X(-2) - 8, Y(j) + 4, String(j), { cls: "small", anchor: "end" });
+            }
+            [1, -1].forEach(j => el(svg, "line", { x1: X(-2), y1: Y(j), x2: X(2), y2: Y(j), stroke: COLOR.green, "stroke-width": 1, "stroke-dasharray": "4 4" }));
+
+            function plot(fn, color) {
+                let d = "";
+                for (let i = 0; i <= 80; i++) {
+                    const x = -2 + i * 0.05;
+                    d += (i === 0 ? "M" : "L") + X(x).toFixed(1) + "," + Y(fn(x)).toFixed(1);
+                }
+                el(svg, "path", { d: d, fill: "none", stroke: color, "stroke-width": 3 });
+            }
+            plot(Math.cosh, COLOR.blue);
+            plot(Math.sinh, COLOR.red);
+            plot(Math.tanh, COLOR.green);
+
+            label(svg, X(-1.9), Y(3.6), "cosh", { color: COLOR.blue, bold: true, anchor: "start" });
+            label(svg, X(1.25), Y(3.6), "sinh", { color: COLOR.red, bold: true, anchor: "end" });
+            label(svg, X(1.95), Y(0.45), "tanh", { color: COLOR.green, bold: true, anchor: "end" });
+        })();
+
+        // 3. max / min
+        (function drawMaxMin() {
+            const svg = document.getElementById("maxmin-svg");
+            const X = v => 30 + v * 48;
+            const axisY = 60;
+            el(svg, "line", { x1: 20, y1: axisY, x2: 625, y2: axisY, stroke: COLOR.axis, "stroke-width": 2 });
+            for (let i = 0; i <= 12; i++) {
+                el(svg, "line", { x1: X(i), y1: axisY - 4, x2: X(i), y2: axisY + 4, stroke: COLOR.axis, "stroke-width": 1.5 });
+                if (i % 2 === 0) label(svg, X(i), axisY + 20, String(i), { cls: "small" });
+            }
+            const values = [1, 3, 0.3, 12];
+            const min = Math.min(...values), max = Math.max(...values);
+            values.forEach(v => {
+                const c = v === min ? COLOR.blue : v === max ? COLOR.red : COLOR.gray;
+                el(svg, "circle", { cx: X(v), cy: axisY, r: v === min || v === max ? 8 : 6, fill: c });
+                label(svg, X(v) + (v === 0.3 ? -6 : v === 1 ? 6 : 0), axisY - 16, String(v), { cls: "mono", bold: true, color: c });
+            });
+            label(svg, X(min), axisY + 44, "min = " + min, { cls: "mono", bold: true, color: COLOR.blue, anchor: "start" });
+            label(svg, X(max), axisY + 44, "max = " + max, { cls: "mono", bold: true, color: COLOR.red, anchor: "end" });
+        })();
+
+        // 3. 주사위
+        function updateDice(r) {
+            const m = r * 6;
+            const f = Math.floor(m);
+            document.getElementById("dice-r").textContent = r.toFixed(3);
+            document.getElementById("dice-m").textContent = m.toFixed(3);
+            document.getElementById("dice-f").textContent = f;
+            document.getElementById("dice-d").textContent = f + 1;
+            ["dice-r", "dice-m", "dice-f", "dice-d"].forEach((id, i) => {
+                const node = document.getElementById(id);
+                node.classList.remove("pop");
+                void node.offsetWidth; // 애니메이션을 처음부터 다시 시작
+                node.style.animationDelay = (i * 0.3) + "s";
+                node.classList.add("pop");
+            });
+        }
+
+        // 4. 반올림 비교
+        function drawRounding(x) {
+            const svg = document.getElementById("round-svg");
+            svg.innerHTML = "";
+            const X = v => 140 + (v + 2) * 140;
+            const axisY = 56;
+            const rows = [
+                ["Math.ceil", Math.ceil, COLOR.blue, "ar-blue"],
+                ["Math.floor", Math.floor, COLOR.red, "ar-red"],
+                ["Math.round", Math.round, COLOR.green, "ar-green"],
+                ["Math.trunc", Math.trunc, COLOR.purple, "ar-purple"]
+            ];
+
+            for (let i = -2; i <= 2; i++) {
+                el(svg, "line", { x1: X(i), y1: axisY, x2: X(i), y2: 240, stroke: COLOR.faint, "stroke-width": 1 });
+            }
+            el(svg, "line", { x1: X(-2) - 20, y1: axisY, x2: X(2) + 20, y2: axisY, stroke: COLOR.axis, "stroke-width": 2 });
+            for (let i = -2; i <= 2; i++) {
+                el(svg, "line", { x1: X(i), y1: axisY - 6, x2: X(i), y2: axisY + 6, stroke: COLOR.axis, "stroke-width": 2 });
+                label(svg, X(i), axisY + 22, String(i), { cls: "small" });
+            }
+            el(svg, "line", { x1: X(x), y1: axisY, x2: X(x), y2: 240, stroke: COLOR.gray, "stroke-width": 1.5, "stroke-dasharray": "5 4" });
+            el(svg, "path", { d: "M" + (X(x) - 7) + "," + (axisY - 16) + " L" + (X(x) + 7) + "," + (axisY - 16) + " L" + X(x) + "," + (axisY - 4) + " z", fill: COLOR.gray });
+            label(svg, X(x), axisY - 24, "x = " + x, { cls: "mono", bold: true });
+
+            rows.forEach(([name, fn, color, marker], i) => {
+                const y = 112 + i * 36;
+                const r = fn(x);
+                label(svg, 10, y + 4, name, { cls: "mono", color: color, bold: true, anchor: "start" });
+                el(svg, "circle", { cx: X(x), cy: y, r: 4, fill: COLOR.gray });
+                const dir = r > x ? 1 : -1;
+                el(svg, "line", { x1: X(x), y1: y, x2: X(r) - dir * 9, y2: y, stroke: color, "stroke-width": 3, "marker-end": "url(#" + marker + ")" });
+                // x 위치에서 출발한 점이 결과 정수로 이동합니다
+                const dot = el(svg, "circle", { cx: X(r), cy: y, r: 7, fill: color });
+                const num = label(svg, X(r) + (dir > 0 ? 14 : -14), y + 5, String(r), { cls: "mono", bold: true, color: color, anchor: dir > 0 ? "start" : "end" });
+                if (!reduceMotion) {
+                    dot.style.transform = "translateX(" + (X(x) - X(r)) + "px)";
+                    num.style.opacity = "0";
+                    requestAnimationFrame(() => requestAnimationFrame(() => {
+                        dot.style.transition = "transform 0.6s ease " + (i * 0.2) + "s";
+                        dot.style.transform = "translateX(0)";
+                        num.style.transition = "opacity 0.3s ease " + (i * 0.2 + 0.5) + "s";
+                        num.style.opacity = "1";
+                    }));
+                }
+            });
+        }
+        const roundButtons = document.querySelectorAll("#round-btns .chip-btn");
+        roundButtons.forEach(btn => btn.addEventListener("click", () => {
+            roundButtons.forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+            drawRounding(Number(btn.dataset.x));
+        }));
+        drawRounding(1.5);
+
+        // 1. 값이 화면에 나타나는 과정을 한 단계씩 강조
+        document.getElementById("dom-play").addEventListener("click", () => {
+            const steps = document.querySelectorAll("#dom-steps .step");
+            steps.forEach(step => step.classList.remove("active"));
+            steps.forEach((step, i) => {
+                setTimeout(() => {
+                    steps.forEach(other => other.classList.remove("active"));
+                    step.classList.add("active");
+                }, i * 800);
+            });
+            setTimeout(() => steps[steps.length - 1].classList.remove("active"), steps.length * 800 + 600);
+        });
+
+        // 3. 단위원 위의 점을 한 바퀴 돌리기
+        let trigTimer = null;
+        const trigPlay = document.getElementById("trig-play");
+        trigPlay.addEventListener("click", () => {
+            if (trigTimer) {
+                clearInterval(trigTimer);
+                trigTimer = null;
+                trigPlay.textContent = "▶ 한 바퀴 돌리기";
+                return;
+            }
+            let deg = 0;
+            trigPlay.textContent = "■ 멈추기";
+            trigTimer = setInterval(() => {
+                trigInput.value = deg;
+                drawTrig(deg);
+                deg += 5;
+                if (deg > 360) {
+                    clearInterval(trigTimer);
+                    trigTimer = null;
+                    trigPlay.textContent = "▶ 한 바퀴 돌리기";
+                }
+            }, 60);
+        });
+        showRandom();
+    </script>
+
+</body>
+</html>
