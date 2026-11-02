@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String 활용 예제</title>
+    <style>
+        :root {
+            --bg: #f7f7f5;
+            --panel: #ffffff;
+            --panel-soft: #f3f3f1;
+            --line: #e5e7eb;
+            --primary: #6b7280;
+            --text: #1f2937;
+            --subtext: #5b6472;
+            --code-bg: #1f2937;
+            --code-text: #e5e7eb;
+            --code-comment: #9ca3af;
+            --ok: #2f6b4f;
+            --ok-soft: #e4efe8;
+            --bad: #b4443f;
+            --bad-soft: #f8e3e1;
+            --hit: #3b6fb6;
+            --hit-soft: #dbe5f3;
+            --mark: #fde9b8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            background: linear-gradient(180deg, #f8f8f7 0%, #f1f2f4 100%);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .top-bar {
+            background: linear-gradient(135deg, #4b5563 0%, #8a919b 100%);
+            color: #fff;
+            text-align: center;
+            padding: 36px 16px 32px;
+        }
+
+        .top-bar h1 {
+            margin: 0;
+            font-size: 34px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .top-bar p {
+            margin: 6px 0 0;
+            color: #e5e7eb;
+        }
+
+        .container {
+            width: min(920px, 92%);
+            margin: 32px auto 60px;
+        }
+
+        .toc {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 0 0 24px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .toc a {
+            display: inline-block;
+            background: var(--panel);
+            color: #111;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 9px 14px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .toc a:hover {
+            background: var(--line);
+        }
+
+        .section {
+            background: var(--panel);
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 28px;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+        }
+
+        .section h2 {
+            margin: 0 0 12px;
+            font-size: 23px;
+            border-left: 6px solid var(--primary);
+            padding-left: 12px;
+        }
+
+        .section h3 {
+            margin: 0 0 10px;
+            font-size: 16px;
+        }
+
+        .section > p {
+            margin: 0 0 16px;
+        }
+
+        code {
+            font-family: Consolas, "JetBrains Mono", monospace;
+            background: var(--panel-soft);
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 0.92em;
+        }
+
+        .used {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 18px;
+        }
+
+        .used code {
+            background: var(--hit-soft);
+            color: #2c4f86;
+        }
+
+        /* 앱 화면 + 실행 과정 */
+        .app {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 16px;
+        }
+
+        .panel {
+            min-width: 0;
+            background: #fafaf9;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .panel-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--subtext);
+            margin-bottom: 10px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .field input,
+        .field textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--panel);
+            font-size: 15px;
+            font-family: inherit;
+            font-weight: 400;
+        }
+
+        .field textarea {
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4b5563 0%, #7a818a 100%);
+            color: #fff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn.light {
+            background: var(--panel);
+            color: var(--text);
+            border: 1px solid var(--line);
+        }
+
+        .message {
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            white-space: pre-line;
+            min-height: 48px;
+        }
+
+        .message.ok {
+            background: var(--ok-soft);
+            border-color: transparent;
+            color: var(--ok);
+            font-weight: 700;
+        }
+
+        .message.bad {
+            background: var(--bad-soft);
+            border-color: transparent;
+            color: var(--bad);
+            font-weight: 700;
+        }
+
+        /* 실행 과정 (단계별 값) */
+        .trace {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 6px;
+        }
+
+        .trace li {
+            display: grid;
+            grid-template-columns: 22px minmax(0, 1fr);
+            gap: 8px;
+            align-items: start;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 13.5px;
+            transition: opacity 0.2s ease;
+        }
+
+        .trace .num {
+            display: grid;
+            place-items: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--panel-soft);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--subtext);
+        }
+
+        .trace .body {
+            min-width: 0;
+        }
+
+        .trace .code {
+            font-family: Consolas, "JetBrains Mono", monospace;
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .trace .val {
+            display: inline-block;
+            margin-top: 2px;
+            font-family: Consolas, "JetBrains Mono", monospace;
+            font-weight: 700;
+            color: var(--hit);
+            overflow-wrap: anywhere;
+        }
+
+        .trace .why {
+            display: block;
+            color: var(--subtext);
+            font-size: 12.5px;
+        }
+
+        .trace li.ok .num {
+            background: var(--ok);
+            color: #fff;
+        }
+
+        .trace li.bad {
+            border-color: var(--bad);
+        }
+
+        .trace li.bad .num {
+            background: var(--bad);
+            color: #fff;
+        }
+
+        .trace li.skip {
+            opacity: 0.4;
+        }
+
+        .flash {
+            animation: flash 0.6s ease;
+        }
+
+        @keyframes flash {
+            from {
+                background: var(--mark);
+            }
+        }
+
+        /* 검색 하이라이트 */
+        .preview {
+            margin-top: 12px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .preview mark {
+            background: var(--mark);
+            border-radius: 4px;
+            padding: 0 2px;
+        }
+
+        .preview mark.first {
+            background: var(--hit-soft);
+            outline: 2px solid var(--hit);
+        }
+
+        .preview mark.new {
+            background: var(--ok-soft);
+            color: var(--ok);
+            font-weight: 700;
+        }
+
+        .pieces {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .piece {
+            font-family: Consolas, "JetBrains Mono", monospace;
+            font-size: 12.5px;
+            background: var(--panel-soft);
+            border-radius: 6px;
+            padding: 2px 8px;
+            overflow-wrap: anywhere;
+        }
+
+        /* 성적 표 */
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--line);
+            vertical-align: middle;
+        }
+
+        th {
+            background: var(--panel-soft);
+            white-space: nowrap;
+        }
+
+        td.mono {
+            font-family: Consolas, "JetBrains Mono", monospace;
+            font-size: 13px;
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 1px 9px;
+            white-space: nowrap;
+        }
+
+        .badge.ok {
+            background: var(--ok-soft);
+            color: var(--ok);
+        }
+
+        .badge.bad {
+            background: var(--bad-soft);
+            color: var(--bad);
+        }
+
+        .bar-cell {
+            min-width: 110px;
+        }
+
+        .bar {
+            height: 10px;
+            border-radius: 999px;
+            background: var(--hit);
+            transition: width 0.5s ease;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .summary div {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+
+        .summary small {
+            display: block;
+            font-size: 12px;
+            color: var(--subtext);
+        }
+
+        .summary b {
+            font-size: 20px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .summary code {
+            font-size: 11.5px;
+        }
+
+        /* 코드 보기 */
+        details {
+            margin-top: 16px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        summary {
+            cursor: pointer;
+            padding: 12px 16px;
+            font-weight: 700;
+            background: var(--panel-soft);
+        }
+
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 18px 20px;
+            margin: 0;
+            overflow-x: auto;
+            font-family: Consolas, "JetBrains Mono", monospace;
+            font-size: 13.5px;
+            line-height: 1.7;
+        }
+
+        pre .cm {
+            color: var(--code-comment);
+        }
+
+        .tip {
+            background: #f3f4f6;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-top: 16px;
+            font-size: 14.5px;
+        }
+
+        .tip strong {
+            color: #111;
+        }
+
+        /* 정리 표 */
+        .ref td:first-child {
+            white-space: nowrap;
+        }
+
+        .back-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #4b5563 0%, #7a818a 100%);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .flash,
+            .bar,
+            .trace li {
+                animation: none;
+                transition: none;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .top-bar h1 {
+                font-size: 26px;
+            }
+
+            .section {
+                padding: 22px 18px;
+            }
+
+            .app,
+            .summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="top-bar">
+        <h1>String 활용 예제</h1>
+        <p>문자열 속성과 메서드로 만드는 작은 프로그램 3가지</p>
+    </header>
+
+    <main class="container">
+
+        <ul class="toc">
+            <li><a href="#signup">① 회원가입 검사</a></li>
+            <li><a href="#search">② 텍스트 검색 · 변경</a></li>
+            <li><a href="#grade">③ 성적 데이터 분석</a></li>
+            <li><a href="#summary">한눈에 정리</a></li>
+        </ul>
+
+        <section class="section">
+            <h2>이 페이지 사용법</h2>
+            <p>
+                각 프로그램은 왼쪽에서 직접 입력해 볼 수 있고, 오른쪽 <strong>실행 과정</strong>에 어떤 String 속성과 메서드가 어떤 값을 만들었는지 순서대로 나옵니다.
+                입력을 바꿀 때마다 오른쪽 값도 바로 바뀌니, 일부러 공백을 넣거나 @를 빼 보면서 각 메서드가 하는 일을 확인해 보세요.
+            </p>
+        </section>
+
+        <!-- ① 회원가입 -->
+        <section class="section" id="signup">
+            <h2>① 회원가입 검사</h2>
+            <p>이름과 이메일을 검사합니다. 공백을 정리하고, 글자 수와 @, 마침표(.)가 있는지 차례로 확인합니다.</p>
+            <div class="used"><code>trim()</code><code>toLowerCase()</code><code>length</code><code>indexOf()</code><code>includes()</code></div>
+
+            <div class="app">
+                <div class="panel">
+                    <span class="panel-label">프로그램</span>
+                    <label class="field" for="su-name">이름
+                        <input type="text" id="su-name" value="  홍길동 " placeholder="이름 입력">
+                    </label>
+                    <label class="field" for="su-email">이메일
+                        <input type="text" id="su-email" value=" Hong@Example.COM" placeholder="이메일 입력">
+                    </label>
+                    <div class="btn-row">
+                        <button type="button" class="btn" id="su-btn">가입 정보 확인</button>
+                    </div>
+                    <div class="message" id="su-msg"></div>
+                </div>
+                <div class="panel">
+                    <span class="panel-label">실행 과정</span>
+                    <ol class="trace" id="su-trace"></ol>
+                </div>
+            </div>
+
+            <div class="tip">
+                <strong>해 볼 것</strong>: 이름을 한 글자만 쓰거나, 이메일에서 @나 마침표를 지워 보세요. 처음으로 통과하지 못한 단계에서 <strong>검사가 멈추고</strong>, 그 뒤 단계는 흐리게 표시됩니다. <code>if ~ else if</code>는 하나라도 걸리면 아래 조건은 보지 않기 때문입니다.
+            </div>
+
+            <details>
+                <summary>코드 보기</summary>
+<pre><code>function checkJoin() {
+    var name = document.getElementById("name").value;
+    var email = document.getElementById("email").value;
+
+    name = name.trim();               <span class="cm">// 앞뒤 공백 제거</span>
+    email = email.trim();
+    email = email.toLowerCase();      <span class="cm">// 소문자로 통일</span>
+
+    var nameLength = name.length;     <span class="cm">// 이름 글자 수</span>
+    var atPosition = email.indexOf("@");  <span class="cm">// @ 위치, 없으면 -1</span>
+    var hasDot = email.includes(".");     <span class="cm">// 마침표 있으면 true</span>
+
+    var message = "";
+    if (nameLength == 0) {
+        message = "이름을 입력하세요.";
+    } else if (nameLength &lt; 2) {
+        message = "이름은 2글자 이상 입력하세요.";
+    } else if (atPosition == -1) {
+        message = "이메일에 @를 입력하세요.";
+    } else if (hasDot == false) {
+        message = "이메일에 .을 입력하세요.";
+    } else {
+        message = "가입 정보 확인 완료!\n";
+        message += "이름 : " + name + "\n";
+        message += "이메일 : " + email;
+    }
+    document.getElementById("result").innerText = message;
+}</code></pre>
+            </details>
+        </section>
+
+        <!-- ② 검색 · 변경 -->
+        <section class="section" id="search">
+            <h2>② 텍스트 검색 · 변경</h2>
+            <p>문장에서 단어를 찾아 위치와 횟수를 알려 주고, 찾은 단어를 모두 다른 단어로 바꿉니다.</p>
+            <div class="used"><code>trim()</code><code>toLowerCase()</code><code>length</code><code>includes()</code><code>indexOf()</code><code>split()</code><code>replaceAll()</code></div>
+
+            <div class="app">
+                <div class="panel">
+                    <span class="panel-label">프로그램</span>
+                    <label class="field" for="se-content">검색할 문장
+                        <textarea id="se-content" rows="4">AI는 인공지능입니다. AI는 데이터를 학습하고 AI는 다양한 문제를 해결합니다.</textarea>
+                    </label>
+                    <label class="field" for="se-keyword">검색할 단어
+                        <input type="text" id="se-keyword" value="ai" placeholder="찾을 단어 입력">
+                    </label>
+                    <label class="field" for="se-new">변경할 단어
+                        <input type="text" id="se-new" value="인공지능" placeholder="변경할 단어 입력">
+                    </label>
+                    <div class="btn-row">
+                        <button type="button" class="btn" id="se-search">검색하기</button>
+                        <button type="button" class="btn" id="se-replace">단어 바꾸기</button>
+                        <button type="button" class="btn light" id="se-reset">원래 문장으로</button>
+                    </div>
+                    <div class="message" id="se-msg"></div>
+                    <div class="preview" id="se-preview"></div>
+                </div>
+                <div class="panel">
+                    <span class="panel-label">실행 과정</span>
+                    <ol class="trace" id="se-trace"></ol>
+                </div>
+            </div>
+
+            <div class="tip">
+                <strong>알아 둘 점</strong>: 검색은 문장과 단어를 모두 <code>toLowerCase()</code>로 바꾼 뒤 비교해서 <strong>대소문자를 구분하지 않습니다</strong>(그래서 "ai"로도 "AI"를 찾습니다).
+                반면 바꾸기는 <code>replaceAll()</code>을 원래 문장에 그대로 써서 <strong>대소문자를 구분합니다</strong>. "ai"로는 바꿀 수 없고 "AI"로 입력해야 합니다.
+            </div>
+
+            <details>
+                <summary>코드 보기</summary>
+<pre><code>function searchText() {
+    var content = document.getElementById("content").value;
+    var keyword = document.getElementById("keyword").value.trim();
+
+    var text = content.toLowerCase();     <span class="cm">// 대소문자 구분 없이 비교하려고</span>
+    var word = keyword.toLowerCase();
+
+    if (word.length == 0) {
+        document.getElementById("result").innerText = "검색어를 입력하세요.";
+        return;
+    }
+
+    var found = text.includes(word);           <span class="cm">// 있으면 true</span>
+    var position = text.indexOf(word);         <span class="cm">// 처음 위치</span>
+    var count = text.split(word).length - 1;   <span class="cm">// 조각 수 - 1 = 횟수</span>
+
+    if (found) {
+        document.getElementById("result").innerText =
+            "검색어 : " + keyword + "\n검색 위치 : " + position + "\n검색 횟수 : " + count + "회";
+    } else {
+        document.getElementById("result").innerText = "검색어를 찾을 수 없습니다.";
+    }
+}
+
+function replaceText() {
+    var content = document.getElementById("content").value;
+    var keyword = document.getElementById("keyword").value.trim();
+    var newWord = document.getElementById("newWord").value.trim();
+
+    if (keyword.length == 0) { <span class="cm">/* "찾을 단어를 입력하세요." */</span> return; }
+    if (newWord.length == 0) { <span class="cm">/* "변경할 단어를 입력하세요." */</span> return; }
+    if (content.includes(keyword) == false) { <span class="cm">/* "찾을 수 없습니다." */</span> return; }
+
+    var changedText = content.replaceAll(keyword, newWord);  <span class="cm">// 모두 바꾸기</span>
+    document.getElementById("changed").innerText = changedText;
+    document.getElementById("content").value = changedText;  <span class="cm">// 입력창도 바뀐 문장으로</span>
+}</code></pre>
+            </details>
+        </section>
+
+        <!-- ③ 성적 분석 -->
+        <section class="section" id="grade">
+            <h2>③ 학생 성적 데이터 분석</h2>
+            <p>"이름,점수" 형식의 여러 줄을 읽어 학생별 점수, 학생 수, 합계, 평균을 구합니다. 형식이 잘못된 줄은 건너뜁니다.</p>
+            <div class="used"><code>split("\n")</code><code>split(",")</code><code>trim()</code><code>length</code><code>Number()</code><code>toFixed(2)</code></div>
+
+            <div class="app">
+                <div class="panel">
+                    <span class="panel-label">프로그램</span>
+                    <label class="field" for="gr-data">이름,점수 (한 줄에 한 명)
+                        <textarea id="gr-data" rows="7">홍길동,80
+김철수,90
+이영희,85
+박민수,95
+최지우,
+정우성,120</textarea>
+                    </label>
+                    <div class="btn-row">
+                        <button type="button" class="btn" id="gr-btn">데이터 분석</button>
+                    </div>
+                    <div class="summary" id="gr-summary"></div>
+                </div>
+                <div class="panel">
+                    <span class="panel-label">실행 과정 · 한 줄씩 나누고 검사하기</span>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr><th>줄</th><th>split(",")</th><th>점수</th><th>결과</th></tr>
+                            </thead>
+                            <tbody id="gr-rows"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip">
+                <strong>해 볼 것</strong>: 예시에는 일부러 점수가 빈 줄(최지우)과 100점을 넘는 줄(정우성)을 넣었습니다. 둘 다 <strong>건너뜀</strong>으로 표시되고 평균 계산에서 빠집니다.
+                <code>split("\n")</code>으로 줄을 나누고, 다시 <code>split(",")</code>으로 이름과 점수를 나누는 <strong>두 번 자르기</strong>가 핵심입니다.
+            </div>
+
+            <details>
+                <summary>코드 보기</summary>
+<pre><code>function analyze() {
+    var data = document.getElementById("data").value;
+    var rows = data.split("\n");          <span class="cm">// 줄 단위로 나누기</span>
+    var total = 0;
+    var validCount = 0;
+    var output = "";
+
+    for (var i = 0; i &lt; rows.length; i++) {
+        var student = rows[i].split(",");     <span class="cm">// ["홍길동", "80"]</span>
+        var name = student[0].trim();
+
+        if (student.length &lt; 2 || student[1].trim() == "") {
+            continue;                         <span class="cm">// 점수가 없으면 건너뜀</span>
+        }
+        var score = Number(student[1].trim());   <span class="cm">// 문자 "80" → 숫자 80</span>
+        if (name == "" || isNaN(score) || score &lt; 0 || score &gt; 100) {
+            continue;                         <span class="cm">// 잘못된 값도 건너뜀</span>
+        }
+        total = total + score;
+        validCount++;
+        output += name + " : " + score + "점&lt;br&gt;";
+    }
+
+    var average = total / validCount;
+    <span class="cm">// average.toFixed(2) → 소수점 둘째 자리까지 문자열로</span>
+}</code></pre>
+            </details>
+        </section>
+
+        <!-- 정리 -->
+        <section class="section" id="summary">
+            <h2>한눈에 정리</h2>
+            <p>세 프로그램에서 쓴 속성과 메서드입니다.</p>
+            <div class="table-wrap">
+                <table class="ref">
+                    <tr><th>속성 · 메서드</th><th>하는 일</th><th>예시</th><th>쓰인 곳</th></tr>
+                    <tr><td><code>trim()</code></td><td>앞뒤 공백 제거</td><td><code>" 홍길동 ".trim()</code> → "홍길동"</td><td>①②③</td></tr>
+                    <tr><td><code>toLowerCase()</code></td><td>영문을 모두 소문자로</td><td><code>"A@B.COM".toLowerCase()</code> → "a@b.com"</td><td>①②</td></tr>
+                    <tr><td><code>length</code></td><td>글자 수 (배열이면 칸 수)</td><td><code>"홍길동".length</code> → 3</td><td>①②③</td></tr>
+                    <tr><td><code>indexOf()</code></td><td>처음 나오는 위치, 없으면 -1</td><td><code>"a@b".indexOf("@")</code> → 1</td><td>①②</td></tr>
+                    <tr><td><code>includes()</code></td><td>들어 있으면 true</td><td><code>"a.com".includes(".")</code> → true</td><td>①②</td></tr>
+                    <tr><td><code>split()</code></td><td>구분자로 잘라 배열로</td><td><code>"홍길동,80".split(",")</code> → ["홍길동", "80"]</td><td>②③</td></tr>
+                    <tr><td><code>replaceAll()</code></td><td>찾은 단어를 모두 바꿈</td><td><code>"a-a".replaceAll("a", "b")</code> → "b-b"</td><td>②</td></tr>
+                    <tr><td><code>Number()</code></td><td>문자를 숫자로 바꿈</td><td><code>Number("80")</code> → 80</td><td>③</td></tr>
+                    <tr><td><code>toFixed(n)</code></td><td>소수점 n자리까지 표시</td><td><code>(87.5).toFixed(2)</code> → "87.50"</td><td>③</td></tr>
+                </table>
+            </div>
+            <div class="tip">
+                <strong>원본 예제와 다른 점</strong>: 원본은 세 프로그램이 결과 칸에 모두 같은 <code>id="result"</code>를 써서, 검색 결과와 성적 분석 결과가 회원가입 결과 칸에 출력되는 문제가 있었습니다.
+                이 페이지는 프로그램마다 다른 id를 써서 각자의 칸에 나오도록 고쳤습니다. 성적 분석의 학생 수도 문자열을 다시 나눠 세는 대신 <code>validCount++</code>로 바로 셉니다.
+            </div>
+        </section>
+
+        <a href="../classpages/Dsgnpages.html" class="back-button">목록으로 돌아가기</a>
+
+    </main>
+
+    <script>
+        // 화면에 보여 줄 값: 문자열은 따옴표를 붙여 공백까지 보이게 합니다
+        function show(value) {
+            if (typeof value === "string") return JSON.stringify(value);
+            if (Array.isArray(value)) return JSON.stringify(value);
+            return String(value);
+        }
+
+        // 실행 과정 목록 그리기. steps: [{ code, value, why, state }]
+        function renderTrace(id, steps) {
+            const list = document.getElementById(id);
+            const old = [...list.querySelectorAll(".val")].map(v => v.textContent);
+            list.innerHTML = "";
+            steps.forEach((step, i) => {
+                const li = document.createElement("li");
+                if (step.state) li.className = step.state;
+                li.innerHTML = '<span class="num"></span><span class="body"><span class="code"></span><br><span class="val"></span><span class="why"></span></span>';
+                li.querySelector(".num").textContent = i + 1;
+                li.querySelector(".code").textContent = step.code;
+                const val = li.querySelector(".val");
+                val.textContent = "→ " + step.value;
+                if (old[i] !== undefined && old[i] !== val.textContent) val.classList.add("flash");
+                li.querySelector(".why").textContent = step.why || "";
+                list.appendChild(li);
+            });
+        }
+
+        function setMessage(id, text, state) {
+            const box = document.getElementById(id);
+            box.textContent = text;
+            box.className = "message" + (state ? " " + state : "");
+        }
+
+        // ① 회원가입 검사
+        function checkJoin() {
+            const rawName = document.getElementById("su-name").value;
+            const rawEmail = document.getElementById("su-email").value;
+            const name = rawName.trim();
+            const email = rawEmail.trim().toLowerCase();
+            const nameLength = name.length;
+            const atPosition = email.indexOf("@");
+            const hasDot = email.includes(".");
+
+            const checks = [
+                { pass: nameLength !== 0, msg: "이름을 입력하세요." },
+                { pass: nameLength >= 2, msg: "이름은 2글자 이상 입력하세요." },
+                { pass: atPosition !== -1, msg: "이메일에 @를 입력하세요." },
+                { pass: hasDot, msg: "이메일에 .을 입력하세요." }
+            ];
+            const stopAt = checks.findIndex(c => !c.pass);
+            const state = i => stopAt === -1 || i < stopAt ? "ok" : i === stopAt ? "bad" : "skip";
+
+            renderTrace("su-trace", [
+                { code: "name.trim()", value: show(name), why: "입력값 " + show(rawName) + "의 앞뒤 공백을 지움" },
+                { code: "email.trim().toLowerCase()", value: show(email), why: "공백을 지우고 소문자로 통일" },
+                { code: "name.length == 0 ?", value: nameLength + "글자", why: "이름이 비어 있는지 검사", state: state(0) },
+                { code: "name.length < 2 ?", value: nameLength + "글자", why: "2글자 이상인지 검사", state: state(1) },
+                { code: 'email.indexOf("@")', value: String(atPosition), why: atPosition === -1 ? "-1이면 @가 없다는 뜻" : atPosition + "번 자리에 @가 있음", state: state(2) },
+                { code: 'email.includes(".")', value: String(hasDot), why: "마침표가 있으면 true", state: state(3) }
+            ]);
+
+            if (stopAt !== -1) {
+                setMessage("su-msg", checks[stopAt].msg, "bad");
+            } else {
+                setMessage("su-msg", "가입 정보 확인 완료!\n이름 : " + name + "\n이메일 : " + email, "ok");
+            }
+        }
+        ["su-name", "su-email"].forEach(id => document.getElementById(id).addEventListener("input", checkJoin));
+        document.getElementById("su-btn").addEventListener("click", checkJoin);
+        checkJoin();
+
+        // ② 텍스트 검색 · 변경
+        const seContent = document.getElementById("se-content");
+        const originalText = seContent.value;
+
+        // 문장 안의 단어를 <mark>로 감싸 보여 줍니다 (입력값은 textContent로만 넣음)
+        function renderPreview(text, word, cls, ignoreCase) {
+            const box = document.getElementById("se-preview");
+            box.innerHTML = "";
+            if (!word) {
+                box.textContent = text;
+                return;
+            }
+            const hay = ignoreCase ? text.toLowerCase() : text;
+            const needle = ignoreCase ? word.toLowerCase() : word;
+            let from = 0;
+            let first = true;
+            while (true) {
+                const at = hay.indexOf(needle, from);
+                if (at === -1) break;
+                box.appendChild(document.createTextNode(text.slice(from, at)));
+                const mark = document.createElement("mark");
+                mark.textContent = text.slice(at, at + word.length);
+                if (cls) mark.className = cls;
+                else if (first) mark.className = "first";
+                first = false;
+                box.appendChild(mark);
+                from = at + needle.length;
+            }
+            box.appendChild(document.createTextNode(text.slice(from)));
+        }
+
+        function searchText() {
+            const content = seContent.value;
+            const rawKeyword = document.getElementById("se-keyword").value;
+            const keyword = rawKeyword.trim();
+            const text = content.toLowerCase();
+            const word = keyword.toLowerCase();
+
+            if (word.length === 0) {
+                renderTrace("se-trace", [
+                    { code: "keyword.trim()", value: show(keyword), why: "앞뒤 공백 제거" },
+                    { code: "word.length == 0 ?", value: "0글자", why: "검색어가 없어서 여기서 멈춤", state: "bad" }
+                ]);
+                setMessage("se-msg", "검색어를 입력하세요.", "bad");
+                renderPreview(content, "");
+                return;
+            }
+
+            const found = text.includes(word);
+            const position = text.indexOf(word);
+            const parts = text.split(word);
+            const count = parts.length - 1;
+
+            renderTrace("se-trace", [
+                { code: "keyword.trim()", value: show(keyword), why: "입력값 " + show(rawKeyword) + "의 앞뒤 공백 제거" },
+                { code: "content.toLowerCase(), keyword.toLowerCase()", value: show(word), why: "둘 다 소문자로 바꿔 대소문자 구분 없이 비교" },
+                { code: "text.includes(word)", value: String(found), why: found ? "문장에 검색어가 있음" : "문장에 검색어가 없음", state: found ? "ok" : "bad" },
+                { code: "text.indexOf(word)", value: String(position), why: position === -1 ? "없으면 -1" : "처음 나온 자리(파란 테두리)의 번호", state: found ? "ok" : "skip" },
+                { code: "text.split(word).length - 1", value: count + "회", why: "검색어로 자르면 " + parts.length + "조각 → 조각 수 - 1 = 나온 횟수", state: found ? "ok" : "skip" }
+            ]);
+
+            if (found) {
+                setMessage("se-msg", "검색어 : " + keyword + "\n검색 위치 : " + position + "\n검색 횟수 : " + count + "회", "ok");
+            } else {
+                setMessage("se-msg", "검색어를 찾을 수 없습니다.", "bad");
+            }
+            renderPreview(content, keyword, "", true);
+        }
+
+        function replaceText() {
+            const content = seContent.value;
+            const keyword = document.getElementById("se-keyword").value.trim();
+            const newWord = document.getElementById("se-new").value.trim();
+            const steps = [
+                { code: "keyword.trim()", value: show(keyword), why: "찾을 단어 공백 제거" },
+                { code: "newWord.trim()", value: show(newWord), why: "바꿀 단어 공백 제거" }
+            ];
+
+            let stop = null;
+            if (keyword.length === 0) stop = "찾을 단어를 입력하세요.";
+            else if (newWord.length === 0) stop = "변경할 단어를 입력하세요.";
+            const has = content.includes(keyword);
+            steps.push({ code: "content.includes(keyword)", value: String(has), why: has ? "원래 문장에 그대로(대소문자까지) 있음" : "대소문자까지 똑같은 단어가 없음", state: stop ? "skip" : has ? "ok" : "bad" });
+            if (!stop && !has) stop = "변경할 단어를 찾을 수 없습니다.";
+
+            if (stop) {
+                renderTrace("se-trace", steps);
+                setMessage("se-msg", stop, "bad");
+                return;
+            }
+
+            const changed = content.replaceAll(keyword, newWord);
+            const times = content.split(keyword).length - 1;
+            steps.push({ code: "content.replaceAll(keyword, newWord)", value: times + "곳 바뀜", why: "찾은 단어를 모두 바꾼 새 문장을 돌려줌", state: "ok" });
+            renderTrace("se-trace", steps);
+            seContent.value = changed;
+            setMessage("se-msg", "바꾸기 완료. 입력창의 문장도 바뀐 문장으로 바뀌었습니다.", "ok");
+            renderPreview(changed, newWord, "new", false);
+        }
+
+        document.getElementById("se-search").addEventListener("click", searchText);
+        document.getElementById("se-replace").addEventListener("click", replaceText);
+        document.getElementById("se-reset").addEventListener("click", () => {
+            seContent.value = originalText;
+            searchText();
+        });
+        ["se-content", "se-keyword"].forEach(id => document.getElementById(id).addEventListener("input", searchText));
+        searchText();
+
+        // ③ 성적 분석
+        function badge(text, ok) {
+            return '<span class="badge ' + (ok ? "ok" : "bad") + '">' + text + "</span>";
+        }
+
+        function analyze() {
+            const data = document.getElementById("gr-data").value;
+            const rows = data.split("\n");
+            const tbody = document.getElementById("gr-rows");
+            tbody.innerHTML = "";
+            let total = 0;
+            let validCount = 0;
+
+            rows.forEach((row, i) => {
+                const student = row.split(",");
+                const name = student[0].trim();
+                let score = null;
+                let reason = "";
+
+                if (student.length < 2 || student[1].trim() === "") {
+                    reason = "점수 없음";
+                } else {
+                    score = Number(student[1].trim());
+                    if (name === "") reason = "이름 없음";
+                    else if (isNaN(score)) reason = "숫자 아님";
+                    else if (score < 0 || score > 100) reason = "0~100 아님";
+                }
+                const ok = reason === "";
+                if (ok) {
+                    total += score;
+                    validCount++;
+                }
+
+                const tr = document.createElement("tr");
+                tr.innerHTML = '<td class="mono"></td><td class="mono"></td><td class="bar-cell"></td><td></td>';
+                tr.children[0].textContent = i + 1;
+                tr.children[1].textContent = JSON.stringify(student);
+                if (ok) {
+                    tr.children[2].innerHTML = '<div class="bar" style="width: 0"></div><span class="mono"></span>';
+                    tr.children[2].querySelector("span").textContent = score;
+                    const bar = tr.children[2].querySelector(".bar");
+                    requestAnimationFrame(() => requestAnimationFrame(() => { bar.style.width = score + "%"; }));
+                } else {
+                    tr.children[2].textContent = score === null ? "-" : String(score);
+                }
+                tr.children[3].innerHTML = ok ? badge("사용", true) : badge("건너뜀 · " + reason, false);
+                tbody.appendChild(tr);
+            });
+
+            const summary = document.getElementById("gr-summary");
+            if (validCount === 0) {
+                summary.innerHTML = '<div style="grid-column: 1 / -1;">분석할 수 있는 데이터가 없습니다.</div>';
+                return;
+            }
+            const average = total / validCount;
+            summary.innerHTML =
+                "<div><small>학생 수 <code>validCount</code></small><b>" + validCount + "명</b></div>" +
+                "<div><small>점수 합계 <code>total</code></small><b>" + total + "점</b></div>" +
+                "<div><small>평균 <code>toFixed(2)</code></small><b>" + average.toFixed(2) + "점</b></div>";
+        }
+        document.getElementById("gr-btn").addEventListener("click", analyze);
+        document.getElementById("gr-data").addEventListener("input", analyze);
+        analyze();
+    </script>
+
+</body>
+</html>
