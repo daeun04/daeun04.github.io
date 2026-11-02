@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예제 9-9 Math 객체</title>
+    <style>
+        :root {
+            --bg: #f7f7f5;
+            --panel: #ffffff;
+            --panel-soft: #f3f3f1;
+            --line: #e5e7eb;
+            --primary: #6b7280;
+            --text: #1f2937;
+            --subtext: #5b6472;
+            --code-bg: #1f2937;
+            --code-text: #e5e7eb;
+            --code-comment: #9ca3af;
+            --result: #2f6b4f;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            background: linear-gradient(180deg, #f8f8f7 0%, #f1f2f4 100%);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .top-bar {
+            background: linear-gradient(135deg, #4b5563 0%, #8a919b 100%);
+            color: #fff;
+            text-align: center;
+            padding: 36px 16px 32px;
+        }
+
+        .top-bar h1 {
+            margin: 0;
+            font-size: 34px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .top-bar p {
+            margin: 6px 0 0;
+            color: #e5e7eb;
+        }
+
+        .container {
+            width: min(920px, 92%);
+            margin: 32px auto 60px;
+        }
+
+        .toc {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 0 0 24px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .toc a {
+            display: inline-block;
+            background: var(--panel);
+            color: #111;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 9px 14px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .toc a:hover {
+            background: var(--line);
+        }
+
+        .section {
+            background: var(--panel);
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 28px;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+        }
+
+        .section h2 {
+            margin: 0 0 16px;
+            font-size: 23px;
+            border-left: 6px solid var(--primary);
+            padding-left: 12px;
+        }
+
+        .section h3 {
+            margin: 28px 0 10px;
+            font-size: 18px;
+        }
+
+        .section p {
+            margin: 0 0 12px;
+        }
+
+        code {
+            font-family: Consolas, "JetBrains Mono", monospace;
+            background: var(--panel-soft);
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 0.92em;
+        }
+
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 18px 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-family: Consolas, "JetBrains Mono", monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            font-size: inherit;
+        }
+
+        pre .cm {
+            color: var(--code-comment);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 11px 12px;
+            border-bottom: 1px solid var(--line);
+            vertical-align: top;
+        }
+
+        th {
+            background: var(--panel-soft);
+            white-space: nowrap;
+        }
+
+        td:first-child {
+            white-space: nowrap;
+        }
+
+        td.val {
+            font-family: Consolas, "JetBrains Mono", monospace;
+            color: var(--result);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .output-box {
+            margin-top: 16px;
+            background: var(--panel-soft);
+            border-left: 6px solid var(--primary);
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+
+        .output-box h3 {
+            margin: 0 0 8px;
+        }
+
+        .output-box p {
+            margin: 2px 0;
+        }
+
+        .output-box b {
+            font-family: Consolas, "JetBrains Mono", monospace;
+            color: var(--result);
+        }
+
+        .label {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--subtext);
+            margin: 18px 0 6px;
+        }
+
+        .tip {
+            background: #f3f4f6;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-top: 16px;
+        }
+
+        .tip strong {
+            color: #111;
+        }
+
+        /* 직접 해 보기 */
+        .try {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .try label {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .try input,
+        .try select {
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--panel-soft);
+            font-size: 15px;
+            min-width: 150px;
+        }
+
+        .try button,
+        .btn {
+            background: linear-gradient(135deg, #4b5563 0%, #7a818a 100%);
+            color: #fff;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .try-result {
+            margin-top: 14px;
+            font-family: Consolas, "JetBrains Mono", monospace;
+            font-size: 16px;
+        }
+
+        .try-result b {
+            color: var(--result);
+        }
+
+        .back-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #4b5563 0%, #7a818a 100%);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 700px) {
+            .top-bar h1 {
+                font-size: 26px;
+            }
+
+            .section {
+                padding: 22px 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="top-bar">
+        <h1>예제 9-9 Math 객체</h1>
+        <p>JavaScript 수학 내장 객체의 상수와 메서드 정리</p>
+    </header>
+
+    <main class="container">
+
+        <ul class="toc">
+            <li><a href="#example">예제 코드</a></li>
+            <li><a href="#constants">Math 상수</a></li>
+            <li><a href="#methods">Math 메서드</a></li>
+            <li><a href="#rounding">반올림 비교</a></li>
+            <li><a href="#try">직접 해 보기</a></li>
+        </ul>
+
+        <section class="section">
+            <h2>Math 객체란?</h2>
+            <p>
+                <code>Math</code>는 수학 계산에 필요한 상수와 함수를 모아 둔 JavaScript 내장 객체입니다.
+                <code>new</code>로 만들지 않고 <code>Math.PI</code>, <code>Math.round(1.5)</code>처럼 바로 사용합니다.
+            </p>
+            <ul>
+                <li><strong>상수(속성)</strong>: <code>Math.PI</code>처럼 정해진 값. 이름이 모두 대문자입니다.</li>
+                <li><strong>메서드</strong>: <code>Math.sqrt(4)</code>처럼 값을 넣으면 계산 결과를 돌려주는 함수입니다.</li>
+            </ul>
+        </section>
+
+        <section class="section" id="example">
+            <h2>1. 예제 코드</h2>
+            <p>Math 객체의 상수 8개를 화면에 출력하는 예제입니다. 출력할 자리를 <code>&lt;b id="..."&gt;</code>로 만들어 두고, 스크립트에서 <code>innerHTML</code>로 값을 채웁니다.</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;예제 9-9 Math 속성&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h3&gt;Math 객체 속성&lt;/h3&gt;
+
+<span class="cm">&lt;!-- 값이 들어갈 자리. id로 구분합니다 --&gt;</span>
+&lt;p&gt;Euler's 상수(E) : &lt;b id="ca"&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;자연로그2 LN2 : &lt;b id="cca"&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;자연로그10 LN10 : &lt;b id="cnct"&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;2진로그E(LOG2E) : &lt;b id="ido"&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;10진로그E(LOG10E): &lt;b id="fxd"&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;PI : &lt;b id="prc"&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;SQRT1_2 : &lt;b id="str"&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;SQRT2 : &lt;b id="vlf"&gt;&lt;/b&gt;&lt;/p&gt;
+
+&lt;script&gt;
+    <span class="cm">// id로 요소를 찾아 Math 상수 값을 넣습니다</span>
+    document.getElementById("ca").innerHTML = Math.E;
+    document.getElementById("cca").innerHTML = Math.LN2;
+    document.getElementById("cnct").innerHTML = Math.LN10;
+    document.getElementById("ido").innerHTML = Math.LOG2E;
+    document.getElementById("fxd").innerHTML = Math.LOG10E;
+    document.getElementById("prc").innerHTML = Math.PI;
+    document.getElementById("str").innerHTML = Math.SQRT1_2;
+    document.getElementById("vlf").innerHTML = Math.SQRT2;
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+            <div class="output-box">
+                <h3>실행 결과</h3>
+                <p>Euler's 상수(E) : <b id="ca"></b></p>
+                <p>자연로그2 LN2 : <b id="cca"></b></p>
+                <p>자연로그10 LN10 : <b id="cnct"></b></p>
+                <p>2진로그E(LOG2E) : <b id="ido"></b></p>
+                <p>10진로그E(LOG10E): <b id="fxd"></b></p>
+                <p>PI : <b id="prc"></b></p>
+                <p>SQRT1_2 : <b id="str"></b></p>
+                <p>SQRT2 : <b id="vlf"></b></p>
+            </div>
+
+            <h3>코드 흐름</h3>
+            <ol>
+                <li><code>&lt;p&gt;</code> 안의 빈 <code>&lt;b&gt;</code> 태그가 값을 출력할 자리입니다. <code>ca</code>, <code>cca</code>, <code>prc</code> 같은 고유 id를 붙여 구분합니다.</li>
+                <li><code>document.getElementById("id")</code>로 해당 요소를 찾습니다.</li>
+                <li><code>.innerHTML = Math.E</code>처럼 Math 상수 값을 요소 안에 넣으면 화면에 표시됩니다.</li>
+            </ol>
+        </section>
+
+        <section class="section" id="constants">
+            <h2>2. Math 상수</h2>
+            <p>값이 바뀌지 않는 수학 상수입니다. 괄호 없이 씁니다.</p>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>상수</th><th>의미</th><th>값</th></tr>
+                    <tr><td><code>Math.E</code></td><td>오일러 상수 e. 자연로그의 밑</td><td class="val">2.718281828459045</td></tr>
+                    <tr><td><code>Math.LN2</code></td><td>2의 자연로그 (ln 2)</td><td class="val">0.6931471805599453</td></tr>
+                    <tr><td><code>Math.LN10</code></td><td>10의 자연로그 (ln 10)</td><td class="val">2.302585092994046</td></tr>
+                    <tr><td><code>Math.LOG2E</code></td><td>밑이 2인 e의 로그 (log₂ e)</td><td class="val">1.4426950408889634</td></tr>
+                    <tr><td><code>Math.LOG10E</code></td><td>밑이 10인 e의 로그 (log₁₀ e)</td><td class="val">0.4342944819032518</td></tr>
+                    <tr><td><code>Math.PI</code></td><td>원주율 π</td><td class="val">3.141592653589793</td></tr>
+                    <tr><td><code>Math.SQRT1_2</code></td><td>1/2의 제곱근 (√½ = 1/√2)</td><td class="val">0.7071067811865476</td></tr>
+                    <tr><td><code>Math.SQRT2</code></td><td>2의 제곱근 (√2)</td><td class="val">1.4142135623730951</td></tr>
+                </table>
+            </div>
+        </section>
+
+        <section class="section" id="methods">
+            <h2>3. Math 메서드</h2>
+            <p>괄호 안에 숫자를 넣으면 계산 결과를 돌려줍니다. 비슷한 기능끼리 묶었습니다.</p>
+
+            <h3>정수 만들기 · 절댓값</h3>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>메서드</th><th>설명</th><th>예시</th><th>결과</th></tr>
+                    <tr><td><code>Math.ceil(x)</code></td><td>올림. x보다 크거나 같은 정수 중 가장 작은 수</td><td><code>Math.ceil(1.234)</code></td><td class="val">2</td></tr>
+                    <tr><td><code>Math.floor(x)</code></td><td>내림. x보다 작거나 같은 정수 중 가장 큰 수</td><td><code>Math.floor(1.234)</code></td><td class="val">1</td></tr>
+                    <tr><td><code>Math.round(x)</code></td><td>반올림. 가장 가까운 정수</td><td><code>Math.round(1.234)</code></td><td class="val">1</td></tr>
+                    <tr><td><code>Math.trunc(x)</code></td><td>소수점 아래를 버리고 정수 부분만 남김</td><td><code>Math.trunc(1.234)</code></td><td class="val">1</td></tr>
+                    <tr><td><code>Math.abs(x)</code></td><td>절댓값</td><td><code>Math.abs(-3)</code></td><td class="val">3</td></tr>
+                </table>
+            </div>
+
+            <h3>거듭제곱 · 제곱근 · 로그</h3>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>메서드</th><th>설명</th><th>예시</th><th>결과</th></tr>
+                    <tr><td><code>Math.pow(x, y)</code></td><td>x의 y제곱</td><td><code>Math.pow(1, 3)</code></td><td class="val">1</td></tr>
+                    <tr><td><code>Math.sqrt(x)</code></td><td>제곱근 (√x)</td><td><code>Math.sqrt(1.234)</code></td><td class="val">1.1108555261599053</td></tr>
+                    <tr><td><code>Math.cbrt(x)</code></td><td>세제곱근 (∛x)</td><td><code>Math.cbrt(1)</code></td><td class="val">1</td></tr>
+                    <tr><td><code>Math.exp(x)</code></td><td>e의 x제곱 (eˣ)</td><td><code>Math.exp(1)</code></td><td class="val">2.718281828459045</td></tr>
+                    <tr><td><code>Math.log(x)</code></td><td>자연로그 (ln x)</td><td><code>Math.log(1)</code></td><td class="val">0</td></tr>
+                </table>
+            </div>
+
+            <h3>삼각함수</h3>
+            <p>각도는 <strong>도(°)가 아니라 라디안</strong> 단위입니다.</p>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>메서드</th><th>설명</th><th>예시</th><th>결과</th></tr>
+                    <tr><td><code>Math.sin(x)</code></td><td>사인</td><td><code>Math.sin(1.234)</code></td><td class="val">0.9438182093746337</td></tr>
+                    <tr><td><code>Math.cos(x)</code></td><td>코사인</td><td><code>Math.cos(1)</code></td><td class="val">0.5403023058681398</td></tr>
+                    <tr><td><code>Math.tan(x)</code></td><td>탄젠트</td><td><code>Math.tan(1.234)</code></td><td class="val">2.856029838919548</td></tr>
+                    <tr><td><code>Math.asin(x)</code></td><td>아크사인 (sin의 역함수)</td><td><code>Math.asin(1)</code></td><td class="val">1.5707963267948966 (π/2)</td></tr>
+                    <tr><td><code>Math.acos(x)</code></td><td>아크코사인 (cos의 역함수)</td><td><code>Math.acos(1)</code></td><td class="val">0</td></tr>
+                    <tr><td><code>Math.atan(x)</code></td><td>아크탄젠트 (tan의 역함수)</td><td><code>Math.atan(1)</code></td><td class="val">0.7853981633974483 (π/4)</td></tr>
+                    <tr><td><code>Math.atan2(y, x)</code></td><td>점 (x, y)의 각도. y를 먼저 씁니다</td><td><code>Math.atan2(1, 3)</code></td><td class="val">0.3217505543966422</td></tr>
+                </table>
+            </div>
+            <div class="tip">
+                <strong>도 → 라디안 변환</strong>: <code>라디안 = 도 * Math.PI / 180</code>.
+                예를 들어 sin 30°는 <code>Math.sin(30 * Math.PI / 180)</code>이고 결과는 약 0.5입니다.
+            </div>
+
+            <h3>쌍곡선 함수</h3>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>메서드</th><th>설명</th><th>예시</th><th>결과</th></tr>
+                    <tr><td><code>Math.sinh(x)</code></td><td>쌍곡사인</td><td><code>Math.sinh(1.234)</code></td><td class="val">1.5719080591023373</td></tr>
+                    <tr><td><code>Math.cosh(x)</code></td><td>쌍곡코사인</td><td><code>Math.cosh(1)</code></td><td class="val">1.5430806348152437</td></tr>
+                    <tr><td><code>Math.tanh(x)</code></td><td>쌍곡탄젠트</td><td><code>Math.tanh(1.234)</code></td><td class="val">0.8437356625893302</td></tr>
+                    <tr><td><code>Math.asinh(x)</code></td><td>역쌍곡사인</td><td><code>Math.asinh(1)</code></td><td class="val">0.881373587019543</td></tr>
+                    <tr><td><code>Math.acosh(x)</code></td><td>역쌍곡코사인</td><td><code>Math.acosh(1)</code></td><td class="val">0</td></tr>
+                </table>
+            </div>
+
+            <h3>최댓값 · 최솟값 · 난수</h3>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>메서드</th><th>설명</th><th>예시</th><th>결과</th></tr>
+                    <tr><td><code>Math.max(...)</code></td><td>넣은 값 중 가장 큰 수</td><td><code>Math.max(1, 3, 0.3, 12)</code></td><td class="val">12</td></tr>
+                    <tr><td><code>Math.min(...)</code></td><td>넣은 값 중 가장 작은 수</td><td><code>Math.min(1, 3, 0.3, 12)</code></td><td class="val">0.3</td></tr>
+                    <tr><td><code>Math.random()</code></td><td>0 이상 1 미만의 무작위 수. 실행할 때마다 바뀜</td><td><code>Math.random()</code></td><td class="val" id="random-value">0.…</td></tr>
+                </table>
+            </div>
+            <p style="margin-top: 12px;"><button type="button" class="btn" id="random-btn">난수 다시 뽑기</button></p>
+            <div class="tip">
+                <strong>1~6 주사위 만들기</strong>: <code>Math.floor(Math.random() * 6) + 1</code>.
+                <code>random()</code>에 6을 곱하면 0 이상 6 미만이 되고, <code>floor</code>로 내려서 0~5, 1을 더해 1~6이 됩니다.
+            </div>
+        </section>
+
+        <section class="section" id="rounding">
+            <h2>4. 올림 · 내림 · 반올림 · 버림 비교</h2>
+            <p>양수 1에서는 네 메서드 결과가 모두 같아서 차이가 안 보입니다. 다른 값을 넣어 보면 차이가 드러납니다. 특히 <strong>음수</strong>에서 <code>floor</code>와 <code>trunc</code>가 달라집니다.</p>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>x</th><th>ceil</th><th>floor</th><th>round</th><th>trunc</th></tr>
+                    <tr><td><code>1.234</code></td><td class="val">2</td><td class="val">1</td><td class="val">1</td><td class="val">1</td></tr>
+                    <tr><td><code>1.5</code></td><td class="val">2</td><td class="val">1</td><td class="val">2</td><td class="val">1</td></tr>
+                    <tr><td><code>-1.234</code></td><td class="val">-1</td><td class="val">-2</td><td class="val">-1</td><td class="val">-1</td></tr>
+                    <tr><td><code>-1.5</code></td><td class="val">-1</td><td class="val">-2</td><td class="val">-1</td><td class="val">-1</td></tr>
+                </table>
+            </div>
+            <div class="tip">
+                <strong>주의</strong>: <code>Math.round(-1.5)</code>는 -2가 아니라 <strong>-1</strong>입니다. JavaScript의 round는 .5일 때 항상 큰 쪽(+∞ 방향)으로 올립니다.
+            </div>
+        </section>
+
+        <section class="section" id="try">
+            <h2>5. 직접 해 보기</h2>
+            <p>숫자와 메서드를 골라 결과를 확인해 보세요.</p>
+            <form class="try" id="try-form">
+                <label for="try-x">x 값
+                    <input type="number" id="try-x" value="1.234" step="any">
+                </label>
+                <label for="try-fn">메서드
+                    <select id="try-fn">
+                        <option>ceil</option>
+                        <option>floor</option>
+                        <option selected>round</option>
+                        <option>trunc</option>
+                        <option>abs</option>
+                        <option>sqrt</option>
+                        <option>cbrt</option>
+                        <option>exp</option>
+                        <option>log</option>
+                        <option>sin</option>
+                        <option>cos</option>
+                        <option>tan</option>
+                        <option>asin</option>
+                        <option>acos</option>
+                        <option>atan</option>
+                        <option>sinh</option>
+                        <option>cosh</option>
+                        <option>tanh</option>
+                    </select>
+                </label>
+                <button type="submit">계산</button>
+            </form>
+            <div class="try-result" id="try-result"></div>
+        </section>
+
+        <a href="../classpages/Dsgnpages.html" class="back-button">목록으로 돌아가기</a>
+
+    </main>
+
+    <script>
+        // 1. 예제 실행 결과
+        document.getElementById("ca").innerHTML = Math.E;
+        document.getElementById("cca").innerHTML = Math.LN2;
+        document.getElementById("cnct").innerHTML = Math.LN10;
+        document.getElementById("ido").innerHTML = Math.LOG2E;
+        document.getElementById("fxd").innerHTML = Math.LOG10E;
+        document.getElementById("prc").innerHTML = Math.PI;
+        document.getElementById("str").innerHTML = Math.SQRT1_2;
+        document.getElementById("vlf").innerHTML = Math.SQRT2;
+
+        // 3. 난수
+        function showRandom() {
+            document.getElementById("random-value").textContent = Math.random();
+        }
+        document.getElementById("random-btn").addEventListener("click", showRandom);
+        showRandom();
+
+        // 5. 직접 해 보기
+        function calculate(event) {
+            if (event) event.preventDefault();
+            const x = Number(document.getElementById("try-x").value);
+            const fn = document.getElementById("try-fn").value;
+            document.getElementById("try-result").innerHTML =
+                "Math." + fn + "(" + x + ") = <b>" + Math[fn](x) + "</b>";
+        }
+        document.getElementById("try-form").addEventListener("submit", calculate);
+        calculate();
+    </script>
+
+</body>
+</html>
