@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>진로 로드맵</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .roadmap-section {
+      margin-top: 40px;
+    }
+
+    .roadmap-section h2 {
+      margin: 0 0 16px;
+      font-size: 1.45rem;
+      color: var(--text);
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .content p {
+      color: var(--subtext);
+      line-height: 1.8;
+    }
+
+    .goal-box {
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+      border-left: 8px solid #374151;
+      border-radius: 16px;
+      padding: 20px 22px;
+      margin: 0 0 18px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .step-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .step-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-left: 8px solid var(--primary);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 8px 20px rgba(31, 41, 55, 0.05);
+    }
+
+    .step-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 8px 12px;
+      margin-bottom: 12px;
+    }
+
+    .step-label {
+      background: linear-gradient(135deg, #4b5563 0%, #7a818a 100%);
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    .step-head h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: var(--text);
+    }
+
+    .step-period {
+      color: var(--subtext);
+      font-size: 0.92rem;
+    }
+
+    .step-card ul,
+    .skill-card ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--subtext);
+      line-height: 1.8;
+    }
+
+    .step-done {
+      margin: 14px 0 0;
+      padding-top: 12px;
+      border-top: 1px dashed var(--line);
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .step-done strong {
+      color: #374151;
+    }
+
+    .notice {
+      margin-top: 18px;
+      background: #fdf8ec;
+      border: 1px solid #f1e3bf;
+      border-radius: 12px;
+      padding: 14px 16px;
+      color: #6b5a2e;
+      line-height: 1.7;
+    }
+
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .skill-card {
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .skill-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .skill-card ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .skill-card li {
+      position: relative;
+      padding-left: 26px;
+    }
+
+    .skill-card li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.45em;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #9ca3af;
+      border-radius: 4px;
+      background: #ffffff;
+    }
+
+    .skill-card li.done::before {
+      background: #4b5563;
+      border-color: #4b5563;
+    }
+
+    .status-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .status-table th,
+    .status-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+
+    .status-table th {
+      background: var(--panel-soft);
+      color: var(--text);
+    }
+
+    .status-table td {
+      color: var(--subtext);
+    }
+
+    .status-table td:last-child,
+    .status-table th:last-child {
+      text-align: center;
+      width: 120px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status.todo {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    .status.doing {
+      background: #e8f0fe;
+      color: #2f5bb7;
+    }
+
+    .status.done {
+      background: #e7f6ec;
+      color: #23774a;
+    }
+
+    .status-guide {
+      margin-top: 12px;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 768px) {
+      .skill-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .status-table th,
+      .status-table td {
+        padding: 10px 12px;
+      }
+
+      .status-table td:last-child,
+      .status-table th:last-child {
+        width: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo-area">
+      <div class="school-mark" aria-label="AI 소프트웨어과 로고">AI</div>
+      <div class="title-wrap">
+        <h2>진로 로드맵</h2>
+        <p>졸업 후 목표와 단계별 계획</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    <h1>🔭 졸업 후 목표 &amp; 로드맵</h1>
+
+    <section class="roadmap-section">
+      <h2>1. 졸업 후 목표</h2>
+      <div class="goal-box">대학 수업과 병행하며 천문학(천문우주)계열 학과 편입시험을 준비하고 합격하는 것</div>
+      <p>AI과에서 배운 프로그래밍·데이터 분석 역량을 바탕으로, 천문학이라는 기초과학 분야로 전공을 확장하려 합니다.
+        천문학은 관측 데이터 처리, 시뮬레이션, 머신러닝 기반 분석이 활발한 분야여서 지금까지 쌓은 AI·코딩 경험을 그대로 살릴 수 있다고 생각합니다.</p>
+    </section>
+
+    <section class="roadmap-section">
+      <h2>2. 목표 달성을 위한 단계별 계획</h2>
+
+      <div class="step-list">
+        <div class="step-card">
+          <div class="step-head">
+            <span class="step-label">STEP 1</span>
+            <h3>정보 수집</h3>
+            <span class="step-period">즉시 ~ 1개월</span>
+          </div>
+          <ul>
+            <li>천문·우주 관련 학과가 있는 대학 목록 정리</li>
+            <li>학교별 모집요강 확인 (지원 자격, 시험 과목, 전적대 성적 반영 비율, 면접 여부)</li>
+            <li>목표 대학 1지망 ~ 3지망 선정</li>
+          </ul>
+          <p class="step-done"><strong>완료 기준</strong> · 목표 대학별 전형 비교표 완성</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-head">
+            <span class="step-label">STEP 2</span>
+            <h3>기초 다지기</h3>
+            <span class="step-period">1 ~ 4개월</span>
+          </div>
+          <ul>
+            <li>편입수학 기초: 미적분 (극한·미분·적분) 개념 완성</li>
+            <li>고교 물리 핵심 개념 복습 (역학, 전자기, 파동)</li>
+            <li>하루 학습 시간 고정 (수업 외 최소 2~3시간)</li>
+          </ul>
+          <p class="step-done"><strong>완료 기준</strong> · 미적분 기본서 1회독 완료</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-head">
+            <span class="step-label">STEP 3</span>
+            <h3>본격 시험 준비</h3>
+            <span class="step-period">4 ~ 9개월</span>
+          </div>
+          <ul>
+            <li>편입수학 전 범위: 다변수 미적분, 선형대수, 공학수학 (미분방정식 등)</li>
+            <li>영어 시험이 있는 학교라면 어휘·독해 병행</li>
+            <li>단원별 문제풀이 → 오답노트 정리</li>
+          </ul>
+          <p class="step-done"><strong>완료 기준</strong> · 전 범위 1회독 + 오답노트 정리</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-head">
+            <span class="step-label">STEP 4</span>
+            <h3>실전 대비</h3>
+            <span class="step-period">9 ~ 12개월</span>
+          </div>
+          <ul>
+            <li>목표 대학 기출문제 풀이 (시간 재고 실전처럼)</li>
+            <li>주 1회 모의고사 → 취약 단원 보완</li>
+            <li>전적대 학점 관리 (졸업 요건·평점 유지)</li>
+          </ul>
+          <p class="step-done"><strong>완료 기준</strong> · 기출 3개년 이상 풀이, 목표 점수 도달</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-head">
+            <span class="step-label">STEP 5</span>
+            <h3>지원 &amp; 면접</h3>
+            <span class="step-period">원서 접수기</span>
+          </div>
+          <ul>
+            <li>원서 접수, 서류 준비 (성적증명서, 졸업(예정)증명서 등)</li>
+            <li>면접 대비: 지원 동기, 천문학 관심 분야, AI 활용 계획 정리</li>
+            <li>포트폴리오로 이 GitHub 활용</li>
+          </ul>
+          <p class="step-done"><strong>완료 기준</strong> · 원서 제출 및 면접 응시</p>
+        </div>
+      </div>
+
+      <p class="notice">⚠️ 전형 방식과 시험 과목은 대학·연도마다 다르므로, 매년 각 대학의 <strong>최신 모집요강</strong>을 기준으로 계획을 수정합니다.</p>
+    </section>
+
+    <section class="roadmap-section">
+      <h2>3. 개별 역량 강화 계획</h2>
+      <p>위 단계를 바탕으로 아래 4가지 역량을 집중적으로 키울 예정입니다.</p>
+
+      <div class="skill-grid">
+        <div class="skill-card">
+          <h3>📐 수학 역량 (편입시험 핵심)</h3>
+          <ul>
+            <li>미적분 → 다변수 미적분 → 선형대수 → 공학수학 순서로 단계 학습</li>
+            <li>단원별 개념 정리와 오답노트를 이 저장소에 꾸준히 기록</li>
+            <li>기출문제 풀이로 실전 감각 확보</li>
+          </ul>
+        </div>
+
+        <div class="skill-card">
+          <h3>🪐 천문학·물리 기초 역량</h3>
+          <ul>
+            <li>일반물리 (역학, 전자기학) 개념 학습</li>
+            <li>천문학 입문서·온라인 강의로 기초 개념 익히기 (항성, 은하, 우주론)</li>
+            <li>천문 관련 강연·관측 프로그램 참여로 관심 분야 구체화</li>
+          </ul>
+        </div>
+
+        <div class="skill-card">
+          <h3>💻 AI·프로그래밍 역량 (천문학과 연결)</h3>
+          <ul>
+            <li>Python으로 공개 천문 데이터 분석해 보기 (예: 천체 밝기 변화, 별 분류)</li>
+            <li>Unity 우주 시뮬레이션 프로젝트를 발전시켜 궤도·중력 계산 정확도 높이기</li>
+            <li>머신러닝을 활용한 천체 이미지 분류 같은 미니 프로젝트 진행</li>
+          </ul>
+        </div>
+
+        <div class="skill-card">
+          <h3>🗓️ 자기관리 역량</h3>
+          <ul>
+            <li>대학 수업과 시험 준비를 병행하는 주간 학습 계획표 운영</li>
+            <li>월말마다 진도 점검 후 계획 조정</li>
+            <li>전적대 학점 관리로 지원 자격과 성적 반영에 불이익 없도록 유지</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="roadmap-section">
+      <h2>📈 진행 상황</h2>
+      <table class="status-table">
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th>상태</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>목표 대학·전형 조사</td>
+            <td><span class="status todo">🔲 예정</span></td>
+          </tr>
+          <tr>
+            <td>편입수학 기초 (미적분)</td>
+            <td><span class="status todo">🔲 예정</span></td>
+          </tr>
+          <tr>
+            <td>편입수학 심화 (선형대수·공학수학)</td>
+            <td><span class="status todo">🔲 예정</span></td>
+          </tr>
+          <tr>
+            <td>천문 데이터 분석 프로젝트</td>
+            <td><span class="status todo">🔲 예정</span></td>
+          </tr>
+          <tr>
+            <td>기출문제 풀이</td>
+            <td><span class="status todo">🔲 예정</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="status-guide">진행하면서 <span class="status todo">🔲 예정</span> → <span class="status doing">🔄 진행 중</span> → <span class="status done">✅ 완료</span> 로 업데이트합니다.</p>
+    </section>
+
+    <a href="../index.html" class="back-button">홈으로 돌아가기</a>
+  </main>
+
+</body>
+</html>
