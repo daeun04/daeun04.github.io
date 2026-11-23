@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas</title>
+</head>
+<body>
+<canvas id="myCanvas" width="600" height="400"></canvas>
+
+<script>
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+
+ctx.fillStyle = "skyblue";
+ctx.fillRect(40, 35, 180, 110);
+
+ctx.strokeStyle = "red";
+ctx.lineWidth = 4;
+ctx.strokeRect(270, 35, 180, 110);
+
+ctx.fillStyle = "#4A6B2A";
+ctx.fillRect(40, 185, 180, 110);
+ctx.strokeStyle = "#9ACD32";
+ctx.lineWidth = 4;
+ctx.strokeRect(40, 185, 180, 110);
+
+const emeralds = ["#50C878", "#007A5E"];
+let emeraldIndex = 0;
+
+function drawEmeraldBox() {
+  ctx.fillStyle = emeralds[emeraldIndex];
+  ctx.fillRect(270, 185, 180, 110);
+  emeraldIndex = (emeraldIndex + 1) % emeralds.length;
+}
+
+drawEmeraldBox();
+setInterval(drawEmeraldBox, 1000);
+</script>
+</body>
+</html>

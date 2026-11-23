@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas Line</title>
+</head>
+<body>
+<canvas id="myCanvas" width="600" height="400"></canvas>
+
+<script>
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+
+ctx.beginPath();
+ctx.moveTo(50, 140);
+ctx.lineTo(180, 35);
+ctx.lineTo(310, 140);
+ctx.strokeStyle = "purple";
+ctx.lineWidth = 5;
+ctx.stroke();
+</script>
+</body>
+</html>

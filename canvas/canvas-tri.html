@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas Triangle</title>
+</head>
+<body>
+<canvas id="myCanvas" width="600" height="400"></canvas>
+
+<script>
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+
+ctx.beginPath();
+ctx.moveTo(180, 25);
+ctx.lineTo(90, 155);
+ctx.lineTo(270, 155);
+ctx.closePath();
+ctx.fillStyle = "gold";
+ctx.fill();
+ctx.stroke();
+
+// 세 점을 이어 삼각형 하나를 그리는 함수
+function drawTriangle(x1, y1, x2, y2, x3, y3, color) {
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.lineTo(x3, y3);
+  ctx.closePath();
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.stroke();
+}
+
+// 갈색 마름모 = 위쪽 삼각형 + 아래쪽 삼각형
+drawTriangle(180, 175, 110, 255, 250, 255, "saddlebrown"); // 위
+drawTriangle(110, 255, 250, 255, 180, 335, "saddlebrown"); // 아래
+
+// 녹색 평행사변형 = 왼쪽 삼각형 + 오른쪽 삼각형
+drawTriangle(300, 335, 380, 175, 440, 335, "green"); // 왼쪽
+drawTriangle(380, 175, 520, 175, 440, 335, "green"); // 오른쪽
+</script>
+</body>
+</html>
