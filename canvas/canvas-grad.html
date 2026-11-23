@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas Gradient</title>
+</head>
+<body>
+<canvas id="myCanvas" width="600" height="400"></canvas>
+
+<script>
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+
+const gradient = ctx.createLinearGradient(40, 0, 500, 0);
+gradient.addColorStop(0, "red");
+gradient.addColorStop(0.5, "yellow");
+gradient.addColorStop(1, "blue");
+
+ctx.fillStyle = gradient;
+ctx.fillRect(40, 40, 500, 100);
+
+// 아래쪽 꼬불꼬불한 선 (같은 색 그라데이션)
+const waveGradient = ctx.createLinearGradient(40, 0, 540, 0);
+waveGradient.addColorStop(0, "red");
+waveGradient.addColorStop(0.5, "yellow");
+waveGradient.addColorStop(1, "blue");
+
+const waveY = 260;      // 선의 가운데 높이
+const waveHeight = 40;  // 위아래로 흔들리는 크기
+const waveLength = 100; // 물결 한 번의 가로 길이
+
+ctx.beginPath();
+for (let x = 40; x <= 540; x++) {
+  const y = waveY + Math.sin(((x - 40) / waveLength) * Math.PI * 2) * waveHeight;
+  if (x === 40) {
+    ctx.moveTo(x, y);
+  } else {
+    ctx.lineTo(x, y);
+  }
+}
+ctx.strokeStyle = waveGradient;
+ctx.lineWidth = 8;
+ctx.lineCap = "round";
+ctx.stroke();
+</script>
+</body>
+</html>

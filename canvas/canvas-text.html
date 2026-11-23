@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas Text</title>
+</head>
+<body>
+<canvas id="myCanvas" width="600" height="400"></canvas>
+
+<script>
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+
+ctx.font = "bold 32px Arial";
+ctx.fillStyle = "navy";
+ctx.fillText("Hello Canvas!", 45, 75);
+
+ctx.font = "bold 28px Arial";
+ctx.strokeStyle = "tomato";
+ctx.strokeText("JavaScript", 45, 135);
+
+// 자두색 그라데이션 문구
+ctx.font = "bold 40px Arial";
+const text = "AI소프트웨어과";
+const textWidth = ctx.measureText(text).width; // 글자 전체 너비
+
+const plumGradient = ctx.createLinearGradient(45, 0, 45 + textWidth, 0);
+plumGradient.addColorStop(0, "#5C1E4A");   // 진한 자두색
+plumGradient.addColorStop(0.5, "#8E4585"); // 자두색
+plumGradient.addColorStop(1, "#DDA0DD");   // 연한 자두색
+
+ctx.fillStyle = plumGradient;
+ctx.fillText(text, 45, 205);
+</script>
+</body>
+</html>
